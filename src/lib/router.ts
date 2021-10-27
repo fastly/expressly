@@ -1,9 +1,11 @@
 import Route from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
+import Middleware from "./middleware";
 
 export class Router {
   routes: Route[] = [];
+  middlewares: Middleware[] = [];
 
   public listen(): void {
     addEventListener("fetch", (event) =>
@@ -16,12 +18,20 @@ export class Router {
       const req = new FPRequest(event);
       const res = new FPResponse();
 
+      await this.runMiddlewares(req, res);
+
       await this.runRoutes(req, res);
 
       return serializeResponse(res);
     } catch (e) {
       console.log(e);
     }
+  }
+
+  private async runMiddlewares(req: FPRequest, res: FPResponse): Promise<any> {
+    this.middlewares.map(async m => {
+      await m.run(req, res);
+    })
   }
 
   private async runRoutes(req: FPRequest, res: FPResponse): Promise<any> {
@@ -35,6 +45,10 @@ export class Router {
     }
 
     console.log("Ran route.");
+  }
+
+  public use(callback: Function): void {
+    this.middlewares.push(new Middleware(callback));
   }
 
   public route(method: string, pattern: string, callback: Function): void {

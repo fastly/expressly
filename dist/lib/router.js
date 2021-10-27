@@ -10,9 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Route from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
+import Middleware from "./middleware";
 export class Router {
     constructor() {
         this.routes = [];
+        this.middlewares = [];
     }
     listen() {
         addEventListener("fetch", (event) => event.respondWith(this.handler(event)));
@@ -22,12 +24,20 @@ export class Router {
             try {
                 const req = new FPRequest(event);
                 const res = new FPResponse();
+                yield this.runMiddlewares(req, res);
                 yield this.runRoutes(req, res);
                 return serializeResponse(res);
             }
             catch (e) {
                 console.log(e);
             }
+        });
+    }
+    runMiddlewares(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.middlewares.map((m) => __awaiter(this, void 0, void 0, function* () {
+                yield m.run(req, res);
+            }));
         });
     }
     runRoutes(req, res) {
@@ -40,6 +50,9 @@ export class Router {
             }
             console.log("Ran route.");
         });
+    }
+    use(callback) {
+        this.middlewares.push(new Middleware(callback));
     }
     route(method, pattern, callback) {
         this.routes.push(new Route(basicRouteMatcher(method, pattern), callback));

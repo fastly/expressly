@@ -2,6 +2,10 @@ import { Router } from "../../../dist/index.js";
 
 const router = new Router();
 
+router.use((req, res) => {
+  res.headers.set("x-powered-by", "FlightPath")
+})
+
 router.route("GET", "/", (req, res) => {
   return res.send("Home");
 });
