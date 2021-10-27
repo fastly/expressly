@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "rootDir": "./src",
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es6",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@fastly"],
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "dist/",
+    "examples/"
+  ]
+}
