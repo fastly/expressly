@@ -3,7 +3,7 @@ import { Router } from "../../../dist/index.js";
 const router = new Router();
 
 router.use((req, res) => {
-  res.headers.set("x-powered-by", "FlightPath")
+  res.setHeader("x-powered-by", "FlightPath")
 })
 
 router.route("GET", "/", (req, res) => {
@@ -11,7 +11,7 @@ router.route("GET", "/", (req, res) => {
 });
 
 router.get("/puppies", async (req, res) => {
-  res.headers.set("x-testing", "It works!");
+  res.setHeader("x-testing", "It works!");
   return res.send("You're at the puppy page!");
 });
 

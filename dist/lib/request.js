@@ -4,10 +4,16 @@ export default class FPRequest {
         this.clientInfo = {};
         this.params = {};
         this.clientInfo = event.client;
-        this.headers = event.request.headers;
+        this._headers = event.request.headers;
         this.method = event.request.method;
         this.url = new URL(event.request.url);
         this.query = Object.fromEntries(this.url.searchParams.entries());
+    }
+    get headers() {
+        return Object.fromEntries(this._headers.entries());
+    }
+    setHeader(key, value) {
+        this._headers.set(key, value);
     }
     async json() {
         return await this.event.request.json();

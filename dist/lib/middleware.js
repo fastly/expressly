@@ -3,6 +3,7 @@ export default class Middleware {
         this.callback = callback;
     }
     async run(req, res) {
-        await this.callback(req, res);
+        // Supply an empty callback which would normally be next() in express
+        await this.callback(req, res, () => { });
     }
 }
