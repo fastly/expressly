@@ -29,6 +29,10 @@ router.get("/assets/*", async (req, res) => {
   return res.send("This is where the assets would be!");
 });
 
+router.get("/query", async (req, res) => {
+  return res.send(JSON.stringify(req.query));
+});
+
 /**
  * This must be last! Catch anything we dont handle and return a 404
  */
