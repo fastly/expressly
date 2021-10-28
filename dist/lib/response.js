@@ -1,3 +1,4 @@
+import cookie from "cookie";
 export default class FPResponse {
     constructor() {
         this._body = "";
@@ -22,6 +23,9 @@ export default class FPResponse {
     }
     setHeader(key, value) {
         this._headers.set(key, value);
+    }
+    cookie(key, value, options = {}) {
+        this.setHeader("Set-Cookie", cookie.serialize(key, value, options));
     }
     get body() {
         return this._body;

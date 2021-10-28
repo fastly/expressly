@@ -3,8 +3,14 @@ import { Router } from "../../../dist/index.js";
 const router = new Router();
 
 router.use((req, res) => {
-  res.setHeader("x-powered-by", "FlightPath")
-})
+  res.setHeader("x-powered-by", "FlightPath");
+});
+
+router.use((req, res) => {
+  res.cookie("visitcount", (Number(req.cookies.visitcount) + 1) | 0, {
+    maxAge: 60 * 60 * 24 * 7, // 1 week
+  });
+});
 
 router.route("GET", "/", (req, res) => {
   return res.send("Home");
