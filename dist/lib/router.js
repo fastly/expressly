@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import Route from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
@@ -19,37 +10,28 @@ export class Router {
     listen() {
         addEventListener("fetch", (event) => event.respondWith(this.handler(event)));
     }
-    handler(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const req = new FPRequest(event);
-                const res = new FPResponse();
-                yield this.runMiddlewares(req, res);
-                yield this.runRoutes(req, res);
-                return serializeResponse(res);
-            }
-            catch (e) {
-                console.log(e);
-            }
+    async handler(event) {
+        try {
+            const req = new FPRequest(event);
+            const res = new FPResponse();
+            await this.runMiddlewares(req, res);
+            await this.runRoutes(req, res);
+            return serializeResponse(res);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+    async runMiddlewares(req, res) {
+        this.middlewares.map(async (m) => {
+            await m.run(req, res);
         });
     }
-    runMiddlewares(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.middlewares.map((m) => __awaiter(this, void 0, void 0, function* () {
-                yield m.run(req, res);
-            }));
-        });
-    }
-    runRoutes(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log("Checking routes...");
-            const matchedRoute = this.routes.find((route) => route.check(req));
-            console.log("Found matching route");
-            if (matchedRoute) {
-                yield matchedRoute.run(req, res);
-            }
-            console.log("Ran route.");
-        });
+    async runRoutes(req, res) {
+        const matchedRoute = this.routes.find((route) => route.check(req));
+        if (matchedRoute) {
+            await matchedRoute.run(req, res);
+        }
     }
     use(callback) {
         this.middlewares.push(new Middleware(callback));
@@ -93,7 +75,6 @@ export function basicRouteMatcher(method, pattern) {
             return false;
         return pattern == "*" || req.url.pathname == pattern;
     }
-    console.log(`${pattern}: ${isRegexMatch}`);
     let checkFunction = isRegexMatch ? makeRegexMatch(pattern) : simpleMatch;
     return (req) => {
         return checkFunction(req);

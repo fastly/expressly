@@ -35,16 +35,11 @@ export class Router {
   }
 
   private async runRoutes(req: FPRequest, res: FPResponse): Promise<any> {
-    console.log("Checking routes...");
     const matchedRoute = this.routes.find((route): boolean => route.check(req));
-
-    console.log("Found matching route");
 
     if (matchedRoute) {
       await matchedRoute.run(req, res);
     }
-
-    console.log("Ran route.");
   }
 
   public use(callback: Function): void {
@@ -103,8 +98,6 @@ export function basicRouteMatcher(method: string, pattern: string): Function {
 
     return pattern == "*" || req.url.pathname == pattern;
   }
-
-  console.log(`${pattern}: ${isRegexMatch}`);
 
   let checkFunction = isRegexMatch ? makeRegexMatch(pattern) : simpleMatch;
 

@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 export default class FPRequest {
     constructor(event) {
         this.event = event;
@@ -16,20 +7,15 @@ export default class FPRequest {
         this.headers = event.request.headers;
         this.method = event.request.method;
         this.url = new URL(event.request.url);
+        this.query = Object.fromEntries(this.url.searchParams.entries());
     }
-    json() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.event.request.json();
-        });
+    async json() {
+        return await this.event.request.json();
     }
-    text() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.event.request.text();
-        });
+    async text() {
+        return await this.event.request.text();
     }
-    arrayBuffer() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.event.request.arrayBuffer();
-        });
+    async arrayBuffer() {
+        return await this.event.request.arrayBuffer();
     }
 }

@@ -1,4 +1,3 @@
-
 export default class FPResponse {
     headers: Headers;
     private _body: string = "";
@@ -10,6 +9,20 @@ export default class FPResponse {
 
     send(body: string){
         this._body = body;
+    }
+    
+    // For better express support
+    end(body: string){
+        this.send(body);
+    }
+
+    writeHead(statusCode: number, headers: {}) {
+        this.status = statusCode;
+
+        Object.keys(headers).map(k => {
+            this.headers.set(k, headers[k]);
+        })
+
     }
 
     get body(){

@@ -7,6 +7,16 @@ export default class FPResponse {
     send(body) {
         this._body = body;
     }
+    // For better express support
+    end(body) {
+        this.send(body);
+    }
+    writeHead(statusCode, headers) {
+        this.status = statusCode;
+        Object.keys(headers).map(k => {
+            this.headers.set(k, headers[k]);
+        });
+    }
     get body() {
         return this._body;
     }
