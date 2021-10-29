@@ -2,43 +2,52 @@ import { Router } from "../../../dist/index.js";
 
 const router = new Router();
 
-router.use((req, res) => {
-  res.setHeader("x-powered-by", "FlightPath");
-});
-
-router.use((req, res) => {
-  res.cookie("visitcount", (Number(req.cookies.visitcount) + 1) | 0, {
-    maxAge: 60 * 60 * 24 * 7, // 1 week
-  });
-});
-
-router.route("GET", "/", (req, res) => {
+router.route("GET", "/", (req, res) => { 
   return res.send("Home");
 });
 
-router.get("/puppies", async (req, res) => {
-  res.setHeader("x-testing", "It works!");
+router.get("/puppies", (req, res) => {
   return res.send("You're at the puppy page!");
 });
 
-router.get("/greeting/:name", async (req, res) => {
+/**
+ * Embed parameters in the path e.g. `:name` and access them in `req.params`
+ */
+router.post("/profile/:name", (req, res) => {
   return res.send(`Hello ${req.params.name}!`);
 });
 
+/**
+ * Match any path starting /assets/
+ * ✅ /assets/logo.png
+ * ✅ /assets/static/main.css
+ * ❌ /assets
+ * ❌ /static/assets/logo.png
+ */
 router.get("/assets/*", async (req, res) => {
-  return res.send("This is where the assets would be!");
-});
-
-router.get("/query", async (req, res) => {
-  return res.send(JSON.stringify(req.query));
+  res.send("This is where assets are!")
 });
 
 /**
- * This must be last! Catch anything we dont handle and return a 404
+ * Match on "/page" and use the "id" search parameter
+ * /page?id=42 -> "You are on page 42"
+ * /page?id=-1337 -> "You are on page -1337"
+ * /page -> "You are on page 0"
+ */
+router.get("/page", async (req, res) => {
+  let pageId = Number(req.query.id) | 0
+  res.send(`You are on page ${pageId}`)
+});
+
+/**
+ * Match everything
+ * For router.route(METHOD, PATH) you can pass a * for the method and path to match all possible requests
+ * this works great as a 404 handler
  */
 router.route("*", "*", (req, res) => {
   res.status = 404;
   return res.send("Page not found!");
 });
 
+// Listen for requests
 router.listen();

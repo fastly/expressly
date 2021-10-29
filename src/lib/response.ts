@@ -1,13 +1,10 @@
 import cookie from "cookie";
 
 export default class FPResponse {
-  private _headers: Headers;
+  _headers: Headers = new Headers();
   private _body: string = "";
   status: number = 0;
-
-  constructor() {
-    this._headers = new Headers();
-  }
+  _cookies: Map<string, string> = new Map();
 
   send(body: string) {
     this._body = body;
@@ -22,7 +19,7 @@ export default class FPResponse {
     this.status = statusCode;
 
     Object.keys(headers).map((k) => {
-      this._headers.set(k, headers[k]);
+      this.setHeader(k, headers[k]);
     });
   }
 
@@ -34,8 +31,12 @@ export default class FPResponse {
     this._headers.set(key, value);
   }
 
+  appendHeader(key: string, value: string): void {
+    this._headers.append(key, value);
+  }
+
   cookie(key: string, value: string, options:{} = {}): void {
-    this.setHeader("Set-Cookie", cookie.serialize(key, value, options))
+    this._cookies.set(key, cookie.serialize(key, value, options))
   }
 
   get body() {
