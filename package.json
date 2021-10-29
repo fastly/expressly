@@ -1,17 +1,19 @@
 {
-  "name": "flightpath",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.ts",
-  "directories": {
-    "example": "examples",
-    "lib": "lib"
+  "name": "flight-path",
+  "version": "1.0.1",
+  "description": "Express style router for Fastly Compute@Edge",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamoverton/FlightPath"
   },
   "scripts": {
     "build": "tsc",
+    "prepublish": "tsc",
     "dev": "nodemon --exec \"tsc\""
   },
-  "keywords": [],
+  "keywords": ["fastly", "c@e", "compute", "edge", "router"],
   "author": "",
   "license": "ISC",
   "devDependencies": {

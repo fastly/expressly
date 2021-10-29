@@ -12,8 +12,6 @@
     "typeRoots": ["./node_modules/@fastly"],
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "dist/",
-    "examples/"
-  ]
+  "declaration": true,
+  "exclude": ["dist/", "examples/"]
 }
