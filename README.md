@@ -8,6 +8,8 @@ This project is designed to offer an express style router for Fastly's C@E platf
 
 ## Usage
 
+[Check out the docs](https://flight-path.edgecompute.app/)
+
 Create a router object with `const router = new Router();`, this is the main object of FlightPath which all routes and middleware will be added to.
 
 Once all routes and middleware are added, you need to call `router.listen();` to bind the router to the `fetch` event which is called on each request.

@@ -13,7 +13,13 @@
     "prepublish": "tsc",
     "dev": "nodemon --exec \"tsc\""
   },
-  "keywords": ["fastly", "c@e", "compute", "edge", "router"],
+  "keywords": [
+    "fastly",
+    "c@e",
+    "compute",
+    "edge",
+    "router"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {

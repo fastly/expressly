@@ -15,6 +15,11 @@ export default class FPResponse {
     this.send(body);
   }
 
+  json(data: any) {
+    this.setHeader("Content-Type", "application/json");
+    this.send(JSON.stringify(data))
+  }
+
   writeHead(statusCode: number, headers: {}) {
     this.status = statusCode;
 
