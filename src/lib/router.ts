@@ -1,8 +1,7 @@
-import Route from "./route";
+import { Route, RequestHandlerCallback } from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
 import Middleware from "./middleware";
-
 export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
@@ -46,35 +45,35 @@ export class Router {
     this.middlewares.push(new Middleware(callback));
   }
 
-  public route(method: string, pattern: string, callback: Function): void {
+  public route(method: string, pattern: string, callback: RequestHandlerCallback): void {
     this.routes.push(new Route(basicRouteMatcher(method, pattern), callback));
   }
 
-  public get(pattern: string, callback: Function): void {
+  public get(pattern: string, callback: RequestHandlerCallback): void {
     this.route("GET", pattern, callback);
   }
 
-  public post(pattern: string, callback: Function): void {
+  public post(pattern: string, callback: RequestHandlerCallback): void {
     this.route("POST", pattern, callback);
   }
 
-  public put(pattern: string, callback: Function): void {
+  public put(pattern: string, callback: RequestHandlerCallback): void {
     this.route("PUT", pattern, callback);
   }
 
-  public delete(pattern: string, callback: Function): void {
+  public delete(pattern: string, callback: RequestHandlerCallback): void {
     this.route("DELETE", pattern, callback);
   }
 
-  public head(pattern: string, callback: Function): void {
+  public head(pattern: string, callback: RequestHandlerCallback): void {
     this.route("HEAD", pattern, callback);
   }
 
-  public options(pattern: string, callback: Function): void {
+  public options(pattern: string, callback: RequestHandlerCallback): void {
     this.route("OPTIONS", pattern, callback);
   }
 
-  public patch(pattern: string, callback: Function): void {
+  public patch(pattern: string, callback: RequestHandlerCallback): void {
     this.route("PATCH", pattern, callback);
   }
 }

@@ -6,8 +6,14 @@ export default class FPResponse {
   status: number = 0;
   _cookies: Map<string, string> = new Map();
 
-  send(body: BodyInit) {
-    this._body = body;
+  send(response: BodyInit | Response) {
+    if(response instanceof Response){
+      this._body = response.body;
+      this.useHeaders(response.headers);
+      this.status = response.status;
+    }else{
+      this._body = response;
+    }
   }
 
   // For better express support

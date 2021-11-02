@@ -36,7 +36,7 @@ router.get("/assets/*", async (req, res) => {
  */
 router.get("/page", async (req, res) => {
   let pageId = Number(req.query.id) | 0;
-  res.send(`You are on page ${pageId}`);
+  res.json({ message: `You are on page ${pageId}` });
 });
 
 /**
@@ -50,12 +50,14 @@ router.get("/redirect", async (req, res) => {
  * Get content from origin
  */
 router.get("/origin", async (req, res) => {
-  const originRequest = await fetch("https://www.fastly.com/products/edge-compute/serverless", {
-    backend: "origin"
-  })
+  const originRequest = await fetch(
+    "https://www.fastly.com/products/edge-compute/serverless",
+    {
+      backend: "origin",
+    }
+  );
 
-  res.useHeaders(originRequest.headers)
-  res.send(originRequest.body)
+  res.send(originRequest);
 });
 
 /**
