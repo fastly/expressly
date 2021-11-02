@@ -1,6 +1,6 @@
 {
   "name": "flight-path",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Express style router for Fastly Compute@Edge",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

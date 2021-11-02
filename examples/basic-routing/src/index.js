@@ -40,6 +40,13 @@ router.get("/page", async (req, res) => {
 });
 
 /**
+ * Redirect requests to a specific url
+ */
+router.get("/redirect", async (req, res) => {
+  res.redirect("https://fastly.com");
+});
+
+/**
  * Match everything
  * For router.route(METHOD, PATH) you can pass a * for the method and path to match all possible requests
  * this works great as a 404 handler

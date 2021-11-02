@@ -48,6 +48,13 @@ export default class FPResponse {
     return this._body;
   }
 
+  redirect(url: string) {
+    this.writeHead(301, {
+      Location: url
+    });
+    this.send(`Redirecting you to: ${url}`)
+  }
+
   // Set sensible values if things are not set, such as 200 status code if the user doesnt set a status code.
   setDefaults() {
     if (this.status == 0) {
