@@ -2,7 +2,7 @@ import { Router } from "../../../dist/index.js";
 
 const router = new Router();
 
-router.route("GET", "/", (req, res) => { 
+router.route("GET", "/", (req, res) => {
   return res.send("Home");
 });
 
@@ -25,7 +25,7 @@ router.post("/profile/:name", (req, res) => {
  * ❌ /static/assets/logo.png
  */
 router.get("/assets/*", async (req, res) => {
-  res.send("This is where assets are!")
+  res.send("This is where assets are!");
 });
 
 /**
@@ -35,8 +35,8 @@ router.get("/assets/*", async (req, res) => {
  * /page -> "You are on page 0"
  */
 router.get("/page", async (req, res) => {
-  let pageId = Number(req.query.id) | 0
-  res.send(`You are on page ${pageId}`)
+  let pageId = Number(req.query.id) | 0;
+  res.send(`You are on page ${pageId}`);
 });
 
 /**
@@ -44,6 +44,18 @@ router.get("/page", async (req, res) => {
  */
 router.get("/redirect", async (req, res) => {
   res.redirect("https://fastly.com");
+});
+
+/**
+ * Get content from origin
+ */
+router.get("/origin", async (req, res) => {
+  const originRequest = await fetch("https://www.fastly.com/products/edge-compute/serverless", {
+    backend: "origin"
+  })
+
+  res.useHeaders(originRequest.headers)
+  res.send(originRequest.body)
 });
 
 /**

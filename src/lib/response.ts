@@ -2,16 +2,16 @@ import cookie from "cookie";
 
 export default class FPResponse {
   _headers: Headers = new Headers();
-  private _body: string = "";
+  private _body: BodyInit = null;
   status: number = 0;
   _cookies: Map<string, string> = new Map();
 
-  send(body: string) {
+  send(body: BodyInit) {
     this._body = body;
   }
 
   // For better express support
-  end(body: string) {
+  end(body: BodyInit) {
     this.send(body);
   }
 
@@ -36,6 +36,12 @@ export default class FPResponse {
     this._headers.set(key, value);
   }
 
+  useHeaders(headers: Headers){
+    headers.forEach((value, key) => {
+      this.setHeader(key, value);
+    })
+  }
+
   appendHeader(key: string, value: string): void {
     this._headers.append(key, value);
   }
@@ -58,7 +64,7 @@ export default class FPResponse {
   // Set sensible values if things are not set, such as 200 status code if the user doesnt set a status code.
   setDefaults() {
     if (this.status == 0) {
-      if (this.body.length == 0) {
+      if (this.body == null) {
         this.status = 404;
         this._body = "Not Found";
       } else {
