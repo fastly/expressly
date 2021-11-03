@@ -10,5 +10,5 @@ service_id = ""
 
 
 [local_server.backends]
-    [local_server.backends.origin]
+    [local_server.backends.my-origin]
         url = "https://fastly.com"

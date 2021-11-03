@@ -53,7 +53,7 @@ router.get("/origin", async (req, res) => {
   const originRequest = await fetch(
     "https://www.fastly.com/products/edge-compute/serverless",
     {
-      backend: "origin",
+      backend: "my-origin",
     }
   );
 
