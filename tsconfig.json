@@ -10,8 +10,8 @@
     "allowJs": true,
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@fastly"],
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
   },
-  "declaration": true,
   "exclude": ["dist/", "examples/"]
 }
