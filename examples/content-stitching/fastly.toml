@@ -1,0 +1,16 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["oss@fastly.com"]
+description = "Compute example app"
+language = "javascript"
+manifest_version = 2
+name = "content-stitching"
+service_id = ""
+
+
+[local_server.backends]
+    [local_server.backends.header_service]
+        url = "https://content-stitching-header.edgecompute.app/"
+    [local_server.backends.page_service]
+        url = "https://content-stitching-page.edgecompute.app/"
