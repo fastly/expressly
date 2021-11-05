@@ -7,7 +7,7 @@ export default class FPRequest {
   readonly url: URL;
   params: {} = {};
   query: {};
-  readonly cookies: {} = {};
+  cookies: {} = {};
 
   constructor(private event: FetchEvent) {
     this.clientInfo = event.client;
