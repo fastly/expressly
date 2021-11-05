@@ -4,7 +4,7 @@ export default class FPRequest {
   readonly clientInfo: {} = {};
   private _headers: Headers;
   readonly method: string;
-  readonly url: URL;
+  url: URL;
   params: {} = {};
   query: {};
   cookies: {} = {};
