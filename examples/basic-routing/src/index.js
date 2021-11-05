@@ -61,6 +61,23 @@ router.get("/origin", async (req, res) => {
 });
 
 /**
+ * Read post data
+ */
+router.post("/post", async (req, res) => {
+  let body = {};
+
+  try {
+    await req.json();
+  } catch (e) {
+    body = {
+      error: "Invalid JSON!"
+    }
+  }
+
+  res.json(body);
+});
+
+/**
  * Match everything
  * For router.route(METHOD, PATH) you can pass a * for the method and path to match all possible requests
  * this works great as a 404 handler

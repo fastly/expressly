@@ -1,7 +1,7 @@
 import { Route, RequestHandlerCallback } from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
-import Middleware from "./middleware";
+import Middleware, { MiddlewareCallback } from "./middleware";
 export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
@@ -19,7 +19,9 @@ export class Router {
 
       await this.runMiddlewares(req, res);
 
-      await this.runRoutes(req, res);
+      if (!res.hasEnded) {
+        await this.runRoutes(req, res);
+      }
 
       return serializeResponse(res);
     } catch (e) {
@@ -28,9 +30,11 @@ export class Router {
   }
 
   private async runMiddlewares(req: FPRequest, res: FPResponse): Promise<any> {
-    this.middlewares.map(async (m) => {
-      await m.run(req, res);
-    });
+    this.middlewares
+      .filter((ware): boolean => ware.check(req))
+      .map(async (m) => {
+        await m.run(req, res);
+      });
   }
 
   private async runRoutes(req: FPRequest, res: FPResponse): Promise<any> {
@@ -41,11 +45,26 @@ export class Router {
     }
   }
 
-  public use(callback: Function): void {
-    this.middlewares.push(new Middleware(callback));
+  public use(
+    path: string | MiddlewareCallback,
+    callback?: MiddlewareCallback
+  ): void {
+    if (path instanceof Function) {
+      this.middlewares.push(
+        new Middleware(() => true, path as MiddlewareCallback)
+      );
+    } else {
+      this.middlewares.push(
+        new Middleware(basicRouteMatcher("*", path as string, false), callback)
+      );
+    }
   }
 
-  public route(method: string, pattern: string, callback: RequestHandlerCallback): void {
+  public route(
+    method: string,
+    pattern: string,
+    callback: RequestHandlerCallback
+  ): void {
     this.routes.push(new Route(basicRouteMatcher(method, pattern), callback));
   }
 
@@ -101,7 +120,11 @@ function serializeResponse(res: FPResponse): Response {
  * @param pattern Express style path
  * @returns A function which returns a boolean, true = "matched, run this route"
  */
-export function basicRouteMatcher(method: string, pattern: string): Function {
+export function basicRouteMatcher(
+  method: string,
+  pattern: string,
+  extractParams: boolean = true
+): Function {
   const isRegexMatch =
     pattern.indexOf("*") !== -1 || pattern.indexOf(":") !== -1;
 
@@ -112,7 +135,9 @@ export function basicRouteMatcher(method: string, pattern: string): Function {
     return pattern == "*" || req.url.pathname == pattern;
   }
 
-  let checkFunction = isRegexMatch ? makeRegexMatch(pattern) : simpleMatch;
+  let checkFunction = isRegexMatch
+    ? makeRegexMatch(pattern, extractParams)
+    : simpleMatch;
 
   return (req: FPRequest): boolean => {
     return checkFunction(req);
@@ -124,7 +149,10 @@ export function basicRouteMatcher(method: string, pattern: string): Function {
  * @param pattern Express style path pattern, e.g "/user/:userid/profile"
  * @returns
  */
-function makeRegexMatch(pattern: string): Function {
+function makeRegexMatch(
+  pattern: string,
+  extractParams: boolean = true
+): Function {
   pattern = pattern
     .replace(/\$/g, "$")
     .replace(/\^/g, "^")

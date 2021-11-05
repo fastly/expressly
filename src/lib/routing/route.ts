@@ -1,7 +1,10 @@
 import FPRequest from "./request";
 import FPResponse from "./response";
 
-export type RequestHandlerCallback = (req: FPRequest, res: FPResponse) => Promise<any>;
+export type RequestHandlerCallback = (
+  req: FPRequest,
+  res: FPResponse
+) => Promise<any>;
 
 export class Route {
   constructor(

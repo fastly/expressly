@@ -12,7 +12,7 @@ router.use((req, res) => {
 /**
  * incremement the "visitiedcount" cookie on every request
  */
-router.use((req, res) => {
+router.use("/cookies", (req, res) => {
   res.cookie("visitcount", (Number(req.cookies.visitcount) + 1) | 0, {
     maxAge: 60 * 60 * 24 * 7, // 1 week
   });
@@ -20,8 +20,12 @@ router.use((req, res) => {
   res.cookie("hello", "world");
 });
 
+router.use("*", (req, res) => {
+  res.end("This content is served from middleware")
+});
+
 router.route("GET", "/", (req, res) => { 
-  return res.send("Welcome to the middleware example!");
+  return res.send("This is never show as the middleware above calls `end`");
 });
 
 router.listen();
