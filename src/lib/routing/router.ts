@@ -30,11 +30,11 @@ export class Router {
   }
 
   private async runMiddlewares(req: FPRequest, res: FPResponse): Promise<any> {
-    this.middlewares
-      .filter((ware): boolean => ware.check(req))
-      .map(async (m) => {
+    for (let m of this.middlewares) {
+      if (m.check(req)) {
         await m.run(req, res);
-      });
+      }
+    }
   }
 
   private async runRoutes(req: FPRequest, res: FPResponse): Promise<any> {
@@ -66,6 +66,10 @@ export class Router {
     callback: RequestHandlerCallback
   ): void {
     this.routes.push(new Route(basicRouteMatcher(method, pattern), callback));
+  }
+
+  public all(pattern: string, callback: RequestHandlerCallback): void {
+    this.route("*", pattern, callback);
   }
 
   public get(pattern: string, callback: RequestHandlerCallback): void {
@@ -126,7 +130,8 @@ export function basicRouteMatcher(
   extractParams: boolean = true
 ): Function {
   const isRegexMatch =
-    pattern.indexOf("*") !== -1 || pattern.indexOf(":") !== -1;
+    (pattern.indexOf("*") !== -1 || pattern.indexOf(":") !== -1) &&
+    pattern.length > 1;
 
   function simpleMatch(req: FPRequest): boolean {
     if (req.method.toUpperCase() != method.toUpperCase() && method != "*")
@@ -145,7 +150,7 @@ export function basicRouteMatcher(
 }
 
 /**
- * Take the path of a route which can include paramters such as ":id" and turn those into regex matches
+ * Take the path of a route which can include parameters such as ":id" and turn those into regex matches
  * @param pattern Express style path pattern, e.g "/user/:userid/profile"
  * @returns
  */

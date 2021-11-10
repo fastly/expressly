@@ -7,7 +7,8 @@ export default class FPRequest {
   url: URL;
   params: {} = {};
   query: {};
-  cookies: {} = {};
+  private _cookies: {} = {};
+  cookies = {};
 
   constructor(private event: FetchEvent) {
     this.clientInfo = event.client;
@@ -17,8 +18,25 @@ export default class FPRequest {
     this.query = Object.fromEntries(this.url.searchParams.entries());
 
     if(this._headers.has("cookie")){
-      this.cookies = cookie.parse(this._headers.get("cookie"));
+      this._cookies = cookie.parse(this._headers.get("cookie"));
     }
+
+    // If a cookie is set on the req object, we need to re-serialize the `cookie` header incase the req is forwarded to an origin
+    this.cookies = new Proxy(this._cookies, {
+      get: (target, key) => {
+        return target[key];
+      },
+      set: (target, key, value) => {
+        target[key] = value;
+        this.reSerializeCookies();
+        return true;
+      }
+    });
+  }
+
+  private reSerializeCookies() {
+    console.log("reSerializeCookies")
+    this._headers.set("cookie", Object.entries(this._cookies).map(([key, value]) => `${key}=${value}`).join("; "));
   }
 
   get headers() {
