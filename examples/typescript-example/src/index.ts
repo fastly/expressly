@@ -1,6 +1,7 @@
 import { Router } from "../../../dist/index.js";
 import FPRequest from "../../../dist/lib/routing/request.js";
 import FPResponse from "../../../dist/lib/routing/response.js";
+import "@fastly/js-compute";
 
 const router = new Router();
 
