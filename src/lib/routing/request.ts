@@ -8,7 +8,7 @@ export default class FPRequest {
   params: { [key: string]: string } = {};
   query: { [key: string]: string };
   private _cookies: {} = {};
-  cookies = {};
+  cookies: any = {};
 
   constructor(private event: FetchEvent) {
     this.clientInfo = event.client;
