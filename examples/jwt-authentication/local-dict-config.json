@@ -1,0 +1,3 @@
+{
+    "secret": "this is my super secret jwt signing key"
+}

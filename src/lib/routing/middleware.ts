@@ -7,7 +7,7 @@ export type MiddlewareCallback = (
   next?: () => void
 ) => Promise<any>;
 
-export default class Middleware {
+export class Middleware {
   constructor(
     private matchFn: Function,
     private callback: MiddlewareCallback

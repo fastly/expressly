@@ -1,7 +1,8 @@
 import { Route, RequestHandlerCallback } from "./route";
 import FPRequest from "./request";
 import FPResponse from "./response";
-import Middleware, { MiddlewareCallback } from "./middleware";
+import {Middleware, MiddlewareCallback } from "./middleware";
+
 export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
