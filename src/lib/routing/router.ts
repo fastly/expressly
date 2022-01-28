@@ -6,6 +6,17 @@ import {Middleware, MiddlewareCallback } from "./middleware";
 export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
+  config: {} = {
+    templatesDir: "templates",
+    parseCookies: true,
+  };
+
+  constructor(config: {}){
+    this.config = {
+      ...this.config,
+      ...config
+    }
+  }
 
   public listen(): void {
     addEventListener("fetch", (event) =>
@@ -15,8 +26,8 @@ export class Router {
 
   private async handler(event: FetchEvent): Promise<Response> {
     try {
-      const req = new FPRequest(event);
-      const res = new FPResponse();
+      const req = new FPRequest(this.config, event);
+      const res = new FPResponse(this.config);
 
       await this.runMiddlewares(req, res);
 

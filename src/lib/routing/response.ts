@@ -1,4 +1,5 @@
 import cookie from "cookie";
+import Mustache from "mustache";
 
 export default class FPResponse {
   _headers: Headers = new Headers();
@@ -6,6 +7,8 @@ export default class FPResponse {
   status: number = 0;
   _cookies: Map<string, string> = new Map();
   private _hasEnded: boolean = false;
+
+  constructor(private config: any) {}
 
   send(response: BodyInit | Response) {
     if (this.hasEnded) return;
@@ -88,8 +91,13 @@ export default class FPResponse {
     this.writeHead(301, {
       Location: url,
     });
-    
+
     this.end(`Redirecting you to: ${url}`);
+  }
+
+  render(templateName, view) {
+    const template = require(`/src/${this.config.templatesDir}/${templateName}.html`);
+    this.send(Mustache.render(template, view));
   }
 
   // Set sensible values if things are not set, such as 200 status code if the user doesnt set a status code.

@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@fastly"],
+    "typeRoots": ["./node_modules/@fastly", "./node_modules/@types"],
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
   },

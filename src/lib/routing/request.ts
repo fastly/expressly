@@ -10,14 +10,14 @@ export default class FPRequest {
   private _cookies: {} = {};
   cookies: any = {};
 
-  constructor(private event: FetchEvent) {
+  constructor(private config: any, private event: FetchEvent) {
     this.clientInfo = event.client;
     this._headers = event.request.headers;
     this.method = event.request.method;
     this.url = new URL(event.request.url);
     this.query = Object.fromEntries(this.url.searchParams.entries());
 
-    if(this._headers.has("cookie")){
+    if(config.parseCookies && this._headers.has("cookie")){
       this._cookies = cookie.parse(this._headers.get("cookie"));
     }
 
