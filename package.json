@@ -36,7 +36,6 @@
   "dependencies": {
     "@fastly/js-compute": "^0.2.4",
     "cookie": "^0.5.0",
-    "core-js": "^3.22.2",
-    "mustache": "^4.2.0"
+    "core-js": "^3.22.2"
   }
 }
