@@ -21,7 +21,8 @@ export default class FPRequest {
       this._cookies = cookie.parse(this._headers.get("cookie"));
     }
 
-    // If a cookie is set on the req object, we need to re-serialize the `cookie` header incase the req is forwarded to an origin
+    // If a cookie is set on the Request object, we need to re-serialize the `cookie` header
+    // in case the request is forwarded to an origin
     this.cookies = new Proxy(this._cookies, {
       get: (target, key) => {
         return target[key];
