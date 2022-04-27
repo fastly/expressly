@@ -1,12 +1,12 @@
 {
   "name": "flight-path",
-  "version": "1.0.13",
-  "description": "Express style router for Fastly Compute@Edge",
+  "version": "2.0.0",
+  "description": "Express style router for Fastly's Compute@Edge",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/williamoverton/FlightPath"
+    "url": "https://github.com/fastly/FlightPath"
   },
   "scripts": {
     "build": "tsc",
@@ -20,20 +20,23 @@
     "edge",
     "router"
   ],
+  "engines": {
+    "node": "^16.15.0"
+  },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^17.0.10",
-    "nodemon": "^2.0.14",
-    "ts-loader": "^9.2.6",
-    "typescript": "^4.4.4",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1"
+    "@types/node": "^17.0.29",
+    "nodemon": "^2.0.15",
+    "ts-loader": "^9.2.9",
+    "typescript": "^4.6.3",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@fastly/js-compute": "^0.2.0",
-    "cookie": "^0.4.1",
-    "core-js": "^3.19.0",
+    "@fastly/js-compute": "^0.2.4",
+    "cookie": "^0.5.0",
+    "core-js": "^3.22.2",
     "mustache": "^4.2.0"
   }
 }
