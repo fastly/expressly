@@ -4,14 +4,17 @@
     "rootDir": "./src",
     "sourceMap": false,
     "noImplicitAny": false,
-    "module": "es6",
     "target": "es2019",
+    "module": "es2020",
+    "lib": ["es2019"],
+    "skipLibCheck": false,
+    "strict": false,
     "esModuleInterop": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@fastly", "./node_modules/@types"],
+    "typeRoots": ["./node_modules/@fastly"],
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
+    "declaration": true
   },
-  "exclude": ["dist/", "examples/"]
+  "exclude": ["dist/", "examples/", "docs/"]
 }
