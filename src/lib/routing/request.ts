@@ -48,6 +48,14 @@ export default class FPRequest {
     this._headers.set(key, value);
   }
 
+  appendHeader(key: string, value: string): void {
+    this._headers.append(key, value);
+  }
+
+  removeHeader(key: string): void {
+    this._headers.delete(key);
+  }
+
   async json() {
     return await this.event.request.json();
   }

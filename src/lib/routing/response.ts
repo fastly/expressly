@@ -9,6 +9,11 @@ export default class FPResponse {
 
   constructor(private config: any) {}
 
+  withStatus(status: number) {
+    this.status = status;
+    return this;
+  }
+
   send(response: BodyInit | Response) {
     if (this.hasEnded) return;
 
@@ -34,6 +39,20 @@ export default class FPResponse {
 
     this.setHeader("Content-Type", "application/json");
     this.send(JSON.stringify(data));
+  }
+
+  text(data: any) {
+    if (this.hasEnded) return;
+
+    this.setHeader("Content-Type", "text/plain");
+    this.send(data);
+  }
+
+  html(data: any, charset?: string) {
+    if (this.hasEnded) return;
+
+    this.setHeader("Content-Type", `text/html$`);
+    this.send(data);
   }
 
   writeHead(statusCode: number, headers: {}) {
@@ -68,6 +87,12 @@ export default class FPResponse {
     if (this.hasEnded) return;
 
     this._headers.append(key, value);
+  }
+
+  removeHeader(key: string): void {
+    if (this.hasEnded) return;
+
+    this._headers.delete(key);
   }
 
   cookie(key: string, value: string, options: {} = {}): void {
