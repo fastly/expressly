@@ -13,8 +13,9 @@ function HomepageHeader() {
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        {/* <h1 className="hero__title">{siteConfig.title}</h1> */}
-        <img src="/img/logo.jpeg" className="hero-logo" />
+       
+        <img src="/img/logo.png" className="hero-logo" />
+        <h1 className="hero__title">{siteConfig.title}</h1> 
         <p className={clsx("hero__subtitle", styles.heroSubtitle)}>
           {siteConfig.tagline}
         </p>
@@ -23,7 +24,7 @@ function HomepageHeader() {
             className="button button--secondary button--lg"
             to="/docs/intro"
           >
-            Get Started
+            GET STARTED
           </Link>
         </div>
       </div>
@@ -68,8 +69,24 @@ router.listen();`;
                 <p>
                   <dl>
                     <dt>Install <strong>expressly</strong> from <a href="https://www.npmjs.com/package/@fastly/expresly" target="_blank">npm</a>:</dt>
-                    <dd><code>npm i @fastly-expressly</code></dd>
-                    <dd><code>yarn add @fastly-expressly</code></dd>
+                    <dd>
+                      <SyntaxHighlighter
+                        language="shell"
+                        style={github}
+                        showLineNumbers={false}
+                      >
+                        npm i @fastly-expressly
+                      </SyntaxHighlighter>
+                    </dd>
+                    <dd>
+                      <SyntaxHighlighter
+                        language="shell"
+                        style={github}
+                        showLineNumbers={false}
+                      >
+                        yarn add @fastly-expressly
+                      </SyntaxHighlighter>
+                    </dd>
                   </dl>
                 </p>
               </div>

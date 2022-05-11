@@ -8,11 +8,11 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "expressly",
   tagline: "Express-style router for Fastly's Compute@Edge",
-  url: "https://flight-path.edgecompute.app",
+  url: "https://expressly.edgecompute.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/logo.jpeg",
+  favicon: "img/favicon.ico",
   organizationName: "fastly", 
   projectName: "expressly", 
 
