@@ -20,7 +20,7 @@ This will **not** redirect the user; instead, it will affect the route selection
 
 ## Stopping a request
 
-If you need to stop requests (for example, in order to block unauthenticated requests), you can call `res.end()` – which, unlike [`req.send()`](../sending-responses/response-functions.md#ressend), will end the response process.
+If you need to stop requests (for example, in order to block unauthenticated requests), you can call `res.end()` – which, unlike [`req.send()`](../handling-data/responses.md#ressend), will end the response process.
 
 ```javascript
 router.use("/account/", (req, res) => {
