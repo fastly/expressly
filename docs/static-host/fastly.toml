@@ -1,9 +1,5 @@
-# This file describes a Fastly Compute@Edge package. To learn more visit:
-# https://developer.fastly.com/reference/fastly-toml/
-
-authors = ["<woverton@fastly.com>"]
-description = "Static host for Flight Path docs"
+authors = ["<oss@fastly.com>"]
+description = "Static host for expressly documentation"
 language = "rust"
 manifest_version = 2
-name = "flightpath-docs"
-service_id = "7TSTxZ5qvmKCu1pSQjN05a"
+name = "expressly-docs"

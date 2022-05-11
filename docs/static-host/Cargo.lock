@@ -42,15 +42,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "compute-starter-kit-rust-default"
-version = "0.1.0"
-dependencies = [
- "fastly",
- "include_dir",
- "mime_guess",
-]
-
-[[package]]
 name = "cpufeatures"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -66,6 +57,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3dd60d1080a57a05ab032377049e0591415d2b31afd7028356dbf3cc6dcb066"
 dependencies = [
  "generic-array",
+]
+
+[[package]]
+name = "expressly-docs"
+version = "0.1.0"
+dependencies = [
+ "fastly",
+ "include_dir",
+ "mime_guess",
 ]
 
 [[package]]
