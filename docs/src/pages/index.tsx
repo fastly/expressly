@@ -61,7 +61,7 @@ router.listen();`;
           <div className="row">
             <div className={clsx("col col--6", styles.description)}>
               <div>
-                <h2>Dont waste time on boilerplate code</h2>
+                <h2>Don't waste time on boilerplate code</h2>
                 <p>
                   <strong>expressly</strong> is a lightweight and minimalist routing layer for
                   JavaScript apps running on Fastly's Compute@Edge.
