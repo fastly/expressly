@@ -1,39 +1,33 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Flight Path',
-  tagline: 'Express style router for Fastly Compute@Edge',
-  url: 'https://flight-path.edgecompute.app',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/logo.jpeg',
-  organizationName: 'willoverton', // Usually your GitHub org/user name.
-  projectName: 'flight-path', // Usually your repo name.
+  title: "expressly",
+  tagline: "Express-style router for Fastly's Compute@Edge",
+  url: "https://flight-path.edgecompute.app",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/logo.jpeg",
+  organizationName: "fastly", 
+  projectName: "expressly", 
 
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
-          // Please change this to your repo.
-          // editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/blog/',
+          editUrl: 'https://github.com/fastly/expressly/edit/main/docs/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -43,74 +37,74 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Flight Path',
+        title: "expressly",
         logo: {
-          alt: 'Flight Path Logo',
-          src: 'img/logo-black.png',
+          alt: "expressly Logo",
+          src: "img/logo-black.png",
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Docs',
+            type: "doc",
+            docId: "intro",
+            position: "left",
+            label: "Docs",
           },
           {
-            href: 'https://github.com/williamoverton/FlightPath/tree/main/examples',
-            label: 'Examples',
-            position: 'left',
+            href: "https://github.com/fastly/expressly/tree/main/examples",
+            label: "Examples",
+            position: "left",
           },
           {
-            href: 'https://github.com/williamoverton/FlightPath',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/fastly/expressly",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
-          // {
-          //   title: 'Docs',
-          //   items: [
-          //     {
-          //       label: 'Intro to Flight Path',
-          //       to: '/docs/intro',
-          //     },
-          //   ],
-          // },
-          // {
-          //   title: 'Community',
-          //   items: [
-          //     {
-          //       label: 'Stack Overflow',
-          //       href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-          //     },
-          //     {
-          //       label: 'Discord',
-          //       href: 'https://discordapp.com/invite/docusaurus',
-          //     },
-          //     {
-          //       label: 'Twitter',
-          //       href: 'https://twitter.com/docusaurus',
-          //     },
-          //   ],
-          // },
-          // {
-          //   title: 'More',
-          //   items: [
-          //     {
-          //       label: 'Blog',
-          //       to: '/blog',
-          //     },
-          //     {
-          //       label: 'GitHub',
-          //       href: 'https://github.com/facebook/docusaurus',
-          //     },
-          //   ],
-          // },
+          {
+            title: "expressly",
+            items: [
+              {
+                label: "Documentation",
+                to: "/docs/intro",
+              },
+              {
+                label: "Examples",
+                href: "https://github.com/fastly/expressly/tree/main/examples",
+              },
+            ],
+          },
+          {
+            title: "Compute@Edge",
+            items: [
+              {
+                label: "Learn about Compute@Edge",
+                href: "https://developer.fastly.com/learning/compute/",
+              },
+              {
+                label: "Create your first JavaScript app",
+                href: "https://developer.fastly.com/learning/compute/javascript/",
+              },
+              {
+                label: "Fastly Developer Hub",
+                href: "https://developer.fastly.com/",
+              },
+            ],
+          },
+          {
+            title: "Fastly",
+            items: [
+              {
+                label: "Twitter",
+                href: "https://twitter.com/fastly",
+              },
+            ],
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} William Overton. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Fastly`,
       },
       prism: {
         theme: lightCodeTheme,

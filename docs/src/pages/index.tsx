@@ -32,16 +32,16 @@ function HomepageHeader() {
 }
 
 export default function Home(): JSX.Element {
-  const exampleCode = `import { Router } from "flight-path";
+  const exampleCode = `import { Router } from "@fastly/expressly";
 
 const router = new Router();
 
 router.use((req, res) => {
-  res.setHeader("x-powered-by", "FlightPath");
+  res.setHeader("x-powered-by", "expressly");
 });
 
 router.get("/", async (req, res) => {
-  return res.send("Hello World!");
+  return res.send("Hello world!");
 });
 
 router.get("/api", async (req, res) => {
@@ -56,7 +56,7 @@ router.listen();`;
   return (
     <Layout
       title={`Routing for C@E`}
-      description="Express style router for Fastly Compute@Edge"
+      description="Express-style router for Fastly Compute@Edge"
     >
       <HomepageHeader />
       <main>
@@ -68,8 +68,8 @@ router.listen();`;
                 <div>
                   <h2>Dont waste time on boilerplate code, use Flight Path</h2>
                   <p>
-                    Flight Path is a lightweight and minimal routing layer for
-                    C@E apps. Add Flight Path to any Javascript C@E app by
+                    <strong>expressly</strong> is a lightweight and minimal routing layer for
+                    C@E apps. Add <strong>expressly</strong> to any Javascript Compute@Edge app by
                     install with NPM: <code>npm i flight-path</code>
                   </p>
                 </div>
