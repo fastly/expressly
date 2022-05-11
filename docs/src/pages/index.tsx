@@ -44,12 +44,6 @@ router.get("/", async (req, res) => {
   return res.send("Hello world!");
 });
 
-router.get("/api", async (req, res) => {
-  return res.json({
-    message: "Hello from the API!"
-  });
-});
-
 router.listen();`;
 
   const { siteConfig } = useDocusaurusContext();
@@ -65,14 +59,20 @@ router.listen();`;
         <div className="container">
           <div className="row">
             <div className={clsx("col col--6", styles.description)}>
-                <div>
-                  <h2>Dont waste time on boilerplate code, use Flight Path</h2>
-                  <p>
-                    <strong>expressly</strong> is a lightweight and minimal routing layer for
-                    C@E apps. Add <strong>expressly</strong> to any Javascript Compute@Edge app by
-                    install with NPM: <code>npm i flight-path</code>
-                  </p>
-                </div>
+              <div>
+                <h2>Dont waste time on boilerplate code</h2>
+                <p>
+                  <strong>expressly</strong> is a lightweight and minimalist routing layer for
+                  JavaScript apps running on Fastly's Compute@Edge.
+                </p>
+                <p>
+                  <dl>
+                    <dt>Install <strong>expressly</strong> from <a href="https://www.npmjs.com/package/@fastly/expresly" target="_blank">npm</a>:</dt>
+                    <dd><code>npm i @fastly-expressly</code></dd>
+                    <dd><code>yarn add @fastly-expressly</code></dd>
+                  </dl>
+                </p>
+              </div>
             </div>
             <div className="col col--6">
               <SyntaxHighlighter

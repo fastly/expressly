@@ -104,7 +104,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Fastly`,
+        copyright: `Copyright © ${new Date().getFullYear()} Fastly. Forked from github.com/williamoverton/FlightPath`,
       },
       prism: {
         theme: lightCodeTheme,

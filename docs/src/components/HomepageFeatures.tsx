@@ -15,26 +15,26 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Easy to use',
     description: (
       <>
-        Flight Path was designed to be familiar to javascript developers with experience making services with popular frameworks like Express
+        <strong>expressly</strong> was designed for JavaScript developers and inspired by the popular framework, <a href="https://expressjs.com/" target="_blank">Express</a>.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Focus on what matters',
     description: (
       <>
-        Flight Path lets you focus on your business logic, and we&apos;ll do the chores.
+        <strong>expressly</strong> lets you focus on your business logic, and makes it easier than ever to get started with <a href="https://www.fastly.com/products/edge-compute" target="_blank">Compute@Edge</a>.
       </>
     ),
   },
   {
-    title: 'Open Source',
+    title: 'Open source',
     description: (
       <>
-        Available for free to make the web a better place! You're encouraged to read the code, submit issues and send in PRs.
+        Available for free to make the web a better place! Your contributions are welcomed and appreciated.
       </>
     ),
   },
