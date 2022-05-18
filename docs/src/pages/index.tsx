@@ -75,7 +75,7 @@ router.listen();`;
                         style={github}
                         showLineNumbers={false}
                       >
-                        npm i @fastly-expressly
+                        npm i @fastly/expressly
                       </SyntaxHighlighter>
                     </dd>
                     <dd>
@@ -84,7 +84,7 @@ router.listen();`;
                         style={github}
                         showLineNumbers={false}
                       >
-                        yarn add @fastly-expressly
+                        yarn add @fastly/expressly
                       </SyntaxHighlighter>
                     </dd>
                   </dl>
