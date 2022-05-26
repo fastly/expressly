@@ -7,7 +7,6 @@ export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
   config: {} = {
-    templatesDir: "templates",
     parseCookies: true,
   };
 
