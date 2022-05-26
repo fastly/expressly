@@ -50,7 +50,7 @@ const config = {
             label: "Docs",
           },
           {
-            href: "https://github.com/fastly/expressly/tree/main/examples",
+            href: "https://developer.fastly.com/solutions/examples/javascript/",
             label: "Examples",
             position: "left",
           },
@@ -73,7 +73,7 @@ const config = {
               },
               {
                 label: "Examples",
-                href: "https://github.com/fastly/expressly/tree/main/examples",
+                href: "https://developer.fastly.com/solutions/examples/javascript/",
               },
             ],
           },
