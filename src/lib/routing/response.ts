@@ -51,7 +51,7 @@ export default class FPResponse {
   html(data: any, charset?: string) {
     if (this.hasEnded) return;
 
-    this.setHeader("Content-Type", `text/html$`);
+    this.setHeader("Content-Type", `text/html`);
     this.send(data);
   }
 
@@ -119,12 +119,14 @@ export default class FPResponse {
     this.end(`Redirecting you to: ${url}`);
   }
 
-  // Set sensible values if things are not set, such as 200 status code if the user doesnt set a status code.
+  // Set sensible values if things are not set, such as 200 status code if the user doesn't set a status code.
   setDefaults() {
     if (this.status == 0) {
       if (this.body == null) {
         this.status = 404;
         this._body = "Not Found";
+      } else if (this.body === '') {
+        this.status = 204;
       } else {
         this.status = 200;
       }

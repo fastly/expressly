@@ -1,5 +1,5 @@
 {
-  "name": "expressly",
+  "name": "@fastly/expressly",
   "version": "1.0.0-alpha.1",
   "description": "Express-style router for Fastly's Compute@Edge",
   "main": "dist/index.js",
@@ -21,7 +21,7 @@
     "router"
   ],
   "engines": {
-    "node": "^16.15.0"
+    "node": "^16"
   },
   "author": "oss@fastly.com",
   "license": "MIT",
