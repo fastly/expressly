@@ -11,7 +11,7 @@ export class Router {
     parseCookies: true,
   };
 
-  constructor(config: {}){
+  constructor(config?: {}){
     this.config = {
       ...this.config,
       ...config
