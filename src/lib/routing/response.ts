@@ -51,7 +51,7 @@ export default class FPResponse {
   html(data: any, charset?: string) {
     if (this.hasEnded) return;
 
-    this.setHeader("Content-Type", `text/html$`);
+    this.setHeader("Content-Type", `text/html`);
     this.send(data);
   }
 
