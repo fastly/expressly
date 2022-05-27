@@ -1,7 +1,7 @@
 import { Route, RequestHandlerCallback } from "./route";
-import FPRequest from "./request";
-import FPResponse from "./response";
-import {Middleware, MiddlewareCallback } from "./middleware";
+import ERequest from "./request";
+import EResponse from "./response";
+import { Middleware, MiddlewareCallback } from "./middleware";
 
 export class Router {
   routes: Route[] = [];
@@ -10,7 +10,7 @@ export class Router {
     parseCookies: true,
   };
 
-  constructor(config?: {}){
+  constructor(config?: {}) {
     this.config = {
       ...this.config,
       ...config
@@ -25,8 +25,8 @@ export class Router {
 
   private async handler(event: FetchEvent): Promise<Response> {
     try {
-      const req = new FPRequest(this.config, event);
-      const res = new FPResponse(this.config);
+      const req = new ERequest(this.config, event);
+      const res = new EResponse(this.config);
 
       await this.runMiddlewares(req, res);
 
@@ -40,7 +40,7 @@ export class Router {
     }
   }
 
-  private async runMiddlewares(req: FPRequest, res: FPResponse): Promise<any> {
+  private async runMiddlewares(req: ERequest, res: EResponse): Promise<any> {
     for (let m of this.middlewares) {
       if (m.check(req)) {
         await m.run(req, res);
@@ -48,7 +48,7 @@ export class Router {
     }
   }
 
-  private async runRoutes(req: FPRequest, res: FPResponse): Promise<any> {
+  private async runRoutes(req: ERequest, res: EResponse): Promise<any> {
     const matchedRoute = this.routes.find((route): boolean => route.check(req));
 
     if (matchedRoute) {
@@ -112,7 +112,7 @@ export class Router {
   }
 }
 
-function serializeResponse(res: FPResponse): Response {
+function serializeResponse(res: EResponse): Response {
   res.setDefaults();
 
   let response = new Response(res.body, {
@@ -144,7 +144,7 @@ export function basicRouteMatcher(
     (pattern.indexOf("*") !== -1 || pattern.indexOf(":") !== -1) &&
     pattern.length > 1;
 
-  function simpleMatch(req: FPRequest): boolean {
+  function simpleMatch(req: ERequest): boolean {
     if (req.method.toUpperCase() != method.toUpperCase() && method != "*")
       return false;
 
@@ -155,7 +155,7 @@ export function basicRouteMatcher(
     ? makeRegexMatch(pattern, extractParams)
     : simpleMatch;
 
-  return (req: FPRequest): boolean => {
+  return (req: ERequest): boolean => {
     return checkFunction(req);
   };
 }
@@ -186,7 +186,7 @@ function makeRegexMatch(
   // Not sure how required this is, but use the regex to verify it is actually compiled.
   matchRegexp.test("Make sure RegExp is compiled at build time.");
 
-  return (req: FPRequest): boolean => {
+  return (req: ERequest): boolean => {
     let matches;
 
     if ((matches = matchRegexp.exec(req.url.pathname)) !== null) {

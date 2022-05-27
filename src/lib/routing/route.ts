@@ -1,9 +1,9 @@
-import FPRequest from "./request";
-import FPResponse from "./response";
+import ERequest from "./request";
+import EResponse from "./response";
 
 export type RequestHandlerCallback = (
-  req: FPRequest,
-  res: FPResponse
+  req: ERequest,
+  res: EResponse
 ) => Promise<any>;
 
 export class Route {
@@ -12,11 +12,11 @@ export class Route {
     private callback: RequestHandlerCallback
   ) {}
 
-  public check(event: FPRequest): boolean {
+  public check(event: ERequest): boolean {
     return this.matchFn(event);
   }
 
-  public async run(req: FPRequest, res: FPResponse): Promise<any> {
+  public async run(req: ERequest, res: EResponse): Promise<any> {
     await this.callback(req, res);
   }
 }

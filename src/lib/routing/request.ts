@@ -1,6 +1,6 @@
 import cookie from "cookie";
 
-export default class FPRequest {
+export default class ERequest {
   readonly clientInfo: {} = {};
   _headers: Headers;
   readonly method: string;

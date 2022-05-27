@@ -1,6 +1,6 @@
 import cookie from "cookie";
 
-export default class FPResponse {
+export default class EResponse {
   _headers: Headers = new Headers();
   private _body: BodyInit = null;
   status: number = 0;

@@ -1,9 +1,9 @@
-import FPRequest from "./request";
-import FPResponse from "./response";
+import ERequest from "./request";
+import EResponse from "./response";
 
 export type MiddlewareCallback = (
-  req: FPRequest,
-  res: FPResponse,
+  req: ERequest,
+  res: EResponse,
   next?: () => void
 ) => Promise<any>;
 
@@ -13,11 +13,11 @@ export class Middleware {
     private callback: MiddlewareCallback
   ) {}
 
-  public check(event: FPRequest): boolean {
+  public check(event: ERequest): boolean {
     return this.matchFn(event);
   }
 
-  public async run(req: FPRequest, res: FPResponse): Promise<any> {
+  public async run(req: ERequest, res: EResponse): Promise<any> {
     // Supply an empty callback which would normally be next() in express
     await this.callback(req, res, () => {});
   }
