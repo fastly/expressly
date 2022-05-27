@@ -1,15 +1,24 @@
 import cookie from "cookie";
+import { CookieOptions, EConfig, ECookie } from ".";
 
 export default class EResponse {
   _headers: Headers = new Headers();
   private _body: BodyInit = null;
   status: number = 0;
-  _cookies: Map<string, string> = new Map();
+  private _cookies: Map<string, ECookie> = new Map();
   private _hasEnded: boolean = false;
 
-  constructor(private config: any) {}
+  constructor(private config: EConfig) {
+  }
 
   withStatus(status: number) {
+    this.status = status;
+    return this;
+  }
+  
+  sendStatus(status: number) {
+    if (this.hasEnded) return;
+
     this.status = status;
     return this;
   }
@@ -66,7 +75,16 @@ export default class EResponse {
   }
 
   get headers() {
-    return Object.fromEntries(this._headers.entries());
+    // Handle cookies.
+    if (this.config.parseCookies && this._cookies.size) {
+      // Handle existing Set-Cookie header.
+      this._headers.delete("set-cookie");
+      // Serialize cookies.
+      for (const [key, cookieObj] of this._cookies.entries()) {
+        this._headers.append("set-cookie", cookie.serialize(key, cookieObj.value, cookieObj));
+      }
+    }
+    return this._headers;
   }
 
   setHeader(key: string, value: string): void {
@@ -95,10 +113,10 @@ export default class EResponse {
     this._headers.delete(key);
   }
 
-  cookie(key: string, value: string, options: {} = {}): void {
+  cookie(key: string, value: string, options: CookieOptions = {}): void {
     if (this.hasEnded) return;
 
-    this._cookies.set(key, cookie.serialize(key, value, options));
+    this._cookies.set(key, { value, ...options });
   }
 
   get body() {

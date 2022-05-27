@@ -2,12 +2,15 @@ import { Route, RequestHandlerCallback } from "./route";
 import ERequest from "./request";
 import EResponse from "./response";
 import { Middleware, MiddlewareCallback } from "./middleware";
+import { EConfig } from ".";
 
 export class Router {
   routes: Route[] = [];
   middlewares: Middleware[] = [];
-  config: {} = {
+  config: EConfig = {
     parseCookies: true,
+    auto405: true,
+    parseBody: false
   };
 
   constructor(config?: {}) {
@@ -121,9 +124,9 @@ function serializeResponse(res: EResponse): Response {
   });
 
   // Looping cookie headers manually to work around this bug: https://github.com/fastly/js-compute-runtime/issues/47
-  for (let [_, c] of res._cookies) {
-    response.headers.append("Set-Cookie", c);
-  }
+  // for (let [_, c] of res._cookies) {
+  //   response.headers.append("Set-Cookie", c);
+  // }
 
   return response;
 }
