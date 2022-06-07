@@ -15,7 +15,3 @@ export type CookieOptions = {
   sameSite?: "strict" | "lax" | "none" | boolean;
   secure?: boolean;
 }
-
-export type ECookie = CookieOptions & {
-  value: string;
-}
