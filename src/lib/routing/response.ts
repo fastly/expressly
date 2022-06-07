@@ -27,10 +27,12 @@ export default class EResponse {
   }
 
   // For better express support
-  end(body: BodyInit) {
+  end(body: BodyInit = null) {
     if (this.hasEnded) return;
 
-    this.send(body);
+    if(body != null) {
+      this.send(body);
+    }
     this._hasEnded = true;
   }
 
