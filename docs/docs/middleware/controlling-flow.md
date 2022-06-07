@@ -16,11 +16,11 @@ router.use((req, res) => {
 });
 ```
 
-This will **not** redirect the user; instead, it will affect the route selection logic. In this case, a subsequent `router.get("/")` will not match the request, but `router.get("/home")` will.
+This will **not** redirect the user; instead, it will affect the route selection logic downstream. In this case, a subsequent `router.get("/")` will not match the request, but `router.get("/home")` will.
 
 ## Stopping a request
 
-If you need to stop requests (for example, in order to block unauthenticated requests), you can call `res.end()` – which, unlike [`req.send()`](../handling-data/responses.md#ressend), will end the response process.
+If you need to end the response process early (for example, in order to block unauthenticated requests), you can call [`res.end`](../handling-data/responses.md#resend) (or [`res.send`](../handling-data/responses.md#ressend)) from middleware. 
 
 ```javascript
 router.use("/account/", (req, res) => {
@@ -30,7 +30,7 @@ router.use("/account/", (req, res) => {
 });
 ```
 
-You can also stop requests by redirecting to a different route:
+You can also end the response process by _redirecting_ to a different route:
 
 ```javascript
 router.use("/account/", (req, res) => {

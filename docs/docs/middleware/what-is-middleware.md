@@ -8,7 +8,7 @@ Middleware allows you to run code on a request before any routes are run. This i
 
 ## router.use()
 
-Middleware is attached by calling `router.use()` method.
+Middleware is attached by calling the `router.use()` method.
 
 The example below shows how to use middleware to add a header to all requests:
 
@@ -25,3 +25,5 @@ router.use("/api/*", (req, res) => {
   console.log("Got a request to the API!");
 });
 ```
+
+> 💡 **expressly** supports [URLPattern syntax](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API#pattern_syntax) for route matching. This means that your middleware mount paths can contain wildcards and even regular expressions.
