@@ -1,9 +1,10 @@
 import cookie from "cookie";
+import { ECommonObject } from "../common";
 import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
 import { CookieOptions, EConfig } from "..";
 
-export default class EResponse {
+export default class EResponse extends ECommonObject {
   headers: Headers = new Headers();
   status: number = 0;
   body: BodyInit = null;
@@ -11,41 +12,12 @@ export default class EResponse {
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
 
   constructor(private config: EConfig) {
+    super();
   }
 
   // Header helpers.
   vary(field: string) {
     this.headers.append("Vary", field);
-  }
-
-  set(headerNameOrObject: string | { [key: string]: string }, value?: string) {
-    if (typeof headerNameOrObject === "string") {
-      this.headers.set(headerNameOrObject, value);
-    } else {
-      Object.keys(headerNameOrObject).forEach((headerName) => {
-        this.headers.set(headerName, headerNameOrObject[headerName]);
-      });
-    }
-  }
-
-  private appendHeader(headerName: string, headerValue: string | string[]) {
-    if (typeof headerValue === "string") {
-      this.headers.append(headerName, headerValue);
-    } else if (Array.isArray(headerValue)) {
-      headerValue.forEach((v) => {
-        this.headers.append(headerName, v);
-      });
-    }
-  }
-
-  append(headerNameOrObject: string | { [key: string]: string | string[] }, value?: string | string[]) {
-    if (typeof headerNameOrObject === "string") {
-      this.appendHeader(headerNameOrObject, value);
-    } else {
-      Object.keys(headerNameOrObject).forEach((headerName) => {
-        this.appendHeader(headerName, headerNameOrObject[headerName]);
-      });
-    }
   }
 
   // Cookie helpers.

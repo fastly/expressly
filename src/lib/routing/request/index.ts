@@ -1,7 +1,8 @@
+import { ECommonObject } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-export default class ERequest {
+export default class ERequest extends ECommonObject {
   readonly clientInfo: ClientInfo;
   readonly method: string;
   headers: Headers;
@@ -11,6 +12,7 @@ export default class ERequest {
 
 
   constructor(private config: EConfig, private event: FetchEvent) {
+    super();
     this.clientInfo = event.client;
     this.method = event.request.method;
     this.url = new URL(event.request.url);
