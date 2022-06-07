@@ -38,10 +38,7 @@ export class Router {
       const res = new EResponse(this.config);
 
       await this.runMiddleware(req, res);
-
-      if (!res.hasEnded) {
-        await this.runRoute(req, res);
-      }
+      await this.runRoute(req, res);
 
       return serializeResponse(res);
     } catch (e) {
@@ -53,6 +50,9 @@ export class Router {
   // Middleware runner.
   private async runMiddleware(req: ERequest, res: EResponse): Promise<any> {
     for (let m of this.middleware) {
+      if (!res.hasEnded) {
+        break;
+      }
       if (m.check(req) === 0) {
         await m.run(req, res);
       }
@@ -62,13 +62,16 @@ export class Router {
   // Route runner.
   private async runRoute(req: ERequest, res: EResponse): Promise<any> {
     let status;
-    const matchedRoute = this.routes.find((route) => {
-      status = route.check(req);
-      return status === 0;
-    });
-    if (matchedRoute) {
-      await matchedRoute.run(req, res);
-    } else {
+    for (let r of this.routes) {
+      if (res.hasEnded) {
+        break;
+      }
+      status = r.check(req);
+      if (status === 0) {
+        await r.run(req, res);
+      }
+    }
+    if (status) {
       // We're here if method not allowed / path not found.
       res.status = this.config.auto405 ? status : 404;
     }

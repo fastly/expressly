@@ -2,7 +2,7 @@
 sidebar_position: 7
 ---
 
-# Configuration options
+# Configuration
 
 ## parseCookie
 WIP
