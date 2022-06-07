@@ -27,10 +27,10 @@ export default class EResponse extends ECommonObject {
     this.headers.append("Set-Cookie", cookie.serialize(key, value, options));
   }
 
-  clearCookie(key: string, value: string, options: CookieOptions = {}): void {
+  clearCookie(key: string, options: CookieOptions = {}): void {
     if (this.hasEnded) return;
 
-    this.headers.append("Set-Cookie", cookie.serialize(key, value, { ...options, expires: "Thu, 01 Jan 1970 00:00:00 GMT" }));
+    this.headers.append("Set-Cookie", cookie.serialize(key, "", { ...options, expires: "Thu, 01 Jan 1970 00:00:00 GMT" }));
   }
 
   // Response lifecycle methods.
