@@ -2,11 +2,14 @@
 sidebar_position: 4
 ---
 
-# Request body
+# The Request object
 
-**expressly** can parse the body of a request in multiple ways.
 
-## As plain text
+## Request body
+
+**expressly** can parse the body of a **req**uest in multiple ways.
+
+### As plain text
 
 ```javascript
 router.post("/submit", async (req, res) => {
@@ -16,7 +19,7 @@ router.post("/submit", async (req, res) => {
 })
 ```
 
-## As JSON
+### As JSON
 
 ```javascript
 router.post("/submit", async (req, res) => {
@@ -32,7 +35,7 @@ router.post("/submit", async (req, res) => {
 })
 ```
 
-## As an ArrayBuffer
+### As an ArrayBuffer
 
 ```javascript
 router.post("/submit", async (req, res) => {
@@ -42,3 +45,30 @@ router.post("/submit", async (req, res) => {
     console.debug(body);
 })
 ```
+
+
+## Convenience methods
+
+### path()
+
+Returns the path part of the request URL.
+
+### ip()
+
+Returns the remote IP address of the request.
+
+### protocol()
+
+Returns the request protocol string: either `http` or (for TLS requests) `https`.
+
+### secure()
+
+Returns a boolean value that is `true` if a TLS connection is established.
+
+### subdomains()
+
+Returns an array of subdomains in the domain name of the request.
+
+### hostname()
+
+Returns the hostname derived from the `Host` HTTP header.

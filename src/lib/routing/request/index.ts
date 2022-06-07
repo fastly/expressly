@@ -7,16 +7,16 @@ export default class ERequest extends ECommonObject {
   readonly method: string;
   headers: Headers;
   url: URL;
+  query: URLSearchParams;
   params: { [key: string]: string } = {};
   cookies: CookieMap;
-
 
   constructor(private config: EConfig, private event: FetchEvent) {
     super();
     this.clientInfo = event.client;
     this.method = event.request.method;
     this.url = new URL(event.request.url);
-
+    this.query = this.url.searchParams;
     this.headers = event.request.headers;
 
     // Parse cookies.
@@ -28,10 +28,6 @@ export default class ERequest extends ECommonObject {
   // Express-like URL helpers.
   get path(): string {
     return this.url.pathname;
-  }
-
-  get query(): URLSearchParams {
-    return this.url.searchParams;
   }
 
   get ip(): string {
