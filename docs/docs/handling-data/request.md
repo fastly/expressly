@@ -9,7 +9,7 @@ title: Request
 
 * **url**: The [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) object corresponding to the request URL
 * **query**: Request [query string parameters](search-params.md)
-* **params**: An object containing properties mapped to any [named route "parameters"](../routing/advanced-routing.md#path-parameters), if the [`extractRequestParameters`](../config.md#extractRequestParameters) configuration option is enabled
+* **params**: An object containing properties mapped to any [named route "parameters"](../routing#path-parameters), if the [`extractRequestParameters`](../config.md#extractRequestParameters) configuration option is enabled
 * **cookies**: A Map containing [request cookies](cookies.md#request-cookies), if the [`parseCookie`](../config.md#parseCookie) configuration option is enabled
 * **headers**: Request [headers](headers.md)
 

@@ -6,7 +6,7 @@ sidebar_position: 5
 
 Search (query string) parameters can be accessed in the `req.query` object, which implements the [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) interface.
 
-## Get the value of a search paramater
+## Get the value of a search parameter
 
 Use `req.query.get(key)` to get the first value associated with a given search parameter. If you need to check whether a parameter is set, use `*.query.has(name)`:
 

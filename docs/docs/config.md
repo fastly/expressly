@@ -42,7 +42,7 @@ Setting `auto405: false` above will cause **expressly** to respond with HTTP 404
 
 > Default 🟢 `true`
 
-When set to `true`, exposes `req.params`, an object containing properties mapped to any [named route "parameters"](./routing/advanced-routing.md#path-parameters).
+When set to `true`, exposes `req.params`, an object containing properties mapped to any [named route "parameters"](./routing#path-parameters).
 
 ### autoContentType
 

@@ -146,7 +146,7 @@ res.vary("x-feature-flags");
 
 ### res.surrogateKeys
 
-**expressly** exposes `res.surrogateKeys`, a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object that allows you to manipulate the [`Surrogate-Key` header](https://docs.fastly.com/en/guides/working-with-surrogate-keys#understanding-the-surrogate-key-header).
+**expressly** exposes `res.surrogateKeys`, a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object that allows you to manipulate the [`Surrogate-Key` header](https://developer.fastly.com/reference/http/http-headers/Surrogate-Key/).
 
 
 ```javascript

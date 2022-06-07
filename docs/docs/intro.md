@@ -41,8 +41,6 @@ router.get("/", async (req, res) => {
 router.listen();
 ```
 
-> 💡 **expressly** supports extra [configuration](config.md). You don't need it for now.  
-
 ## Try it out
 
 Start your app locally:
@@ -51,7 +49,7 @@ Start your app locally:
 fastly compute serve
 ```
 
-This will start your service on `http://localhost:7676`.
+This will start your service on [http://localhost:7676](http://localhost:7676).
 
 ### Live reloading
 
