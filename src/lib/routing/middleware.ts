@@ -13,7 +13,7 @@ export class Middleware {
     private callback: MiddlewareCallback
   ) {}
 
-  public check(event: ERequest): boolean {
+  public check(event: ERequest): 0 | 404 | 405 {
     return this.matchFn(event);
   }
 

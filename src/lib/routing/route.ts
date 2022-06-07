@@ -12,7 +12,7 @@ export class Route {
     private callback: RequestHandlerCallback
   ) {}
 
-  public check(event: ERequest): boolean {
+  public check(event: ERequest): 0 | 404 | 405 {
     return this.matchFn(event);
   }
 
