@@ -1,19 +1,25 @@
+import "urlpattern-polyfill";
+
 import { Route, RequestHandlerCallback } from "./route";
+import { Middleware, MiddlewareCallback } from "./middleware";
 import ERequest from "./request";
 import EResponse from "./response";
-import { Middleware, MiddlewareCallback } from "./middleware";
 import { EConfig } from ".";
+
+const urlPatternCache: Map<string, URLPattern> = new Map();
 
 export class Router {
   routes: Route[] = [];
-  middlewares: Middleware[] = [];
+  middleware: Middleware[] = [];
   config: EConfig = {
     parseCookies: true,
     auto405: true,
-    parseBody: false
+    parseBody: false,
+    extractRequestParameters: true,
+    autoContentType: false
   };
 
-  constructor(config?: {}) {
+  constructor(config?: EConfig) {
     this.config = {
       ...this.config,
       ...config
@@ -31,175 +37,148 @@ export class Router {
       const req = new ERequest(this.config, event);
       const res = new EResponse(this.config);
 
-      await this.runMiddlewares(req, res);
+      await this.runMiddleware(req, res);
 
       if (!res.hasEnded) {
-        await this.runRoutes(req, res);
+        await this.runRoute(req, res);
       }
 
       return serializeResponse(res);
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      throw e;
     }
   }
 
-  private async runMiddlewares(req: ERequest, res: EResponse): Promise<any> {
-    for (let m of this.middlewares) {
-      if (m.check(req)) {
+  // Middleware runner.
+  private async runMiddleware(req: ERequest, res: EResponse): Promise<any> {
+    for (let m of this.middleware) {
+      if (m.check(req) === 0) {
         await m.run(req, res);
       }
     }
   }
 
-  private async runRoutes(req: ERequest, res: EResponse): Promise<any> {
-    const matchedRoute = this.routes.find((route): boolean => route.check(req));
-
+  // Route runner.
+  private async runRoute(req: ERequest, res: EResponse): Promise<any> {
+    let status;
+    const matchedRoute = this.routes.find((route) => {
+      status = route.check(req);
+      return status === 0;
+    });
     if (matchedRoute) {
       await matchedRoute.run(req, res);
+    } else {
+      // We're here if method not allowed / path not found.
+      res.status = this.config.auto405 ? status : 404;
     }
   }
 
+  // Middleware attach point.
   public use(
     path: string | MiddlewareCallback,
     callback?: MiddlewareCallback
   ): void {
     if (path instanceof Function) {
-      this.middlewares.push(
-        new Middleware(() => true, path as MiddlewareCallback)
+      this.middleware.push(
+        new Middleware(() => 0, path as MiddlewareCallback)
       );
     } else {
-      this.middlewares.push(
-        new Middleware(basicRouteMatcher("*", path as string, false), callback)
+      this.middleware.push(
+        new Middleware(routeMatcher(["*"], path as string), callback)
       );
     }
   }
 
+  // Router API.
   public route(
-    method: string,
+    methods: string[],
     pattern: string,
     callback: RequestHandlerCallback
   ): void {
-    this.routes.push(new Route(basicRouteMatcher(method, pattern), callback));
+    this.routes.push(new Route(routeMatcher(methods, pattern), callback));
   }
 
   public all(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("*", pattern, callback);
+    this.route(["*"], pattern, callback);
   }
 
   public get(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("GET", pattern, callback);
+    this.route(["GET"], pattern, callback);
   }
 
   public post(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("POST", pattern, callback);
+    this.route(["POST"], pattern, callback);
   }
 
   public put(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("PUT", pattern, callback);
+    this.route(["PUT"], pattern, callback);
   }
 
   public delete(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("DELETE", pattern, callback);
+    this.route(["DELETE"], pattern, callback);
   }
 
   public head(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("HEAD", pattern, callback);
+    this.route(["HEAD"], pattern, callback);
   }
 
   public options(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("OPTIONS", pattern, callback);
+    this.route(["OPTIONS"], pattern, callback);
   }
 
   public patch(pattern: string, callback: RequestHandlerCallback): void {
-    this.route("PATCH", pattern, callback);
+    this.route(["PATCH"], pattern, callback);
   }
 }
 
 function serializeResponse(res: EResponse): Response {
-  res.setDefaults();
+  // Default to 200 / 204 if no status was set by middleware / route handler.
+  if (res.status === 0) {
+    res.status = Boolean(this.body) ? 200 : 204;
+  }
 
-  let response = new Response(res.body, {
+  return new Response(res.body, {
     headers: res.headers,
     status: res.status,
   });
-
-  return response;
 }
 
 /**
- * This function creates another function which will be used to check if a request matches the route.
- * e.g. does the method and the pattern match?
- * @param method the HTTP method, GET, POST etc
- * @param pattern Express style path
- * @returns A function which returns a boolean, true = "matched, run this route"
+ * Creates a function used to check if the request method and path match a router configuration.
+ * @param methods An array of HTTP method(s) or "*" to match all methods.
+ * @param pattern A URLPattern string (see: https://developer.mozilla.org/en-US/docs/Web/API/URLPattern)
+ * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
  */
-export function basicRouteMatcher(
-  method: string,
-  pattern: string,
-  extractParams: boolean = true
+function routeMatcher(
+  methods: string[],
+  pattern: string
 ): Function {
-  const isRegexMatch =
-    (pattern.indexOf("*") !== -1 || pattern.indexOf(":") !== -1) &&
-    pattern.length > 1;
-
-  function simpleMatch(req: ERequest): boolean {
-    if (req.method.toUpperCase() != method.toUpperCase() && method != "*")
-      return false;
-
-    return pattern == "*" || req.url.pathname == pattern;
-  }
-
-  let checkFunction = isRegexMatch
-    ? makeRegexMatch(pattern, extractParams)
-    : simpleMatch;
-
-  return (req: ERequest): boolean => {
-    return checkFunction(req);
-  };
-}
-
-/**
- * Take the path of a route which can include parameters such as ":id" and turn those into regex matches
- * @param pattern Express style path pattern, e.g "/user/:userid/profile"
- * @returns
- */
-function makeRegexMatch(
-  pattern: string,
-  extractParams: boolean = true
-): Function {
-  pattern = pattern
-    .replace(/\$/g, "$")
-    .replace(/\^/g, "^")
-    .replace(/\*/g, "(.*)")
-    .replace(/\//g, "\\/")
-    .replace(/((?<=\:)[a-zA-Z0-9]+)/g, "(?<$&>[a-zA-Z0-9_-]+)")
-    .replace(/\:/g, "");
-
-  // Above regex does this:
-  // '/user/:userid/profile' -> '\\/user\\/(?<userid>[a-zA-Z0-9_-]+)\\/profile'
-
-  // Importantly, we are making this at compile time and not runtime
-  const matchRegexp = new RegExp(`^${pattern}$`, "i");
-
-  // Not sure how required this is, but use the regex to verify it is actually compiled.
-  matchRegexp.test("Make sure RegExp is compiled at build time.");
-
-  return (req: ERequest): boolean => {
-    let matches;
-
-    if ((matches = matchRegexp.exec(req.url.pathname)) !== null) {
-      // Take matches and put in req.params
-      if (matches.groups) {
-        let matchKeys = Object.keys(matches.groups);
-
-        matchKeys.map((k) => {
-          req.params[k] = matches.groups[k];
-        });
-      }
-
-      return true;
+  return (req: ERequest): 405 | 404 | 0 => {
+    // Match on request method first.
+    if (!methods.some(m => m === "*" || m.toUpperCase() === req.method.toUpperCase())) {
+      // Method not allowed.
+      return 405;
     }
-
-    return false;
+    // Cache URL patterns.
+    if (!urlPatternCache.has(pattern)) {
+      urlPatternCache.set(pattern, new URLPattern(pattern));
+    }
+    // Match on pathname.
+    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec() || { pathname: {} };
+    if (input) {
+      if (this.config.extractRequestParameters) {
+        req.params = Object.keys(groups).reduce((acc, key) => {
+          // Only match named parameters (groups for wildcards have integer indexes).
+          if (`${parseInt(key)}` !== key) {
+            acc[key] = groups[key];
+          }
+          return acc;
+        }, {});
+      }
+      return 0;
+    }
+    // Route not found.
+    return 404;
   };
 }
