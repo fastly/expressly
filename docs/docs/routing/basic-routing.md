@@ -29,10 +29,10 @@ In the example above, if a request is made to the `/hello-world` path, your hand
 A handler is the function **expressly** will call to get a response to send back to the client. It is passed two arguments, the **req**uest and the **res**ponse.
 
 ```javascript
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
   res.send("<h1>This is the response!</h1>");
 })
-```
+``` 
 
 ## Listening for requests
 
@@ -49,12 +49,8 @@ router.get("/", async (req, res) => {
   return res.send("Welcome to expressly!");
 });
 
-router.get("/my-page", async (req, res) => {
-  return res.send("This is my page!");
-});
-
-router.post("/my-page", async (req, res) => {
-  return res.send("You made a POST request to my page!");
+router.route(["GET","POST"], "/my-page", async (req, res) => {
+  return res.send(`You made a ${req.method} request to my page!`);
 });
 
 router.listen();
