@@ -1,7 +1,6 @@
 export type EConfig = {
   parseCookie: boolean;
   auto405: boolean;
-  parseBody: boolean;
   extractRequestParameters: boolean;
   autoContentType: boolean;
 }

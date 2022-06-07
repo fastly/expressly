@@ -14,7 +14,6 @@ export class Router {
   config: EConfig = {
     parseCookie: true,
     auto405: true,
-    parseBody: false,
     extractRequestParameters: true,
     autoContentType: false
   };

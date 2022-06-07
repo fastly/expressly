@@ -41,6 +41,8 @@ router.get("/", async (req, res) => {
 router.listen();
 ```
 
+> 💡 **expressly** supports extra [configuration](config.md). You don't need it for now.  
+
 ## Try it out
 
 Start your app locally:
