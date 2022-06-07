@@ -8,50 +8,38 @@ Search (query string) parameters can be accessed in the `req.query` object, whic
 
 ## Get the value of a search paramater
 
+Use `req.query.get(key)` to get the first value associated with a given search parameter. If you need to check whether a parameter is set, use `*.query.has(name)`:
+
 ```javascript
 router.get("/page", (req, res) => {
   if (req.query.has("id")) {
     res.send(`Your page id is: ${req.query.get("id")}`)
   } else {
-    res.send("You didnt supply an id! Add one like this: /page?id=123")
+    res.send("No id! Add one like this: /page?id=123")
   }
 })
 ```
 
-## Working with req.query
+> 💡 You can use `req.query.getAll(key)` to get all the values of query string array.
 
-### append(name, value)
-Appends a specified key/value pair as a new search parameter.
+## Listing search parameters
 
-### delete(name)
-Deletes a given search parameter, and its associated value, from the list of all search parameters.
+Use `req.query.entries()` method to iterate through all key/value pairs in the same order as they appear in the query string.
 
-### entries()
-Returns an iterator through all key/value pairs in the same order as they appear in the query string.
+```javascript
+for (const [key, value] of req.query.entries()) {
+    console.log(`Query parameter: ${key}`, value);
+}
+```
 
-### forEach()
-Allows iteration through all query string parameters via a callback function.
+If you need only the keys or values, use `req.query.keys()` or `req.query.values()`, respectively.
 
-### get(name)
-Returns the first value associated with the given search parameter.
+## Manipulating query strings
 
-### getAll(name)
-Returns all the values associated with a given search parameter.
+`req.query` is a [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) object. You can use a bunch of utility methods to work with query parameters:
 
-### has(name)
-Returns a boolean value indicating if such a parameter exists.
-
-### keys()
-Returns an iterator through all query string parameter keys.
-
-### set(name, value)
-Sets the value associated with a given search parameter to the given value. If there are several values, the others are deleted.
-
-### sort()
-Sorts all query string parameters, if any, by their name.
-
-### toString()
-Returns a serialized query string suitable for use in a URL.
-
-### values()
-Returns an iterator through all query string parameter values.
+* **req.query.set(name, value)** sets the value of a given search parameter.
+* **req.query.append(name, value)** appends a new search parameter.
+* **req.query.delete(name)** removes a search parameter and its value(s).
+* **req.query.sort()** sorts all query string parameters by name.
+* **req.query.toString()** returns a serialized query string suitable for use in a URL.

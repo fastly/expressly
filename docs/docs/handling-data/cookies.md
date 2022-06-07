@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 })
 ```
 
-The `req.cookies.entries` method returns an iterator for all cookie key/value pairs.
+The `req.cookies.entries()` method returns an iterator for all cookie key/value pairs.
 
 ```javascript
 // List all cookie names and values.
@@ -60,7 +60,7 @@ router.get("/", (req, res) => {
 
 ### Options
 
-`res.cookie` accepts the following properties in the `options` object:
+`res.cookie()` accepts the following properties in the `options` object:
 
 #### [domain](https://tools.ietf.org/html/rfc6265#section-5.2.3)
 

@@ -10,7 +10,7 @@ sidebar_position: 3
 
 ## Get header values
 
-Use `.headers.get(name)` to retrieve the values of a HTTP header.
+Use `*.headers.get(name)` to retrieve the values of a HTTP header.
 
 > 💡 **Header names are case-insensitive**!
 
@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
 });
 ```
 
-The `.headers.entries` method returns an iterator for all header key/value pairs.
+The `.headers.entries()` method returns an iterator for all header key/value pairs.
 
 ```javascript
 // List all header names and values.
@@ -32,11 +32,11 @@ for (const [name, value] of req.headers.entries()) {
 }
 ```
 
-If you need only the keys or values, use [`.headers.keys`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/keys) or [`.headers.values`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/values), respectively.
+If you need only the keys or values, use [`*.headers.keys()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/keys) or [`*.headers.values()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/values), respectively.
 
 ## Check if set
 
-If you need to check whether a header is set, use `.headers.has(name)`:
+If you need to check whether a header is set, use `*.headers.has(name)`:
 
 ```javascript
 router.use((req, res) => {
@@ -48,7 +48,7 @@ router.use((req, res) => {
 
 ## Set headers
 
-Set request or response headers by calling `headers.set(key, value)`.
+Set request or response headers by calling `*.headers.set(key, value)`.
 
 ```javascript
 router.get("/", (req, res) => {
@@ -59,7 +59,7 @@ router.get("/", (req, res) => {
 
 ## Append headers
 
-Append to request or response headers by calling `.headers.append(key, value)`.
+Append to request or response headers by calling `*.headers.append(key, value)`.
 
 ```javascript
 router.get("/", (req, res) => {
@@ -71,7 +71,7 @@ router.get("/", (req, res) => {
 
 ## Remove headers
 
-Remove request or response headers by calling `.headers.delete(key)`.
+Remove request or response headers by calling `*.headers.delete(key)`.
 
 ```javascript
 router.get("/", (req, res) => {
