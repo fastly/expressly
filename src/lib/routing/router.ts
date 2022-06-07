@@ -29,10 +29,7 @@ export class Router {
       const res = new EResponse(this.config);
 
       await this.runMiddlewares(req, res);
-
-      if (!res.hasEnded) {
-        await this.runRoutes(req, res);
-      }
+      await this.runRoutes(req, res);
 
       return serializeResponse(res);
     } catch (e) {
@@ -42,6 +39,9 @@ export class Router {
 
   private async runMiddlewares(req: ERequest, res: EResponse): Promise<any> {
     for (let m of this.middlewares) {
+      if (res.hasEnded) {
+        break;
+      }
       if (m.check(req)) {
         await m.run(req, res);
       }
@@ -49,10 +49,13 @@ export class Router {
   }
 
   private async runRoutes(req: ERequest, res: EResponse): Promise<any> {
-    const matchedRoute = this.routes.find((route): boolean => route.check(req));
-
-    if (matchedRoute) {
-      await matchedRoute.run(req, res);
+    for (let r of this.routes) {
+      if (res.hasEnded) {
+        break;
+      }
+      if (r.check(req)) {
+        await r.run(req, res);
+      }
     }
   }
 
