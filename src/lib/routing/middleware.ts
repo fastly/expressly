@@ -18,7 +18,7 @@ export class Middleware {
   }
 
   public async run(req: ERequest, res: EResponse): Promise<any> {
-    // Supply an empty callback which would normally be next() in express
+    // Supply an empty callback as an equivalent of next() in Express.js.
     await this.callback(req, res, () => {});
   }
 }
