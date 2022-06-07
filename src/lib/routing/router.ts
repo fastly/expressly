@@ -119,14 +119,9 @@ function serializeResponse(res: EResponse): Response {
   res.setDefaults();
 
   let response = new Response(res.body, {
-    headers: res._headers,
+    headers: res.headers,
     status: res.status,
   });
-
-  // Looping cookie headers manually to work around this bug: https://github.com/fastly/js-compute-runtime/issues/47
-  // for (let [_, c] of res._cookies) {
-  //   response.headers.append("Set-Cookie", c);
-  // }
 
   return response;
 }
