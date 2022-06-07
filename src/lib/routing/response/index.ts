@@ -8,7 +8,7 @@ export default class EResponse {
   status: number = 0;
   body: BodyInit = null;
   hasEnded: boolean = false;
-  surrogateKeys: SurrogateKeys;
+  surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
   
   constructor(private config: EConfig) {
   }
