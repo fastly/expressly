@@ -9,7 +9,7 @@ export default class EResponse {
   body: BodyInit = null;
   hasEnded: boolean = false;
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
-  
+
   constructor(private config: EConfig) {
   }
 
@@ -72,14 +72,27 @@ export default class EResponse {
     } else {
       this.body = response;
     }
+
+    // EXPERIMENTAL: Content type inference, à la Express.js.
+    if (this.config.autoContentType && !this.headers.has("Content-Type") && Boolean(this.body)) {
+      if (typeof this.body === "string") {
+        this.headers.set("Content-Type", "text/html");
+      } else if (this.body instanceof ArrayBuffer) {
+        this.headers.set("Content-Type", "application/octet-stream");
+      } else {
+        this.headers.set("Content-Type", "application/json");
+      }
+    }
+
+    this.hasEnded = true;
   }
 
   // End the response process [without any data], à la Express.js.
-  end(body?: BodyInit) {
+  // https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send
+  end(body?: string) {
     if (this.hasEnded) return;
-    
+
     this.send(body);
-    this.hasEnded = true;
   }
 
   // Send a HTTP status code response and end the response process.
@@ -124,18 +137,5 @@ export default class EResponse {
 
     this.headers.set("Content-Type", `text/html${charset ? `; charset=${charset}` : ""}`);
     this.send(data);
-  }
-
-  // Make assumptions about status code if it isn't set.
-  setDefaults() {
-    if (this.status === 0) {
-      if (this.body === null) {
-        this.status = 404;
-      } else if (!Boolean(this.body)) {
-        this.status = 204;
-      } else {
-        this.status = 200;
-      }
-    }
   }
 }
