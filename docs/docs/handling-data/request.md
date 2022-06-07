@@ -1,11 +1,19 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
+title: Request
 ---
 
 # The Request object
 
+## Properties
 
-## Request body
+* **url**: The [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) object corresponding to the request URL
+* **query**: Request [query string parameters](search-params.md)
+* **params**: An object containing properties mapped to any [named route "parameters"](../routing/advanced-routing.md#path-parameters)
+* **cookies**: A Map containing [request cookies](cookies.md#request-cookies), if the [`parseCookie`](../config.md#parseCookie) configuration option is enabled
+* **headers**: Request [headers](headers.md)
+
+## Working with the request body
 
 **expressly** can parse the body of a **req**uest in multiple ways.
 
@@ -46,8 +54,7 @@ router.post("/submit", async (req, res) => {
 })
 ```
 
-
-## Convenience methods
+## Methods
 
 ### path()
 

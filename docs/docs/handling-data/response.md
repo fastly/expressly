@@ -1,8 +1,8 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 ---
 
-# Responses
+# Response
 
 The **res**ponse object is the primary way to send data back to the client. **expressly** provides methods to set the response status, headers, and body.
 

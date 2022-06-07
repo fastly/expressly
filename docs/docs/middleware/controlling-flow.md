@@ -20,7 +20,7 @@ This will **not** redirect the user; instead, it will affect the route selection
 
 ## Stopping a request
 
-If you need to end the response process early (for example, in order to block unauthenticated requests), you can call [`res.end`](../handling-data/responses.md#resend) (or [`res.send`](../handling-data/responses.md#ressend)) from middleware. 
+If you need to end the response process early (for example, in order to block unauthenticated requests), you can call [`res.end`](../handling-data/response.md#resend) (or [`res.send`](../handling-data/response.md#ressend)) from middleware. 
 
 ```javascript
 router.use("/account/", (req, res) => {

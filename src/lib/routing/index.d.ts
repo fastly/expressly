@@ -1,5 +1,5 @@
 export type EConfig = {
-  parseCookies: boolean;
+  parseCookie: boolean;
   auto405: boolean;
   parseBody: boolean;
   extractRequestParameters: boolean;

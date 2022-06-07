@@ -12,7 +12,7 @@ export class Router {
   routes: Route[] = [];
   middleware: Middleware[] = [];
   config: EConfig = {
-    parseCookies: true,
+    parseCookie: true,
     auto405: true,
     parseBody: false,
     extractRequestParameters: true,

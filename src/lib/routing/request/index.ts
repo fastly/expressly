@@ -20,7 +20,7 @@ export default class ERequest extends ECommonObject {
     this.headers = event.request.headers;
 
     // Parse cookies.
-    if (this.config.parseCookies) {
+    if (this.config.parseCookie) {
       this.cookies = new CookieMap(this.headers);
     }
   }
