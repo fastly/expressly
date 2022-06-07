@@ -27,7 +27,19 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+html[data-theme='dark'] {
+  background-color: #182931;
+}
+
+html[data-theme='dark'] .navbar {
+  background-color: #303846;
+}
+
 .hero-logo {
   border-radius: 10px;
   max-width: 200px;
+}
+
+.footer__copyright {
+  font-size: 0.8em;
 }

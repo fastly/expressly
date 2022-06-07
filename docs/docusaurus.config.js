@@ -2,7 +2,7 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const darkCodeTheme = require("prism-react-renderer/themes/nightOwl");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -36,11 +36,14 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        respectPrefersColorScheme: true,
+      },
       navbar: {
         title: "expressly",
         logo: {
           alt: "expressly Logo",
-          src: "img/logo-black.png",
+          src: 'img/logo.png',
         },
         items: [
           {
@@ -104,7 +107,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Fastly. Forked from github.com/williamoverton/FlightPath`,
+        copyright: `Copyright © ${new Date().getFullYear()} Fastly Inc. All rights reserved.`,
       },
       prism: {
         theme: lightCodeTheme,

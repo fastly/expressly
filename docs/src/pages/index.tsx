@@ -5,8 +5,7 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./index.module.css";
 import HomepageFeatures from "../components/HomepageFeatures";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { github } from "react-syntax-highlighter/dist/esm/styles/prism";
+import CodeBlock from '@theme/CodeBlock';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -15,7 +14,7 @@ function HomepageHeader() {
       <div className="container">
        
         <img src="/img/logo.png" className="hero-logo" />
-        <h1 className="hero__title">{siteConfig.title}</h1> 
+        <h1 className={clsx("hero__title", styles.heroTitle)}>{siteConfig.title}</h1> 
         <p className={clsx("hero__subtitle", styles.heroSubtitle)}>
           {siteConfig.tagline}
         </p>
@@ -70,35 +69,33 @@ router.listen();`;
                   <dl>
                     <dt>Install <strong>expressly</strong> from <a href="https://www.npmjs.com/package/@fastly/expresly" target="_blank">npm</a>:</dt>
                     <dd>
-                      <SyntaxHighlighter
+                      <CodeBlock
                         language="shell"
-                        style={github}
                         showLineNumbers={false}
                       >
                         npm i @fastly/expressly
-                      </SyntaxHighlighter>
+                      </CodeBlock>
                     </dd>
                     <dd>
-                      <SyntaxHighlighter
+                      <CodeBlock
                         language="shell"
-                        style={github}
+                      
                         showLineNumbers={false}
                       >
                         yarn add @fastly/expressly
-                      </SyntaxHighlighter>
+                      </CodeBlock>
                     </dd>
                   </dl>
                 </p>
               </div>
             </div>
             <div className="col col--6">
-              <SyntaxHighlighter
+              <CodeBlock
                 language="javascript"
-                style={github}
                 showLineNumbers={true}
               >
                 {exampleCode}
-              </SyntaxHighlighter>
+              </CodeBlock>
             </div>
           </div>
         </div>

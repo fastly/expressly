@@ -11,8 +11,8 @@ import { Router } from "@fastly/expressly";
 
 const router = new Router();
 ```
-> 💡 `Router` supports additional [configuration](config.md).
 
+> 💡 `Router` supports additional [configuration](config.md).
 
 ## Creating a route
 
