@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 
 ## The default error handler
 
-**expressly** comes with a built-in error handler that takes care of any errors that might be encountered in the app. This default error-handling middleware function is added at the end of the router stack, after all other middleware and request handlers.
+**expressly** comes with a built-in error handler that takes care of any errors that might be encountered in the app. This [default error-handling middleware](https://github.com/fastly/expressly/blob/main/src/lib/routing/router.ts#L12) function is added at the end of the router stack, after all other middleware and request handlers.
 
 ## Error-handling middleware
 
