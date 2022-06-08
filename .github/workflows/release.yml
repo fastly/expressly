@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build expressly
+    name: expressly
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.AUTO_GH_TOKEN }}
@@ -36,13 +36,9 @@ jobs:
             ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-
       - name: Compile expressly
         run: yarn build
-
-  ship:
-    needs: build
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Auto
+      - run: auto create-labels
+      - name: Publish
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           git fetch origin 'refs/tags/*:refs/tags/*'
           yarn auto shipit
