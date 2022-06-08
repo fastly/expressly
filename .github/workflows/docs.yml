@@ -1,0 +1,52 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref_name }}-docs
+  cancel-in-progress: true
+
+jobs:
+  publish-docs:
+    name: Publish
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline
+      - name: Node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
+      - name: Compile docs
+        run: yarn build
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+            target: wasm32-wasi
+      - name: Deploy docs to Compute@Edge
+        uses: fastly/compute-actions@main
+        with:
+          project_directory: ./docs/static-host
+        env:
+          FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
+      - name: Purge expressly.edgecompute.app
+        env:
+          FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
+        run: |
+          curl -s -H "Fastly-Key: $FASTLY_API_TOKEN" -X POST "https://api.fastly.com/service/44O0OSuWrOWkzVek5Gg4QN/purge_all"
+        
