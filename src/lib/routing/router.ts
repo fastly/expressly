@@ -49,7 +49,7 @@ export class Router {
   // Middleware runner.
   private async runMiddleware(req: ERequest, res: EResponse): Promise<any> {
     for (let m of this.middleware) {
-      if (!res.hasEnded) {
+      if (res.hasEnded) {
         break;
       }
       if (m.check(req) === 0) {
