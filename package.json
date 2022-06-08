@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/fastly/expressly"
   },
+  "bugs": {
+    "url": "https://github.com/fastly/expressly/issues"
+  },
   "scripts": {
     "build": "tsc",
     "prepublish": "tsc",
@@ -27,6 +30,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^17.0.40",
+    "auto": "^10.37.1",
     "husky": "^8.0.1",
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
@@ -41,5 +45,12 @@
     "cookie": "^0.5.0",
     "core-js": "^3.22.8",
     "path-to-regexp": "^6.2.1"
+  },
+  "auto": {
+    "baseBranch": "main",
+    "plugins": [
+      "npm",
+      "released"
+    ]
   }
 }

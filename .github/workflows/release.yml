@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-
       - name: Compile expressly
         run: yarn build
-      - run: yarn auto create-labels
+      - run: auto create-labels
       - name: Publish
         if: ${{ github.event_name == 'pull_request' }}
         run: |
