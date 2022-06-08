@@ -72,6 +72,12 @@ jobs:
             ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-
       - name: Compile docs
         run: yarn build
+      - name: Install Rust toolchain
+        if: ${{ github.ref_name == 'main' }}
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+            target: wasm32-wasi
       - name: Deploy docs to Compute@Edge
         if: ${{ github.ref_name == 'main' }}
         uses: fastly/compute-actions@main
