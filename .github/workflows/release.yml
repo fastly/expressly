@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  shipit:
+  build:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.AUTO_GH_TOKEN }}
@@ -35,7 +35,41 @@ jobs:
             ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-
       - name: Compile expressly
         run: yarn build
-      # - name: Auto
-      #   run: |
-      #     git fetch origin 'refs/tags/*:refs/tags/*'
-      #     yarn auto shipit
+
+  ship:
+    needs: build
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto
+        run: |
+          git fetch origin 'refs/tags/*:refs/tags/*'
+          yarn auto shipit
+
+  build-docs:
+    needs: ship
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: yarn
+      - name: Install dependencies
+        run: |
+          cd docs
+          yarn install --frozen-lockfile --prefer-offline
+      - name: Node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-
+      - name: Compile docs
+        run: yarn build
