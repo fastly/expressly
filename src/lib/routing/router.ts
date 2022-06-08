@@ -3,10 +3,21 @@ import { match } from "path-to-regexp";
 import { EConfig } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
-import ERequest from "./request";
-import EResponse from "./response";
+import { ErrorNotFound, ErrorMethodNotAllowed } from "./errors";
+import { ERequest } from "./request";
+import { EResponse } from "./response";
 
 const pathMatcherCache: Map<string, Function> = new Map();
+
+const defaultErrorHandler = (auto405) => async (err: Error, req: ERequest, res: EResponse) => {
+  if (err instanceof ErrorNotFound) {
+    return res.sendStatus(404);
+  } else if (err instanceof ErrorMethodNotAllowed && auto405) {
+    res.headers.set("Allow", err.allow);
+    return res.sendStatus(405);
+  }
+  res.withStatus(500).json({ error: err });
+}
 
 export class Router {
   requestHandlers: Array<RequestHandler> = [];
@@ -32,21 +43,18 @@ export class Router {
   }
 
   private async handler(event: FetchEvent): Promise<Response> {
+    const req = new ERequest(this.config, event);
+    const res = new EResponse(this.config);
     try {
-      const req = new ERequest(this.config, event);
-      const res = new EResponse(this.config);
-
-      try {
-        await this.runRequestHandlers(req, res);
-      } catch (err) {
-        await this.runErrorHandlers(err, req, res);
-      }
-
-      return Router.serializeResponse(res);
-    } catch (e) {
-      console.error(e);
-      throw e;
+      // Run middleware and request handler stack.
+      await this.runRequestHandlers(req, res);
+    } catch (err) {
+      // Add default error handler.
+      this.use(defaultErrorHandler(this.config.auto405));
+      // Run error handler stack.
+      await this.runErrorHandlers(err, req, res);
     }
+    return Router.serializeResponse(res);
   }
 
   // Middleware attach point.
@@ -68,12 +76,8 @@ export class Router {
   }
 
   // Router API.
-  public route(
-    methods: string[],
-    pattern: string,
-    callback: RequestHandlerCallback
-  ): void {
-    this.requestHandlers.push(new RequestHandler(this.routeMatcher(methods, pattern), callback));
+  public route(methods: string[], pattern: string, callback: RequestHandlerCallback): void {
+    this.requestHandlers.push(new RequestHandler(this.routeMatcher(methods.map(m => m.toUpperCase()), pattern), callback));
   }
 
   public all(pattern: string, callback: RequestHandlerCallback): void {
@@ -110,19 +114,23 @@ export class Router {
 
   // Request handler runner.
   private async runRequestHandlers(req: ERequest, res: EResponse): Promise<any> {
-    let status;
+    let checkResult;
+    const allowedMethods = [];
     for (let a of this.requestHandlers) {
       if (res.hasEnded) {
         break;
       }
-      status = a.check(req);
-      if (status === 0) {
+      checkResult = a.check(req);
+      if (checkResult === 0) {
         await a.run(req, res);
+      } else if (checkResult.length) {
+        allowedMethods.push(checkResult)
       }
     }
-    if (status) {
-      // We're here if method not allowed / path not found.
-      res.status = this.config.auto405 ? status : 404;
+    if (allowedMethods.length) {
+      throw new ErrorMethodNotAllowed(allowedMethods);
+    } else if (checkResult === 404) {
+      throw new ErrorNotFound();
     }
   }
 
@@ -145,15 +153,11 @@ export class Router {
    * @param extractRequestParameters Whether to extract parameters from a request
    * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
    */
-  private routeMatcher(
-    methods: string[],
-    pattern: string
-  ): Function {
-    return (req: ERequest): 405 | 404 | 0 => {
-      const methodAllowed = methods.some(m => m === "*" || m.toUpperCase() === req.method.toUpperCase());
-
+  private routeMatcher(methods: string[], pattern: string): Function {
+    return (req: ERequest): 404 | 0 | string[] => {
+      const methodAllowed = methods.some(m => m === "*" || m === req.method);
       if (pattern === "*" || pattern === "(.*)") {
-        return methodAllowed ? 0 : 405;
+        return methodAllowed ? 0 : methods;
       } else {
         // Cache pattern matcher.
         if (!pathMatcherCache.has(pattern)) {
@@ -165,7 +169,7 @@ export class Router {
           if (this.config.extractRequestParameters) {
             req.params = params;
           }
-          return methodAllowed ? 0 : 405;
+          return methodAllowed ? 0 : methods;
         }
       }
       // Route not found.

@@ -2,7 +2,7 @@ import { ECommonObject } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-export default class ERequest extends ECommonObject {
+export class ERequest extends ECommonObject {
   readonly clientInfo: ClientInfo;
   readonly method: string;
   headers: Headers;

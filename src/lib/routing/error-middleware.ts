@@ -1,5 +1,5 @@
-import ERequest from "./request";
-import EResponse from "./response";
+import { ERequest } from "./request";
+import { EResponse } from "./response";
 
 export type ErrorMiddlewareCallback = (
   err: Error,
@@ -13,7 +13,7 @@ export class ErrorMiddleware {
     private callback: ErrorMiddlewareCallback
   ) {}
 
-  public check(event: ERequest): 0 | 404 | 405 {
+  public check(event: ERequest): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 

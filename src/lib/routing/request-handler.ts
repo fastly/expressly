@@ -1,5 +1,5 @@
-import ERequest from "./request";
-import EResponse from "./response";
+import { ERequest } from "./request";
+import { EResponse } from "./response";
 
 export type RequestHandlerCallback = (
   req: ERequest,
@@ -12,7 +12,7 @@ export class RequestHandler {
     private callback: RequestHandlerCallback
   ) {}
 
-  public check(event: ERequest): 0 | 404 | 405 {
+  public check(event: ERequest): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 

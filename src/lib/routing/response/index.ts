@@ -4,7 +4,7 @@ import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
 import { CookieOptions, EConfig } from "..";
 
-export default class EResponse extends ECommonObject {
+export class EResponse extends ECommonObject {
   headers: Headers = new Headers();
   status: number = 0;
   body: BodyInit = null;
