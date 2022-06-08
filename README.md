@@ -53,4 +53,3 @@ This will start your service on [http://localhost:7676](http://localhost:7676).
 ## Examples
 
 Check out the JavaScript code examples for Compute@Edge on Fastly's [Developer Hub](https://developer.fastly.com/solutions/examples/javascript/).
-ß
