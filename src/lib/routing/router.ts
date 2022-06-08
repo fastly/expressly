@@ -13,8 +13,8 @@ const defaultErrorHandler = (auto405) => async (err: Error, req: ERequest, res: 
   if (err instanceof ErrorNotFound || (err instanceof ErrorMethodNotAllowed && !auto405)) {
     return res.sendStatus(404);
   } else if (err instanceof ErrorMethodNotAllowed) {
-      res.headers.set("Allow", err.allow);
-      return res.sendStatus(405);
+    res.headers.set("Allow", err.allow);
+    return res.sendStatus(405);
   }
   res.withStatus(500).json({ error: err });
 }

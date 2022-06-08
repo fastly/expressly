@@ -16,5 +16,5 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true
   },
-  "exclude": ["dist/", "examples/", "docs/"]
+  "exclude": ["dist/", ".dora", "docs/"]
 }

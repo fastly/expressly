@@ -34,7 +34,6 @@ jobs:
           key: ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
       - name: Compile expressly
         run: yarn build
-      - run: auto create-labels
       - name: Publish
         if: ${{ github.event_name == 'pull_request' }}
         run: |
