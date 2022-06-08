@@ -166,10 +166,10 @@ function routeMatcher(
     }
     // Cache URL patterns.
     if (!urlPatternCache.has(pattern)) {
-      urlPatternCache.set(pattern, new URLPattern(pattern));
+      urlPatternCache.set(pattern, new URLPattern({pathname: pattern}));
     }
     // Match on pathname.
-    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec() || { pathname: {} };
+    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec(req.url.toString()) || { pathname: {} };
     if (input) {
       if (extractRequestParameters) {
         req.params = Object.keys(groups).reduce((acc, key) => {
