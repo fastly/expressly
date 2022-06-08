@@ -48,11 +48,11 @@ jobs:
           yarn auto shipit
 
   build-docs:
-    name: Generate documentation
+    name: Docs
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: docs
+        working-directory: ./docs
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -61,9 +61,7 @@ jobs:
           node-version: 16
           cache: yarn
       - name: Install dependencies
-        run: |
-          cd docs
-          yarn install --frozen-lockfile --prefer-offline
+        run: yarn install --frozen-lockfile --prefer-offline
       - name: Node modules cache
         id: node-modules-cache
         uses: actions/cache@v2
@@ -74,3 +72,11 @@ jobs:
             ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-
       - name: Compile docs
         run: yarn build
+      - name: Deploy docs to Compute@Edge
+        if: ${{ github.ref_name == 'main' }}
+        uses: fastly/compute-actions@main
+        with:
+          project_directory: ./docs/static-host
+        env:
+          FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
+        
