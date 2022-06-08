@@ -49,7 +49,7 @@ export class Router {
   // Middleware runner.
   private async runMiddleware(req: ERequest, res: EResponse): Promise<any> {
     for (let m of this.middleware) {
-      if (!res.hasEnded) {
+      if (res.hasEnded) {
         break;
       }
       if (m.check(req) === 0) {
@@ -87,7 +87,7 @@ export class Router {
       );
     } else {
       this.middleware.push(
-        new Middleware(routeMatcher(["*"], path as string), callback)
+        new Middleware(routeMatcher(["*"], path as string, this.config.extractRequestParameters), callback)
       );
     }
   }
@@ -98,7 +98,7 @@ export class Router {
     pattern: string,
     callback: RequestHandlerCallback
   ): void {
-    this.routes.push(new Route(routeMatcher(methods, pattern), callback));
+    this.routes.push(new Route(routeMatcher(methods, pattern, this.config.extractRequestParameters), callback));
   }
 
   public all(pattern: string, callback: RequestHandlerCallback): void {
@@ -137,7 +137,7 @@ export class Router {
 function serializeResponse(res: EResponse): Response {
   // Default to 200 / 204 if no status was set by middleware / route handler.
   if (res.status === 0) {
-    res.status = Boolean(this.body) ? 200 : 204;
+    res.status = Boolean(res.body) ? 200 : 204;
   }
 
   return new Response(res.body, {
@@ -150,11 +150,13 @@ function serializeResponse(res: EResponse): Response {
  * Creates a function used to check if the request method and path match a router configuration.
  * @param methods An array of HTTP method(s) or "*" to match all methods.
  * @param pattern A URLPattern string (see: https://developer.mozilla.org/en-US/docs/Web/API/URLPattern)
+ * @param extractRequestParameters Whether to extract parameters from a request
  * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
  */
 function routeMatcher(
   methods: string[],
-  pattern: string
+  pattern: string,
+  extractRequestParameters: boolean,
 ): Function {
   return (req: ERequest): 405 | 404 | 0 => {
     // Match on request method first.
@@ -164,12 +166,12 @@ function routeMatcher(
     }
     // Cache URL patterns.
     if (!urlPatternCache.has(pattern)) {
-      urlPatternCache.set(pattern, new URLPattern(pattern));
+      urlPatternCache.set(pattern, new URLPattern({pathname: pattern}));
     }
     // Match on pathname.
-    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec() || { pathname: {} };
+    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec(req.url.toString()) || { pathname: {} };
     if (input) {
-      if (this.config.extractRequestParameters) {
+      if (extractRequestParameters) {
         req.params = Object.keys(groups).reduce((acc, key) => {
           // Only match named parameters (groups for wildcards have integer indexes).
           if (`${parseInt(key)}` !== key) {
