@@ -1,6 +1,6 @@
 {
   "name": "@fastly/expressly",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.1-0",
   "description": "Express-style router for Fastly's Compute@Edge.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -55,6 +55,10 @@
     "release": {
       "prerelease": true
     },
-    "prereleaseBranches": ["alpha", "beta", "main"]
+    "prereleaseBranches": [
+      "alpha",
+      "beta",
+      "main"
+    ]
   }
 }
