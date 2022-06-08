@@ -15,7 +15,7 @@ First, head over to [developer.fastly.com](https://developer.fastly.com) to get 
 
 ## Install expressly
 
-Install expressly from the [npm registry](https://www.npmjs.com/package/@fastly/expresly):
+Install expressly from the [npm registry](https://www.npmjs.com/package/@fastly/expressly):
 
 ```shell
 npm i @fastly/expressly
