@@ -1,4 +1,4 @@
-import "urlpattern-polyfill";
+import { match } from "path-to-regexp";
 
 import { Route, RequestHandlerCallback } from "./route";
 import { Middleware, MiddlewareCallback } from "./middleware";
@@ -6,7 +6,7 @@ import ERequest from "./request";
 import EResponse from "./response";
 import { EConfig } from ".";
 
-const urlPatternCache: Map<string, URLPattern> = new Map();
+const pathMatcherCache: Map<string, Function> = new Map();
 
 export class Router {
   routes: Route[] = [];
@@ -149,7 +149,7 @@ function serializeResponse(res: EResponse): Response {
 /**
  * Creates a function used to check if the request method and path match a router configuration.
  * @param methods An array of HTTP method(s) or "*" to match all methods.
- * @param pattern A URLPattern string (see: https://developer.mozilla.org/en-US/docs/Web/API/URLPattern)
+ * @param pattern A path string compatible with path-to-regexp (see: https://www.npmjs.com/package/path-to-regexp)
  * @param extractRequestParameters Whether to extract parameters from a request
  * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
  */
@@ -164,23 +164,21 @@ function routeMatcher(
       // Method not allowed.
       return 405;
     }
-    // Cache URL patterns.
-    if (!urlPatternCache.has(pattern)) {
-      urlPatternCache.set(pattern, new URLPattern({pathname: pattern}));
-    }
-    // Match on pathname.
-    let { pathname: { groups, input } } = urlPatternCache.get(pattern).exec(req.url.toString()) || { pathname: {} };
-    if (input) {
-      if (extractRequestParameters) {
-        req.params = Object.keys(groups).reduce((acc, key) => {
-          // Only match named parameters (groups for wildcards have integer indexes).
-          if (`${parseInt(key)}` !== key) {
-            acc[key] = groups[key];
-          }
-          return acc;
-        }, {});
-      }
+    if (pattern === "*") {
       return 0;
+    } else {
+      // Cache pattern matcher.
+      if (!pathMatcherCache.has(pattern)) {
+        pathMatcherCache.set(pattern, match(pattern, { decode: decodeURIComponent }));
+      }
+      // Match on pathname.
+      let { path, params } = pathMatcherCache.get(pattern)(req.url.pathname) || {};
+      if (path) {
+        if (extractRequestParameters) {
+          req.params = params;
+        }
+        return 0;
+      }
     }
     // Route not found.
     return 404;
