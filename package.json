@@ -51,6 +51,10 @@
     "plugins": [
       "npm",
       "released"
-    ]
+    ],
+    "release": {
+      "prerelease": true
+    },
+    "prereleaseBranches": ["alpha", "beta", "main"]
   }
 }
