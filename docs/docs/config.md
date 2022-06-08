@@ -37,7 +37,7 @@ router.get("/users", (req, res) => { ... });
 router.listen();
 ```
 
-Setting `auto405: false` above will cause **expressly** to respond with HTTP 500.
+Setting `auto405: false` above will cause **expressly** to respond with HTTP 404.
 
 ### extractRequestParameters
 
