@@ -85,4 +85,10 @@ jobs:
           project_directory: ./docs/static-host
         env:
           FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
+      - name: Purge expressly.edgecompute.app
+        if: ${{ github.ref_name == 'main' }}
+        env:
+          FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
+        run: |
+          curl -s -H "Fastly-Key: $FASTLY_API_TOKEN" -X POST "https://api.fastly.com/service/44O0OSuWrOWkzVek5Gg4QN/purge_all"
         
