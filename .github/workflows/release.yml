@@ -32,8 +32,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-
       - name: Compile expressly
         run: yarn build
       - run: auto create-labels
@@ -64,8 +62,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-
       - name: Compile docs
         run: yarn build
       - name: Install Rust toolchain
