@@ -12,6 +12,12 @@ title: Request
 * **params**: An object containing properties mapped to any [named route "parameters"](../routing#path-parameters), if the [`extractRequestParameters`](../config.md#extractRequestParameters) configuration option is enabled
 * **cookies**: A Map containing [request cookies](cookies.md#request-cookies), if the [`parseCookie`](../config.md#parseCookie) configuration option is enabled
 * **headers**: Request [headers](headers.md)
+* **path**: The path part of the request URL
+* **ip**: The remote IP address of the request
+* **protocol**: The request protocol string: either `http` or (for TLS requests) `https`.
+* **secure**: A boolean value that is `true` if a TLS connection is established.
+* **subdomains**: An array of subdomains in the domain name of the request.
+* **hostname**: The hostname derived from the `Host` HTTP header.
 
 ## Working with the request body
 
@@ -53,29 +59,3 @@ router.post("/submit", async (req, res) => {
     console.debug(body);
 })
 ```
-
-## Methods
-
-### path()
-
-Returns the path part of the request URL.
-
-### ip()
-
-Returns the remote IP address of the request.
-
-### protocol()
-
-Returns the request protocol string: either `http` or (for TLS requests) `https`.
-
-### secure()
-
-Returns a boolean value that is `true` if a TLS connection is established.
-
-### subdomains()
-
-Returns an array of subdomains in the domain name of the request.
-
-### hostname()
-
-Returns the hostname derived from the `Host` HTTP header.

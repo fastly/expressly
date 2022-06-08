@@ -36,6 +36,8 @@ router.post("/", (req, res) => {
 });
 ```
 
+> 🚨 **Unlike Express**, handlers accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; uncaught errors are passed to [error middleware](error-middleware.md). 
+
 ## Listening for requests
 
 After you have configured your routing logic, you **must** call `router.listen()` to bind the router to incoming requests.
@@ -74,26 +76,47 @@ router.all("/dead-end", (req, res) => {
 });
 ```
 
-### Pattern matching using URLPattern
+### Route matching
 
-**expressly** supports [URLPattern syntax](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API#pattern_syntax) for pattern-matching routes:
+**expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for pattern-matching routes:
 
-- `router.HTTP_METHOD(URL_PATTERN, handler)`
-- `router.all(URL_PATTERN, handler)`
-- `router.route(HTTP_METHOD[], URL_PATTERN, handler)`
+- `router.HTTP_METHOD(PATTERN, handler)`
+- `router.all(PATTERN, handler)`
+- `router.route(HTTP_METHOD[], PATTERN, handler)`
 
 #### Wildcards
 
-You can use wildcards in order to match multiple URLs with one route.
+You can use wildcard parameters `(.*)` in order to match multiple URLs with one route.
 
 ```javascript
-router.get("/assets/*", (req, res) => {
-  let path = req.url.pathname;
-  res.send(`You are at this asset path: ${path}`);
+router.get("/assets/(.*)", (req, res) => {
+  res.send(`You are visiting: ${req.path}`);
 });
 ```
 
-The above will match any `GET` request to `/assets/[ANYTHING]` such as `/assets/logo.png` or `/assets/file.csv`.
+> 🚨 There is no wildcard asterisk (`*`) in **expressly** - use parameters instead (`(.*)` or `:splat*`).
+
+
+```javascript
+router.get("(.*)", (req, res) => {
+  res.send("Hello world!");
+});
+```
+
+The above will match `GET` requests to any path.
+
+
+#### Regular expressions
+
+You can use regular expressions in order to match multiple URLs with one route.
+
+```javascript
+router.get(/.*fly$/, (req, res) => {
+  res.send(`You are visiting: ${req.path}`);
+});
+```
+
+The route path above will match `butterfly` and `dragonfly`, but not `butterfly-net` or `flyer`.
 
 #### Path parameters
 
@@ -112,5 +135,16 @@ You can use regular expressions to constrain matching rules for parameters.
 router.get("/books/:id(\\d+)", (req, res) => {
   let bookId = req.params.id;
   res.send(`Book ID: ${bookId}`);
+});
+```
+
+## Custom 404 pages
+
+TBC
+
+```javascript
+router.all("*", (req, res) => {
+  res.status = 404;
+  return res.send("Page not found!");
 });
 ```

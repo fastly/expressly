@@ -18,12 +18,14 @@ router.use((req, res) => {
 });
 ```
 
+> 🚨 **Unlike Express**, middleware accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; all errors are caught and handled by [error middleware](error-middleware.md). 
+
 If you only want middleware to run on specific routes, you can pass a path to the middleware:
 
 ```javascript
-router.use("/api/*", (req, res) => {
+router.use("/api/(.*)", (req, res) => {
   console.log("Got a request to the API!");
 });
 ```
 
-> 💡 **expressly** supports [URLPattern syntax](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API#pattern_syntax) for route matching. This means that your middleware mount paths can contain wildcards and even regular expressions.
+> **expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for [pattern-matching routes](../routing.md#route-matching). This means that your middleware mount paths can contain wildcards and even regular expressions. 

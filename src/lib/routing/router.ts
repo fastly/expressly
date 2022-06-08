@@ -1,16 +1,16 @@
 import { match } from "path-to-regexp";
 
-import { Route, RequestHandlerCallback } from "./route";
-import { Middleware, MiddlewareCallback } from "./middleware";
+import { EConfig } from ".";
+import { RequestHandler, RequestHandlerCallback } from "./request-handler";
+import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
 import ERequest from "./request";
 import EResponse from "./response";
-import { EConfig } from ".";
 
 const pathMatcherCache: Map<string, Function> = new Map();
 
 export class Router {
-  routes: Route[] = [];
-  middleware: Middleware[] = [];
+  requestHandlers: Array<RequestHandler> = [];
+  errorHandlers: Array<ErrorMiddleware> = [];
   config: EConfig = {
     parseCookie: true,
     auto405: true,
@@ -36,59 +36,34 @@ export class Router {
       const req = new ERequest(this.config, event);
       const res = new EResponse(this.config);
 
-      await this.runMiddleware(req, res);
-      await this.runRoute(req, res);
+      try {
+        await this.runRequestHandlers(req, res);
+      } catch (err) {
+        await this.runErrorHandlers(err, req, res);
+      }
 
-      return serializeResponse(res);
+      return Router.serializeResponse(res);
     } catch (e) {
       console.error(e);
       throw e;
     }
   }
 
-  // Middleware runner.
-  private async runMiddleware(req: ERequest, res: EResponse): Promise<any> {
-    for (let m of this.middleware) {
-      if (res.hasEnded) {
-        break;
-      }
-      if (m.check(req) === 0) {
-        await m.run(req, res);
-      }
-    }
-  }
-
-  // Route runner.
-  private async runRoute(req: ERequest, res: EResponse): Promise<any> {
-    let status;
-    for (let r of this.routes) {
-      if (res.hasEnded) {
-        break;
-      }
-      status = r.check(req);
-      if (status === 0) {
-        await r.run(req, res);
-      }
-    }
-    if (status) {
-      // We're here if method not allowed / path not found.
-      res.status = this.config.auto405 ? status : 404;
-    }
-  }
-
   // Middleware attach point.
   public use(
-    path: string | MiddlewareCallback,
-    callback?: MiddlewareCallback
+    path: string | RequestHandlerCallback | ErrorMiddlewareCallback,
+    callback?: RequestHandlerCallback | ErrorMiddlewareCallback
   ): void {
-    if (path instanceof Function) {
-      this.middleware.push(
-        new Middleware(() => 0, path as MiddlewareCallback)
+    const cb = path instanceof Function ? path : callback;
+    const matcher = path instanceof Function ? () => 0 : this.routeMatcher(["*"], path as string);
+    if (cb.length === 3) {
+      this.errorHandlers.push(
+        new ErrorMiddleware(matcher, cb as ErrorMiddlewareCallback)
       );
     } else {
-      this.middleware.push(
-        new Middleware(routeMatcher(["*"], path as string, this.config.extractRequestParameters), callback)
-      );
+      this.requestHandlers.push(
+        new RequestHandler(matcher, cb as RequestHandlerCallback)
+      )
     }
   }
 
@@ -98,7 +73,7 @@ export class Router {
     pattern: string,
     callback: RequestHandlerCallback
   ): void {
-    this.routes.push(new Route(routeMatcher(methods, pattern, this.config.extractRequestParameters), callback));
+    this.requestHandlers.push(new RequestHandler(this.routeMatcher(methods, pattern), callback));
   }
 
   public all(pattern: string, callback: RequestHandlerCallback): void {
@@ -132,55 +107,81 @@ export class Router {
   public patch(pattern: string, callback: RequestHandlerCallback): void {
     this.route(["PATCH"], pattern, callback);
   }
-}
 
-function serializeResponse(res: EResponse): Response {
-  // Default to 200 / 204 if no status was set by middleware / route handler.
-  if (res.status === 0) {
-    res.status = Boolean(res.body) ? 200 : 204;
+  // Request handler runner.
+  private async runRequestHandlers(req: ERequest, res: EResponse): Promise<any> {
+    let status;
+    for (let a of this.requestHandlers) {
+      if (res.hasEnded) {
+        break;
+      }
+      status = a.check(req);
+      if (status === 0) {
+        await a.run(req, res);
+      }
+    }
+    if (status) {
+      // We're here if method not allowed / path not found.
+      res.status = this.config.auto405 ? status : 404;
+    }
   }
 
-  return new Response(res.body, {
-    headers: res.headers,
-    status: res.status,
-  });
-}
+  // Error handler runner.
+  private async runErrorHandlers(err: Error, req: ERequest, res: EResponse): Promise<any> {
+    for (let eH of this.errorHandlers) {
+      if (res.hasEnded) {
+        break;
+      }
+      if (eH.check(req) === 0) {
+        await eH.run(err, req, res);
+      }
+    }
+  }
 
-/**
- * Creates a function used to check if the request method and path match a router configuration.
- * @param methods An array of HTTP method(s) or "*" to match all methods.
- * @param pattern A path string compatible with path-to-regexp (see: https://www.npmjs.com/package/path-to-regexp)
- * @param extractRequestParameters Whether to extract parameters from a request
- * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
- */
-function routeMatcher(
-  methods: string[],
-  pattern: string,
-  extractRequestParameters: boolean,
-): Function {
-  return (req: ERequest): 405 | 404 | 0 => {
-    // Match on request method first.
-    if (!methods.some(m => m === "*" || m.toUpperCase() === req.method.toUpperCase())) {
-      // Method not allowed.
-      return 405;
-    }
-    if (pattern === "*") {
-      return 0;
-    } else {
-      // Cache pattern matcher.
-      if (!pathMatcherCache.has(pattern)) {
-        pathMatcherCache.set(pattern, match(pattern, { decode: decodeURIComponent }));
-      }
-      // Match on pathname.
-      let { path, params } = pathMatcherCache.get(pattern)(req.url.pathname) || {};
-      if (path) {
-        if (extractRequestParameters) {
-          req.params = params;
+  /**
+   * Creates a function used to check if the request method and path match a router configuration.
+   * @param methods An array of HTTP method(s) or "*" to match all methods.
+   * @param pattern A path string compatible with path-to-regexp (see: https://www.npmjs.com/package/path-to-regexp)
+   * @param extractRequestParameters Whether to extract parameters from a request
+   * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
+   */
+  private routeMatcher(
+    methods: string[],
+    pattern: string
+  ): Function {
+    return (req: ERequest): 405 | 404 | 0 => {
+      const methodAllowed = methods.some(m => m === "*" || m.toUpperCase() === req.method.toUpperCase());
+
+      if (pattern === "*" || pattern === "(.*)") {
+        return methodAllowed ? 0 : 405;
+      } else {
+        // Cache pattern matcher.
+        if (!pathMatcherCache.has(pattern)) {
+          pathMatcherCache.set(pattern, match(pattern, { decode: decodeURIComponent }));
         }
-        return 0;
+        // Match on pathname.
+        let { path, params } = pathMatcherCache.get(pattern)(req.url.pathname) || {};
+        if (path) {
+          if (this.config.extractRequestParameters) {
+            req.params = params;
+          }
+          return methodAllowed ? 0 : 405;
+        }
       }
+      // Route not found.
+      return 404;
+    };
+  }
+
+  private static serializeResponse(res: EResponse): Response {
+    // Default to 200 / 204 if no status was set by middleware / route handler.
+    if (res.status === 0) {
+      res.status = Boolean(res.body) ? 200 : 204;
     }
-    // Route not found.
-    return 404;
-  };
+
+    return new Response(res.body, {
+      headers: res.headers,
+      status: res.status,
+    });
+  }
 }

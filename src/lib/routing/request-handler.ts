@@ -1,16 +1,15 @@
 import ERequest from "./request";
 import EResponse from "./response";
 
-export type MiddlewareCallback = (
+export type RequestHandlerCallback = (
   req: ERequest,
-  res: EResponse,
-  next?: () => void
+  res: EResponse
 ) => Promise<any>;
 
-export class Middleware {
+export class RequestHandler {
   constructor(
     private matchFn: Function,
-    private callback: MiddlewareCallback
+    private callback: RequestHandlerCallback
   ) {}
 
   public check(event: ERequest): 0 | 404 | 405 {
@@ -18,7 +17,6 @@ export class Middleware {
   }
 
   public async run(req: ERequest, res: EResponse): Promise<any> {
-    // Supply an empty callback as an equivalent of next() in Express.js.
-    await this.callback(req, res, () => {});
+    await this.callback(req, res);
   }
 }

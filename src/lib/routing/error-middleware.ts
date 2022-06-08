@@ -1,22 +1,23 @@
 import ERequest from "./request";
 import EResponse from "./response";
 
-export type RequestHandlerCallback = (
+export type ErrorMiddlewareCallback = (
+  err: Error,
   req: ERequest,
   res: EResponse
 ) => Promise<any>;
 
-export class Route {
+export class ErrorMiddleware {
   constructor(
     private matchFn: Function,
-    private callback: RequestHandlerCallback
+    private callback: ErrorMiddlewareCallback
   ) {}
 
   public check(event: ERequest): 0 | 404 | 405 {
     return this.matchFn(event);
   }
 
-  public async run(req: ERequest, res: EResponse): Promise<any> {
-    await this.callback(req, res);
+  public async run(err: Error, req: ERequest, res: EResponse): Promise<any> {
+    await this.callback(err, req, res);
   }
 }
