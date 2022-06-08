@@ -20,6 +20,18 @@ router.get("/origin", async (req, res) => {
 });
 ```
 
+### `req` and `res`
+
+`req` and `res` are compatible with anything that expects a `Request` or `Response`. It's therefore possible to pass `req` directly to `fetch()`, for example:
+
+```javascript
+router.get("/origin", async (req, res) => {
+  res.send(await fetch(
+    req, { backend: "my-origin" }
+  ));
+});
+```
+
 ## Reading a response
 
 If you need to read the body of a response, you can do so like this:

@@ -142,7 +142,7 @@ router.get("/books/:id(\\d+)", (req, res) => {
 For a custom 404 response, you can add a catch-all request handler after all other routes and middleware:
 
 ```javascript
-router.all("*", (req, res) => {
+router.all(("(.*)", (req, res) => {
   res.status = 404;
   return res.send("Page not found!");
 });
