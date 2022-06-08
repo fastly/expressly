@@ -35,7 +35,7 @@ jobs:
       - name: Compile expressly
         run: yarn build
       - name: Publish
-        if: ${{ github.event_name == 'pull_request' }}
+        if: github.event_name == 'pull_request'
         run: |
           git fetch origin 'refs/tags/*:refs/tags/*'
           yarn auto shipit
@@ -43,6 +43,7 @@ jobs:
   build-docs:
     name: Docs
     runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
     defaults:
       run:
         working-directory: ./docs
@@ -64,20 +65,17 @@ jobs:
       - name: Compile docs
         run: yarn build
       - name: Install Rust toolchain
-        if: ${{ github.ref_name == 'main' }}
         uses: actions-rs/toolchain@v1
         with:
             toolchain: stable
             target: wasm32-wasi
       - name: Deploy docs to Compute@Edge
-        if: ${{ github.ref_name == 'main' }}
         uses: fastly/compute-actions@main
         with:
           project_directory: ./docs/static-host
         env:
           FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
       - name: Purge expressly.edgecompute.app
-        if: ${{ github.ref_name == 'main' }}
         env:
           FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
         run: |
