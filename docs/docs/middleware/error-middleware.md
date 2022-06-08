@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+title: Handling errors
 ---
 
 # Error middleware
@@ -7,8 +8,8 @@ sidebar_position: 3
 **expressly** catches and processes errors that occur both synchronously and asynchronously. 
 
 ```javascript
-router.get('/', (req, res) => {
-  throw new Error('BROKEN') // expressly will catch this on its own.
+router.get("/", (req, res) => {
+  throw new Error("BROKEN"); // expressly will catch this.
 })
 ```
 
@@ -37,4 +38,4 @@ router.use("/api/(.*)", (err, req, res) => {
 });
 ```
 
-> **expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for [pattern-matching routes](../routing.md#route-matching).
+> **expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) to [pattern-match routes](../routing.md#route-matching).

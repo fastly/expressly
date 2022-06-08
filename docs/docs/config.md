@@ -27,16 +27,17 @@ When set to `true`, enables parsing of the `Cookie` request header and exposes [
 
 > Default 🟢 `true`
 
-When set to `true`, **expressly** will respond with HTTP `405 Method Not Allowed` if it cannot match the client request method.
+When set to `true`, **expressly** will respond with HTTP `405 Method Not Allowed` and automatically set the [`Allow` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Allow) if it cannot match the client request method on a matched path.
 
 In the example below, a `POST` request to the `/users` path will result in a HTTP 405 response.
+
 ```javascript
 const router = new Router({ auto405: true });
 router.get("/users", (req, res) => { ... });
 router.listen();
 ```
 
-Setting `auto405: false` above will cause **expressly** to respond with HTTP 404.
+Setting `auto405: false` above will cause **expressly** to respond with HTTP 500.
 
 ### extractRequestParameters
 

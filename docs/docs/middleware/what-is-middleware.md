@@ -28,4 +28,4 @@ router.use("/api/(.*)", (req, res) => {
 });
 ```
 
-> **expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for [pattern-matching routes](../routing.md#route-matching). This means that your middleware mount paths can contain wildcards and even regular expressions. 
+> **expressly** uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) to [pattern-match routes](../routing.md#route-matching). This means that your middleware mount paths can contain wildcards and even regular expressions. 

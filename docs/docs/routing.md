@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
 });
 ```
 
-> 🚨 **Unlike Express**, handlers accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; uncaught errors are passed to [error middleware](error-middleware.md). 
+> 🚨 **Unlike Express**, handlers accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; uncaught errors are passed to [error middleware](./middleware/error-middleware.md). 
 
 ## Listening for requests
 
@@ -105,7 +105,6 @@ router.get("(.*)", (req, res) => {
 
 The above will match `GET` requests to any path.
 
-
 #### Regular expressions
 
 You can use regular expressions in order to match multiple URLs with one route.
@@ -138,9 +137,9 @@ router.get("/books/:id(\\d+)", (req, res) => {
 });
 ```
 
-## Custom 404 pages
+## Custom 404
 
-TBC
+For a custom 404 response, you can add a catch-all request handler after all other routes and middleware:
 
 ```javascript
 router.all("*", (req, res) => {
@@ -148,3 +147,17 @@ router.all("*", (req, res) => {
   return res.send("Page not found!");
 });
 ```
+
+Alternatively, you can achieve the same using [error middleware](middleware/error-middleware.md):
+
+```javascript
+router.use((err, req, res) => {
+  if(err.status === 404) {
+    res.send("Page not found!");
+  }
+});
+```
+
+> 💡 **expressly** decorates errors with a `status` property as follows:
+> * `404` – when no route was matched for the request path 
+> * `405` – when a route was found, but the request's HTTP method did not match. 
