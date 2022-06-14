@@ -73,7 +73,7 @@ router.listen();`;
                         language="shell"
                         showLineNumbers={false}
                       >
-                        npm i @fastly/expressly@1.0.0-alpha.1
+                        npm i @fastly/expressly@1.0.0-alpha.2
                       </CodeBlock>
                     </dd>
                     <dd>
@@ -82,7 +82,7 @@ router.listen();`;
                       
                         showLineNumbers={false}
                       >
-                        yarn add @fastly/expressly@1.0.0-alpha.1
+                        yarn add @fastly/expressly@1.0.0-alpha.2
                       </CodeBlock>
                     </dd>
                   </dl>

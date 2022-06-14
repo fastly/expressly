@@ -6,7 +6,7 @@ export class ERequest extends ECommonObject {
   readonly clientInfo: ClientInfo;
   readonly method: string;
   headers: Headers;
-  url: URL;
+  urlObj: URL;
   query: URLSearchParams;
   params: { [key: string]: string } = {};
   cookies: CookieMap;
@@ -15,8 +15,8 @@ export class ERequest extends ECommonObject {
     super();
     this.clientInfo = event.client;
     this.method = event.request.method;
-    this.url = new URL(event.request.url);
-    this.query = this.url.searchParams;
+    this.urlObj = new URL(event.request.url);
+    this.query = this.urlObj.searchParams;
     this.headers = event.request.headers;
 
     // Parse cookies.
@@ -26,8 +26,12 @@ export class ERequest extends ECommonObject {
   }
 
   // Express-like URL helpers.
+  get url(): string {
+    return this.urlObj.toString();
+  }
+
   get path(): string {
-    return this.url.pathname;
+    return this.urlObj.pathname;
   }
 
   get ip(): string {
@@ -35,19 +39,19 @@ export class ERequest extends ECommonObject {
   }
 
   get protocol(): string {
-    return this.url.protocol;
+    return this.urlObj.protocol;
   }
 
   get secure(): boolean {
-    return this.url.protocol === "https";
+    return this.urlObj.protocol === "https";
   }
 
   get subdomains(): Array<string> {
-    return this.url.hostname.split(".").slice(0, -2);
+    return this.urlObj.hostname.split(".").slice(0, -2);
   }
 
   get hostname(): string {
-    return this.url.hostname;
+    return this.urlObj.hostname;
   }
 
   async json() {

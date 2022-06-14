@@ -8,6 +8,9 @@ title: Request
 ## Properties
 
 ### req.url
+A string containing the request URL.
+
+### req.urlObj
 The [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) object corresponding to the request URL.
 
 ### req.query

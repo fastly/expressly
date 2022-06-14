@@ -17,11 +17,11 @@ First, head over to [developer.fastly.com](https://developer.fastly.com) to get 
 Install expressly from the [npm registry](https://www.npmjs.com/package/@fastly/expressly):
 
 ```shell
-npm i @fastly/expressly@1.0.0-alpha.1
+npm i @fastly/expressly@1.0.0-alpha.2
 ```
 
 ```shell
-yarn add @fastly/expressly@1.0.0-alpha.1
+yarn add @fastly/expressly@1.0.0-alpha.2
 ```
 
 ### Your first expressly app
