@@ -10,8 +10,8 @@ For example, you could edit the Request object:
 
 ```javascript
 router.use((req, res) => {
-  if (req.url.pathname == "/") {
-    req.url.pathname = "/home";
+  if (req.urlObj.pathname == "/") {
+    req.urlObj.pathname = "/home";
   }
 });
 ```
