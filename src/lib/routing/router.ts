@@ -164,7 +164,7 @@ export class Router {
           pathMatcherCache.set(pattern, match(pattern, { decode: decodeURIComponent }));
         }
         // Match on pathname.
-        let { path, params } = pathMatcherCache.get(pattern)(req.url.pathname) || {};
+        let { path, params } = pathMatcherCache.get(pattern)(req.urlObj.pathname) || {};
         if (path) {
           if (this.config.extractRequestParameters) {
             req.params = params;
