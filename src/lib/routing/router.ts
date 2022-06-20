@@ -4,12 +4,12 @@ import { EConfig } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
 import { ErrorNotFound, ErrorMethodNotAllowed } from "./errors";
-import { ERequest } from "./request";
-import { EResponse } from "./response";
+import { ERequest, EReq } from "./request";
+import { EResponse, ERes } from "./response";
 
 const pathMatcherCache: Map<string, Function> = new Map();
 
-const defaultErrorHandler = (auto405) => async (err: Error, req: ERequest, res: EResponse) => {
+const defaultErrorHandler = (auto405) => async (err: Error, req: EReq, res: ERes) => {
   if (err instanceof ErrorNotFound || (err instanceof ErrorMethodNotAllowed && !auto405)) {
     return res.sendStatus(404);
   } else if (err instanceof ErrorMethodNotAllowed) {
@@ -114,7 +114,7 @@ export class Router {
   }
 
   // Request handler runner.
-  private async runRequestHandlers(req: ERequest, res: EResponse): Promise<any> {
+  private async runRequestHandlers(req: EReq, res: ERes): Promise<any> {
     let checkResult;
     const allowedMethods = [];
     for (let a of this.requestHandlers) {
@@ -136,7 +136,7 @@ export class Router {
   }
 
   // Error handler runner.
-  private async runErrorHandlers(err: Error, req: ERequest, res: EResponse): Promise<any> {
+  private async runErrorHandlers(err: Error, req: EReq, res: ERes): Promise<any> {
     for (let eH of this.errorHandlers) {
       if (res.hasEnded) {
         break;
@@ -155,7 +155,7 @@ export class Router {
    * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
    */
   private routeMatcher(methods: string[], pattern: string): Function {
-    return (req: ERequest): 404 | 0 | string[] => {
+    return (req: EReq): 404 | 0 | string[] => {
       const methodAllowed = methods.some(m => m === "*" || m === req.method);
       if (pattern === "*" || pattern === "(.*)") {
         return methodAllowed ? 0 : methods;
@@ -178,7 +178,7 @@ export class Router {
     };
   }
 
-  private static serializeResponse(res: EResponse): Response {
+  private static serializeResponse(res: ERes): Response {
     // Default to 200 / 204 if no status was set by middleware / route handler.
     if (res.status === 0) {
       res.status = Boolean(res.body) ? 200 : 204;

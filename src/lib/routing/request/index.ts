@@ -19,7 +19,8 @@ class ERequestBase extends Request {
     });
     this.clientInfo = this.event.client;
     this.urlObj = new URL(this.url);
-
+    this.query = this.urlObj.searchParams;
+    
     Object.defineProperty(this, 'url', {
       get() {
         return this.urlObj.toString();
@@ -59,3 +60,5 @@ class ERequestBase extends Request {
 }
 
 export const ERequest = addCommonMethods(ERequestBase);
+export type EReq = InstanceType<typeof ERequest>;
+

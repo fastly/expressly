@@ -1,11 +1,7 @@
-import { ERequest } from "./request";
-import { EResponse } from "./response";
+import { EReq } from "./request";
+import { ERes } from "./response";
 
-export type ErrorMiddlewareCallback = (
-  err: Error,
-  req: ERequest,
-  res: EResponse
-) => Promise<any>;
+export type ErrorMiddlewareCallback = (err: Error, req: EReq, res: ERes) => Promise<any>;
 
 export class ErrorMiddleware {
   constructor(
@@ -13,11 +9,11 @@ export class ErrorMiddleware {
     private callback: ErrorMiddlewareCallback
   ) {}
 
-  public check(event: ERequest): 0 | 404 | string[] {
+  public check(event: EReq): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 
-  public async run(err: Error, req: ERequest, res: EResponse): Promise<any> {
+  public async run(err: Error, req: EReq, res: ERes): Promise<any> {
     await this.callback(err, req, res);
   }
 }

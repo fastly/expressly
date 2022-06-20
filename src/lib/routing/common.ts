@@ -1,7 +1,5 @@
 export function addCommonMethods<T extends  new (...args: any[]) => any>(Base: T) {
   return class extends Base {
-    headers: Headers = new Headers();
-
     // Header helpers.
     set(headerNameOrObject: string | { [key: string]: string }, value?: string) {
       if (typeof headerNameOrObject === "string") {

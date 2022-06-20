@@ -115,4 +115,4 @@ class EResponseBase {
 }
 
 export const EResponse = addCommonMethods(EResponseBase);
-export type EResponse = InstanceType<typeof EResponse>;
+export type ERes = InstanceType<typeof EResponse>;

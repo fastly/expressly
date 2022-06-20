@@ -1,10 +1,7 @@
-import { ERequest } from "./request";
-import { EResponse } from "./response";
+import { EReq } from "./request";
+import { ERes } from "./response";
 
-export type RequestHandlerCallback = (
-  req: ERequest,
-  res: EResponse
-) => Promise<any>;
+export type RequestHandlerCallback = (req: EReq, res: ERes) => Promise<any>;
 
 export class RequestHandler {
   constructor(
@@ -12,11 +9,11 @@ export class RequestHandler {
     private callback: RequestHandlerCallback
   ) {}
 
-  public check(event: ERequest): 0 | 404 | string[] {
+  public check(event: EReq): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 
-  public async run(req: ERequest, res: EResponse): Promise<any> {
+  public async run(req: EReq, res: ERes): Promise<any> {
     await this.callback(req, res);
   }
 }
