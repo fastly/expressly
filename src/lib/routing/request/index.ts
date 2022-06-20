@@ -1,23 +1,30 @@
-import { ECommonObject } from "../common";
+import { addCommonMethods } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-export class ERequest extends ECommonObject {
+// Will extend Request correctly after https://github.com/fastly/js-compute-runtime/pull/116 is merged
+// See: https://github.com/fastly/js-compute-runtime/issues/113
+class ERequestBase extends Request {
   readonly clientInfo: ClientInfo;
-  readonly method: string;
-  headers: Headers;
   urlObj: URL;
   query: URLSearchParams;
   params: { [key: string]: string } = {};
   cookies: CookieMap;
 
-  constructor(private config: EConfig, private event: FetchEvent) {
-    super();
-    this.clientInfo = event.client;
-    this.method = event.request.method;
-    this.urlObj = new URL(event.request.url);
-    this.query = this.urlObj.searchParams;
-    this.headers = event.request.headers;
+  constructor(private config: EConfig, private readonly event: FetchEvent) {
+    super(event.request, {
+      headers: event.request.headers,
+      method: event.request.method,
+      body: event.request.body,
+    });
+    this.clientInfo = this.event.client;
+    this.urlObj = new URL(this.url);
+
+    Object.defineProperty(this, 'url', {
+      get() {
+        return this.urlObj.toString();
+      }
+    });
 
     // Parse cookies.
     if (this.config.parseCookie) {
@@ -26,23 +33,19 @@ export class ERequest extends ECommonObject {
   }
 
   // Express-like URL helpers.
-  get url(): string {
-    return this.urlObj.toString();
-  }
-
-  get path(): string {
+  public get path(): string {
     return this.urlObj.pathname;
   }
 
-  get ip(): string {
+  public get ip(): string {
     return this.clientInfo.address;
   }
 
-  get protocol(): string {
+  public get protocol(): string {
     return this.urlObj.protocol;
   }
 
-  get secure(): boolean {
+  public get secure(): boolean {
     return this.urlObj.protocol === "https";
   }
 
@@ -53,16 +56,6 @@ export class ERequest extends ECommonObject {
   get hostname(): string {
     return this.urlObj.hostname;
   }
-
-  async json() {
-    return await this.event.request.json();
-  }
-
-  async text() {
-    return await this.event.request.text();
-  }
-
-  async arrayBuffer() {
-    return await this.event.request.arrayBuffer();
-  }
 }
+
+export const ERequest = addCommonMethods(ERequestBase);

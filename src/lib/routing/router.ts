@@ -16,6 +16,7 @@ const defaultErrorHandler = (auto405) => async (err: Error, req: ERequest, res: 
     res.headers.set("Allow", err.allow);
     return res.sendStatus(405);
   }
+  console.error(err);
   res.withStatus(500).json({ error: err });
 }
 

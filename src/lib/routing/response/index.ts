@@ -1,10 +1,12 @@
 import cookie from "cookie";
-import { ECommonObject } from "../common";
+import { addCommonMethods } from "../common";
 import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
 import { CookieOptions, EConfig } from "..";
 
-export class EResponse extends ECommonObject {
+// TODO: extends Response
+// See: https://github.com/fastly/js-compute-runtime/issues/113
+class EResponseBase {
   headers: Headers = new Headers();
   status: number = 0;
   body: BodyInit = null;
@@ -12,7 +14,7 @@ export class EResponse extends ECommonObject {
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
 
   constructor(private config: EConfig) {
-    super();
+    // super();
   }
 
   // Header helpers.
@@ -111,3 +113,6 @@ export class EResponse extends ECommonObject {
     this.send(data);
   }
 }
+
+export const EResponse = addCommonMethods(EResponseBase);
+export type EResponse = InstanceType<typeof EResponse>;

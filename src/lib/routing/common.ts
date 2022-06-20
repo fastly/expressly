@@ -1,34 +1,36 @@
-export class ECommonObject {
-  headers: Headers = new Headers();
+export function addCommonMethods<T extends  new (...args: any[]) => any>(Base: T) {
+  return class extends Base {
+    headers: Headers = new Headers();
 
-  // Header helpers.
-  set(headerNameOrObject: string | { [key: string]: string }, value?: string) {
-    if (typeof headerNameOrObject === "string") {
-      this.headers.set(headerNameOrObject, value);
-    } else {
-      Object.keys(headerNameOrObject).forEach((headerName) => {
-        this.headers.set(headerName, headerNameOrObject[headerName]);
-      });
+    // Header helpers.
+    set(headerNameOrObject: string | { [key: string]: string }, value?: string) {
+      if (typeof headerNameOrObject === "string") {
+        this.headers.set(headerNameOrObject, value);
+      } else {
+        Object.keys(headerNameOrObject).forEach((headerName) => {
+          this.headers.set(headerName, headerNameOrObject[headerName]);
+        });
+      }
     }
-  }
 
-  private appendHeader(headerName: string, headerValue: string | string[]) {
-    if (typeof headerValue === "string") {
-      this.headers.append(headerName, headerValue);
-    } else if (Array.isArray(headerValue)) {
-      headerValue.forEach((v) => {
-        this.headers.append(headerName, v);
-      });
-    }
-  }
+    append(headerNameOrObject: string | { [key: string]: string | string[] }, value?: string | string[]) {
+      const appendHeader = (headerName: string, headerValue: string | string[]) => {
+        if (typeof headerValue === "string") {
+          this.headers.append(headerName, headerValue);
+        } else if (Array.isArray(headerValue)) {
+          headerValue.forEach((v) => {
+            this.headers.append(headerName, v);
+          });
+        }
+      }
 
-  append(headerNameOrObject: string | { [key: string]: string | string[] }, value?: string | string[]) {
-    if (typeof headerNameOrObject === "string") {
-      this.appendHeader(headerNameOrObject, value);
-    } else {
-      Object.keys(headerNameOrObject).forEach((headerName) => {
-        this.appendHeader(headerName, headerNameOrObject[headerName]);
-      });
+      if (typeof headerNameOrObject === "string") {
+        appendHeader(headerNameOrObject, value);
+      } else {
+        Object.keys(headerNameOrObject).forEach((headerName) => {
+          appendHeader(headerName, headerNameOrObject[headerName]);
+        });
+      }
     }
   }
 }
