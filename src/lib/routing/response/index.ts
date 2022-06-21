@@ -41,8 +41,10 @@ class EResponseBase {
 
     if (response instanceof Response) {
       this.body = response.body;
-      this.headers = response.headers;
-      this.status = response.status;
+      // Append, rather than overwrite headers.
+      response.headers.forEach((value, key) => this.headers.append(key, value));
+      // Do not overwrite user-defined status.
+      this.status = this.status || response.status;
     } else {
       this.body = response;
     }
