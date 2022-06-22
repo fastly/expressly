@@ -17,7 +17,7 @@ const defaultErrorHandler = (auto405) => async (err: Error, req: EReq, res: ERes
     return res.sendStatus(405);
   }
   console.error(err);
-  res.withStatus(500).json({ error: err });
+  res.withStatus(500).json({ error: err.message });
 }
 
 export class Router {
