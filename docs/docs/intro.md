@@ -53,9 +53,8 @@ This will start your service on [http://localhost:7676](http://localhost:7676).
 
 ### Live reloading
 
-You can use a tool called [`nodemon`](https://www.npmjs.com/package/nodemon) to automatically reload your app when you make a change in your local development environment.
+You can use the Fastly CLI to automatically reload your app when you make a change in your local development environment.
 
 ```shell
-npx nodemon --exec \
-  "npm run build && fastly compute serve --skip-build"
+fastly compute serve --watch"
 ```
