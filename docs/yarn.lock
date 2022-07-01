@@ -2236,9 +2236,9 @@
     url-loader "^4.1.1"
     webpack "^5.72.1"
 
-"@fastly/compute-js-static-publish@https://github.com/fastly/compute-js-static-publish.git":
+"@fastly/compute-js-static-publish@git+ssh://git@github.com:fastly/compute-js-static-publish.git#main":
   version "1.0.0"
-  resolved "https://github.com/fastly/compute-js-static-publish.git#b1b253bd1ea3b9abf23193ddcfa8f7b46c9139e3"
+  resolved "git+ssh://git@github.com:fastly/compute-js-static-publish.git#b1b253bd1ea3b9abf23193ddcfa8f7b46c9139e3"
   dependencies:
     command-line-args "^5.2.1"
     typescript "^4.7.4"
