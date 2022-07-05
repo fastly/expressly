@@ -2,20 +2,17 @@ import cookie from "cookie";
 import { addCommonMethods } from "../common";
 import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
+import { EHeaders } from "./headers";
 import { CookieOptions, EConfig } from "..";
 
-// TODO: extends Response
-// See: https://github.com/fastly/js-compute-runtime/issues/113
 class EResponseBase {
-  headers: Headers = new Headers();
+  headers: EHeaders = new EHeaders();
   status: number = 0;
   body: BodyInit = null;
   hasEnded: boolean = false;
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
-
-  constructor(private config: EConfig) {
-    // super();
-  }
+  
+  constructor(private config: EConfig) {}
 
   // Header helpers.
   vary(field: string) {
@@ -32,7 +29,7 @@ class EResponseBase {
   clearCookie(key: string, options: CookieOptions = {}): void {
     if (this.hasEnded) return;
 
-    this.headers.append("Set-Cookie", cookie.serialize(key, "", { ...options, expires: "Thu, 01 Jan 1970 00:00:00 GMT" }));
+    this.cookie(key, "", { ...options, expires: "Thu, 01 Jan 1970 00:00:00 GMT" });
   }
 
   // Response lifecycle methods.

@@ -179,14 +179,16 @@ export class Router {
   }
 
   private static serializeResponse(res: ERes): Response {
-    // Default to 200 / 204 if no status was set by middleware / route handler.
-    if (res.status === 0) {
-      res.status = Boolean(res.body) ? 200 : 204;
-    }
-
-    return new Response(res.body, {
+    const response = new Response(res.body, {
       headers: res.headers,
-      status: res.status,
+      // Default to 200 / 204 if no status was set by middleware / route handler.
+      status: res.status ? res.status : Boolean(res.body) ? 200 : 204,
     });
+    if(res.headers.cookies.size) {
+      // Loop cookies manually to work around this issue: https://github.com/fastly/js-compute-runtime/issues/47
+      response.headers.delete("Set-Cookie");
+      res.headers.cookies.forEach((c) => response.headers.append("Set-Cookie", c));
+    }
+    return response;
   }
 }

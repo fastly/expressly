@@ -2,8 +2,6 @@ import { addCommonMethods } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-// Will extend Request correctly after https://github.com/fastly/js-compute-runtime/pull/116 is merged
-// See: https://github.com/fastly/js-compute-runtime/issues/113
 class ERequestBase extends Request {
   readonly clientInfo: ClientInfo;
   urlObj: URL;
