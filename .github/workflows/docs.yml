@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dora-js-publish
 
 concurrency:
   group: ${{ github.ref_name }}-docs
@@ -41,7 +42,7 @@ jobs:
       - name: Deploy docs to Compute@Edge
         uses: fastly/compute-actions@main
         with:
-          project_directory: ./docs/static-host
+          project_directory: ./docs/compute-js
         env:
           FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
       - name: Purge expressly.edgecompute.app
