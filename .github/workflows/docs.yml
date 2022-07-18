@@ -27,17 +27,17 @@ jobs:
         run: yarn install --frozen-lockfile --prefer-offline
       - name: Node modules cache
         id: node-modules-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-expressly-docs-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-expressly-docs-
       - name: Compile docs
         run: yarn build
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-            toolchain: stable
-            target: wasm32-wasi
+      - name: Generate static build for Compute@Edge
+        run: |
+          npx @fastly/compute-js-static-publish --preset=docusaurus --service-id=${{ secrets.DOCS_SERVICE_ID }}
       - name: Deploy docs to Compute@Edge
         uses: fastly/compute-actions@main
         with:
