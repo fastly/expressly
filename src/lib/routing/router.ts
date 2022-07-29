@@ -38,7 +38,7 @@ const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async 
   }
   res.set({
     'access-control-allow-origin': originHeaderValue,
-    'access-control-allow-methods': 'GET, PUT, POST, DELETE, OPTIONS'
+    'access-control-allow-methods': 'GET, PUT, POST, DELETE, PATCH, OPTIONS'
   })
   return res.sendStatus(200);
 }
