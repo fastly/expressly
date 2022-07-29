@@ -1,6 +1,6 @@
 import { match } from "path-to-regexp";
 
-import { EConfig } from ".";
+import { AutoCorsPreflightOptions, EConfig } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
 import { ErrorNotFound, ErrorMethodNotAllowed } from "./errors";
@@ -20,6 +20,29 @@ const defaultErrorHandler = (auto405) => async (err: Error, req: EReq, res: ERes
   res.withStatus(500).json({ error: err.message });
 }
 
+const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async (req: EReq, res: ERes) => {
+  if(autoCorsPreflight.trustedOrigins.length===0){
+    return;
+  }
+  let originHeaderValue :string | null = null;
+  if(autoCorsPreflight.trustedOrigins.length===1 && autoCorsPreflight.trustedOrigins[0] === '*'){
+    originHeaderValue = '*';
+  }else{
+    const origin = req.headers.get("origin");
+    if (autoCorsPreflight.trustedOrigins.includes(origin)){
+      originHeaderValue = origin;
+    }
+  }
+  if(originHeaderValue==null){
+    return;
+  }
+  res.set({
+    'access-control-allow-origin': originHeaderValue,
+    'access-control-allow-methods': 'GET, PUT, POST, DELETE, OPTIONS'
+  })
+  return res.sendStatus(200);
+}
+
 export class Router {
   requestHandlers: Array<RequestHandler> = [];
   errorHandlers: Array<ErrorMiddleware> = [];
@@ -27,13 +50,16 @@ export class Router {
     parseCookie: true,
     auto405: true,
     extractRequestParameters: true,
-    autoContentType: false
+    autoContentType: false,
   };
 
   constructor(config?: EConfig) {
     this.config = {
       ...this.config,
       ...config
+    }
+    if(this.config.autoCorsPreflight!= null){
+      this.options("*", preflightHandler(this.config.autoCorsPreflight));
     }
   }
 

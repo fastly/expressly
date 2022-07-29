@@ -59,4 +59,3 @@ class ERequestBase extends Request {
 
 export const ERequest = addCommonMethods(ERequestBase);
 export type EReq = InstanceType<typeof ERequest>;
-
