@@ -20,25 +20,31 @@ const defaultErrorHandler = (auto405) => async (err: Error, req: EReq, res: ERes
   res.withStatus(500).json({ error: err.message });
 }
 
+/**
+ * Handles preflight requests from trusted origins configured by the user when initializing a router.
+ * Note that the wildcard value "*" will fail if the request is sent with credentials (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives)
+ * @param autoCorsPreflight the object containing CORS preflight option of trustedOrigins, an array of trusted origins.
+ * @returns 200 if the preflight request succeeds, 403 if it fails
+ */
 const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async (req: EReq, res: ERes) => {
-  if(autoCorsPreflight.trustedOrigins.length===0){
-    return;
+  if (autoCorsPreflight.trustedOrigins.length === 0) {
+    return res.sendStatus(403);
   }
-  let originHeaderValue :string | null = null;
-  if(autoCorsPreflight.trustedOrigins.length===1 && autoCorsPreflight.trustedOrigins[0] === '*'){
+  let originHeaderValue: string | null = null;
+  if (autoCorsPreflight.trustedOrigins.length === 1 && autoCorsPreflight.trustedOrigins[0] === '*') {
     originHeaderValue = '*';
-  }else{
-    const origin = req.headers.get("origin");
-    if (autoCorsPreflight.trustedOrigins.includes(origin)){
+  } else {
+    const origin = req.headers.get("origin").toLowerCase();
+    if (autoCorsPreflight.trustedOrigins.some((trustedOrigin) => trustedOrigin.toLowerCase() === origin)) {
       originHeaderValue = origin;
     }
   }
-  if(originHeaderValue==null){
-    return;
+  if (originHeaderValue == null) {
+    return res.sendStatus(403);
   }
   res.set({
     'access-control-allow-origin': originHeaderValue,
-    'access-control-allow-methods': 'GET, PUT, POST, DELETE, PATCH, OPTIONS'
+    'access-control-allow-methods': req.headers.get("access-control-request-method"),
   })
   return res.sendStatus(200);
 }
@@ -58,7 +64,7 @@ export class Router {
       ...this.config,
       ...config
     }
-    if(this.config.autoCorsPreflight!= null){
+    if (!this.config.autoCorsPreflight) {
       this.options("*", preflightHandler(this.config.autoCorsPreflight));
     }
   }
@@ -210,7 +216,7 @@ export class Router {
       // Default to 200 / 204 if no status was set by middleware / route handler.
       status: res.status ? res.status : Boolean(res.body) ? 200 : 204,
     });
-    if(res.headers.cookies.size) {
+    if (res.headers.cookies.size) {
       // Loop cookies manually to work around this issue: https://github.com/fastly/js-compute-runtime/issues/47
       response.headers.delete("Set-Cookie");
       res.headers.cookies.forEach((c) => response.headers.append("Set-Cookie", c));
