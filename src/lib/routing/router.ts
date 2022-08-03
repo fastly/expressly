@@ -45,6 +45,7 @@ const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async 
   res.set({
     'access-control-allow-origin': originHeaderValue,
     'access-control-allow-methods': req.headers.get("access-control-request-method"),
+    'access-control-allow-headers': req.headers.get("access-control-request-headers"),
   })
   return res.sendStatus(200);
 }
@@ -64,7 +65,7 @@ export class Router {
       ...this.config,
       ...config
     }
-    if (!this.config.autoCorsPreflight) {
+    if (this.config.autoCorsPreflight) {
       this.options("*", preflightHandler(this.config.autoCorsPreflight));
     }
   }
