@@ -31,22 +31,24 @@ const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async 
     return res.sendStatus(403);
   }
   let originHeaderValue: string | null = null;
-  if (autoCorsPreflight.trustedOrigins.length === 1 && autoCorsPreflight.trustedOrigins[0] === '*') {
-    originHeaderValue = '*';
-  } else {
+  if (autoCorsPreflight.trustedOrigins.length === 1 && autoCorsPreflight.trustedOrigins[0] === "*") {
+    originHeaderValue = "*";
+  } else if (req.headers.get("origin")) {
     const origin = req.headers.get("origin").toLowerCase();
     if (autoCorsPreflight.trustedOrigins.some((trustedOrigin) => trustedOrigin.toLowerCase() === origin)) {
       originHeaderValue = origin;
     }
   }
-  if (originHeaderValue == null) {
+  if (!originHeaderValue) {
     return res.sendStatus(403);
   }
-  res.set({
-    'access-control-allow-origin': originHeaderValue,
-    'access-control-allow-methods': req.headers.get("access-control-request-method"),
-    'access-control-allow-headers': req.headers.get("access-control-request-headers"),
-  })
+  if (req.headers.has("access-control-request-method")) {
+    res.headers.set("access-control-allow-methods", req.headers.get("access-control-request-method"));
+  }
+  if (req.headers.has("access-control-request-headers")) {
+    res.headers.set("access-control-allow-headers", req.headers.get("access-control-request-headers"));
+  }
+  res.headers.set("access-control-allow-origin", originHeaderValue);
   return res.sendStatus(200);
 }
 
