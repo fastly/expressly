@@ -33,7 +33,7 @@ const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async 
   let originHeaderValue: string | null = null;
   if (autoCorsPreflight.trustedOrigins.length === 1 && autoCorsPreflight.trustedOrigins[0] === "*") {
     originHeaderValue = "*";
-  } else if (req.headers.get("origin")) {
+  } else if (req.headers.has("origin")) {
     const origin = req.headers.get("origin").toLowerCase();
     if (autoCorsPreflight.trustedOrigins.some((trustedOrigin) => trustedOrigin.toLowerCase() === origin)) {
       originHeaderValue = origin;
