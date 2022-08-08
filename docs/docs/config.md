@@ -56,4 +56,4 @@ When set to `true`, [`res.send`](handling-data/response.md#ressend) will try to 
 
 Configures options for [Cross-origin resource sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) automatically.
 
-* `trustedOrigins`: An array of [origins](https://developer.mozilla.org/en-US/docs/Glossary/Origin) from which to automatically accept CORS preflight requests. Using the literal value `*` will accept all domains but will only work if the request is being sent *without* credentials. See the [MDN documentation on Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives) for more.
+* `trustedOrigins`: An array of [origins](https://developer.mozilla.org/en-US/docs/Glossary/Origin) from which to automatically accept CORS preflight requests. Using the literal value `*` will accept all origins but will only work if the request is being sent *without* credentials. See the [MDN documentation on Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives) for more.
