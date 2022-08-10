@@ -2,3 +2,5 @@ node_modules
 dist
 .dora
 .env
+.yarn
+.yarnrc.yml

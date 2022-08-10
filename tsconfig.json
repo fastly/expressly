@@ -16,5 +16,8 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true
   },
-  "exclude": ["dist/", ".dora", "docs/"]
+  "exclude": ["node_modules"],
+  "include": [
+    "src/**/*.ts"
+  ]
 }

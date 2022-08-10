@@ -12,6 +12,7 @@ const router = new Router({
   auto405: true,
   extractRequestParameters: true,
   autoContentType: true,
+  autoCorsPreflight: {trustedOrigins: []}
 });
 ```
 
@@ -50,3 +51,9 @@ When set to `true`, exposes `req.params`, an object containing properties mapped
 > Default 🔴 `false` 🔥 experimental
 
 When set to `true`, [`res.send`](handling-data/response.md#ressend) will try to [infer the `Content-Type` header](https://expressjs.com/en/4x/api.html#res.send) from the data it is passed, if the header is not set.
+
+### autoCorsPreflight
+
+Configures options for [Cross-origin resource sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) automatically.
+
+* `trustedOrigins`: An array of [origins](https://developer.mozilla.org/en-US/docs/Glossary/Origin) from which to automatically accept CORS preflight requests. Using the literal value `*` will accept all origins but will only work if the request is being sent *without* credentials. See the [MDN documentation on Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives) for more.

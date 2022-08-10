@@ -37,7 +37,7 @@ export default function Home(): JSX.Element {
 const router = new Router();
 
 router.use((req, res) => {
-  res.setHeader("x-powered-by", "expressly");
+  res.headers.set("x-powered-by", "expressly");
 });
 
 router.get("/", async (req, res) => {
