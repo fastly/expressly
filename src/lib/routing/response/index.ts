@@ -29,7 +29,7 @@ class EResponseBase {
   clearCookie(key: string, options: CookieOptions = {}): void {
     if (this.hasEnded) return;
 
-    this.cookie(key, "", { ...options, expires: "Thu, 01 Jan 1970 00:00:00 GMT" });
+    this.cookie(key, "", { ...options, expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT") });
   }
 
   // Response lifecycle methods.

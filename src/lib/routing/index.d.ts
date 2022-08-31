@@ -13,7 +13,7 @@ export type EConfig = {
 export type CookieOptions = {
   domain?: string;
   encode?: string;
-  expires?: string;
+  expires?: Date;
   httpOnly?: boolean;
   maxAge?: number;
   path?: string;
