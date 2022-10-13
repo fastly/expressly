@@ -10,11 +10,7 @@ class ERequestBase extends Request {
   cookies: CookieMap;
 
   constructor(private config: EConfig, private readonly event: FetchEvent) {
-    super(event.request, {
-      headers: event.request.headers,
-      method: event.request.method,
-      body: event.request.body,
-    });
+    super(event.request);
     this.clientInfo = this.event.client;
     this.urlObj = new URL(this.url);
     this.query = this.urlObj.searchParams;
