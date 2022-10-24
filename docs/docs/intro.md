@@ -56,5 +56,5 @@ This will start your service on [http://localhost:7676](http://localhost:7676).
 You can use the Fastly CLI to automatically reload your app when you make a change in your local development environment.
 
 ```shell
-fastly compute serve --watch"
+fastly compute serve --watch
 ```
