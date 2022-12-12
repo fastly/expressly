@@ -14,7 +14,7 @@ The example below shows how to use middleware to add a header to all requests:
 
 ```javascript
 router.use((req, res) => {
-  res.setHeader("x-powered-by", "expressly");
+  res.set("x-powered-by", "expressly");
 });
 ```
 
