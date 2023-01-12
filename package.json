@@ -29,7 +29,7 @@
   "author": "oss@fastly.com",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^17.0.40",
+    "@types/node": "^18.11.18",
     "auto": "^10.37.6",
     "husky": "^8.0.3",
     "prettier": "^2.8.2",
