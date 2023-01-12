@@ -24,7 +24,7 @@
     "router"
   ],
   "engines": {
-    "node": ">=18.13.0"
+    "node": ">=18"
   },
   "author": "oss@fastly.com",
   "license": "MIT",
