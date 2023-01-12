@@ -4,7 +4,7 @@
   "description": "Documentation for expressly - an Express-style router for Fastly's Compute@Edge",
   "private": true,
   "engines": {
-    "node": "^16.15.0"
+    "node": ">=18"
   },
   "scripts": {
     "docusaurus": "docusaurus",
