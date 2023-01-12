@@ -157,13 +157,14 @@
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.18.tgz#128b76ecb9be48b60cf5cfc1c63a4f00691a3239"
   integrity sha512-L4jVKS82XVhw2nvzLg/19ClLWg0y27ulRwuP7lcyL6AbUWB5aPglXY3M21mauDQMDfRLs8cQmeT03r/+X3cZYQ==
 
-"@fastly/js-compute@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@fastly/js-compute/-/js-compute-0.7.0.tgz#1e506e14a661910995518e16c301b77b511cf774"
-  integrity sha512-C5ifHaWrtkYdR5+E0YTwlcQLpqy14R+JmMutJwLzUIrEr/krdGcikZFjN8+31t+dPqqSZxaX8pUOqbsAVbc8yg==
+"@fastly/js-compute@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@fastly/js-compute/-/js-compute-1.1.0.tgz#cc9d95787b1f3aaad9c3e3a5481bea49f868ae4e"
+  integrity sha512-fuBQVh9VOqJc/1A/UNgkeEO7J9/HbZLMbhCropzsEdqkMaFrZPinpz8AePMoJSAQon+tPsYLKuMk0JcCF4bjRA==
   dependencies:
     "@jakechampion/wizer" "^1.6.0"
     esbuild "^0.15.16"
+    js-component-tools "^0.2.2"
     tree-sitter "^0.20.1"
     tree-sitter-javascript "^0.19.0"
 
@@ -1750,6 +1751,11 @@ jest-worker@^27.4.5:
     "@types/node" "*"
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
+
+js-component-tools@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/js-component-tools/-/js-component-tools-0.2.3.tgz#1f7e6ae5cb689746783daac0ef62419aff472266"
+  integrity sha512-hktKSgBaEk/Ttpl3ejBseeQn4K41wJijEA8YgxGXhyfCf5zT7YdEq1LYn+IYCPENEVgdcPK1c2ntbPKVjWeNJg==
 
 js-tokens@^4.0.0:
   version "4.0.0"
