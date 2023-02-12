@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
 });
 ```
 
-> 🚨 **Unlike Express**, handlers accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; uncaught errors are passed to [error middleware](./middleware/error-middleware.md). 
+> 🚨 **Unlike Express**, handlers accept only two arguments, `req` and `res`. **expressly** does away with the `next` function; uncaught errors are passed to [error middleware](./middleware/error-middleware.md).
 
 ## Listening for requests
 
@@ -59,6 +59,19 @@ router.listen();
 ## Route matching
 
 ### HTTP methods
+
+**expressly's** `router` supports the following methods corresponding to HTTP verbs:
+
+| **Method**         | **HTTP verb** |
+| ------------------ | ------------- |
+| `router.get()`     | `GET`         |
+| `router.post()`    | `POST`        |
+| `router.put()`     | `PUT`         |
+| `router.delete()`  | `DELETE`      |
+| `router.patch()`   | `PATCH`       |
+| `router.head()`    | `HEAD`        |
+| `router.options()` | `OPTIONS`     |
+| `router.purge()`   | `PURGE`       |
 
 With **expressly**, you can handle multiple HTTP methods per route:
 
@@ -95,7 +108,6 @@ router.get("/assets/(.*)", (req, res) => {
 ```
 
 > 🚨 There is no wildcard asterisk (`*`) in **expressly** - use parameters instead (`(.*)` or `:splat*`).
-
 
 ```javascript
 router.get("(.*)", (req, res) => {
@@ -152,12 +164,13 @@ Alternatively, you can achieve the same using [error middleware](middleware/erro
 
 ```javascript
 router.use((err, req, res) => {
-  if(err.status === 404) {
+  if (err.status === 404) {
     res.send("Page not found!");
   }
 });
 ```
 
 > 💡 **expressly** decorates errors with a `status` property as follows:
-> * `404` – when no route was matched for the request path 
-> * `405` – when a route was found, but the request's HTTP method did not match. 
+>
+> - `404` – when no route was matched for the request path
+> - `405` – when a route was found, but the request's HTTP method did not match.
