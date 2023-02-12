@@ -14,7 +14,9 @@
     "moduleResolution": "node",
     "typeRoots": [],
     "forceConsistentCasingInFileNames": true,
-    "declaration": true
+    "declaration": true,
+    "types": ["@fastly/js-compute"],   
+    "allowSyntheticDefaultImports": true,   
   },
   "exclude": ["node_modules"],
   "include": [
