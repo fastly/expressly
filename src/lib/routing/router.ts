@@ -1,6 +1,5 @@
 import { match } from "path-to-regexp";
-
-import { AutoCorsPreflightOptions, EConfig } from ".";
+import { AutoCorsPreflightOptions, EConfig, Method } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
 import { ErrorNotFound, ErrorMethodNotAllowed } from "./errors";
@@ -112,7 +111,7 @@ export class Router {
   }
 
   // Router API.
-  public route(methods: string[], pattern: string, callback: RequestHandlerCallback): void {
+  public route(methods: Method[], pattern: string, callback: RequestHandlerCallback): void {
     this.requestHandlers.push(new RequestHandler(this.routeMatcher(methods.map(m => m.toUpperCase()), pattern), callback));
   }
 
@@ -146,6 +145,10 @@ export class Router {
 
   public patch(pattern: string, callback: RequestHandlerCallback): void {
     this.route(["PATCH"], pattern, callback);
+  }
+
+  public purge(pattern: string, callback: RequestHandlerCallback): void {
+    this.route(["PURGE"], pattern, callback);
   }
 
   // Request handler runner.

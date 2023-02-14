@@ -21,3 +21,5 @@ export type CookieOptions = {
   sameSite?: "strict" | "lax" | "none" | boolean;
   secure?: boolean;
 }
+
+export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "PURGE" | "*";
