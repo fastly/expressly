@@ -220,7 +220,7 @@ export class Router {
     const response = new Response(res.body, {
       headers: res.headers,
       // Default to 200 / 204 if no status was set by middleware / route handler.
-      status: res.status ? res.status : Boolean(res.body) ? 200 : 204,
+      status: res.status ? res.status : res.body !== null && res.body !== undefined ? 200 : 204,
     });
     if (res.headers.cookies.size) {
       // Loop cookies manually to work around this issue: https://github.com/fastly/js-compute-runtime/issues/47
