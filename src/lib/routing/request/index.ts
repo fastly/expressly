@@ -38,7 +38,7 @@ class ERequestBase extends Request {
     return this.clientInfo.address;
   }
 
-  public get geo(): import('fastly:geolocation').Geolocation {
+  public get geo(): any {
     return this.clientInfo.geo;
   }
 
