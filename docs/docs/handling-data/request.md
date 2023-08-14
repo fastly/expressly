@@ -43,6 +43,14 @@ An array of subdomains in the domain name of the request.
 ### req.hostname
 The hostname derived from the `Host` HTTP header.
 
+### req.geo 
+A geolocation dictionary corresponding to the IP address of the downstream client.
+
+## Methods
+
+### req.waitUntil()
+Tells the host environment that work is ongoing until the promise settles, and it shouldn't terminate the application if it wants that work to complete.
+
 ## Working with the request body
 
 **expressly** can parse the body of a **req**uest in multiple ways.
