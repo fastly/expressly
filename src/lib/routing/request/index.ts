@@ -4,6 +4,7 @@ import { EConfig } from "..";
 
 class ERequestBase extends Request {
   readonly clientInfo: ClientInfo;
+  readonly waitUntil: (promise: Promise<any>) => void;
   urlObj: URL;
   query: URLSearchParams;
   params: { [key: string]: string } = {};
@@ -11,6 +12,7 @@ class ERequestBase extends Request {
 
   constructor(private config: EConfig, private readonly event: FetchEvent) {
     super(event.request);
+    this.waitUntil = event.waitUntil.bind(event);
     this.clientInfo = this.event.client;
     this.urlObj = new URL(this.url);
     this.query = this.urlObj.searchParams;
@@ -34,6 +36,10 @@ class ERequestBase extends Request {
 
   public get ip(): string {
     return this.clientInfo.address;
+  }
+
+  public get geo(): import('fastly:geolocation').Geolocation {
+    return this.clientInfo.geo;
   }
 
   public get protocol(): string {
