@@ -12,7 +12,7 @@ export class ERequest extends Request {
 
   constructor(
     private config: EConfig,
-    private readonly event: FetchEvent
+    private readonly event: FetchEvent,
   ) {
     super(event.request);
     this.waitUntil = event.waitUntil.bind(event);
@@ -32,8 +32,8 @@ export class ERequest extends Request {
     }
   }
 
-  static set = setFn(this);
-  static append = appendFn(this);
+  set = setFn(this);
+  append = appendFn(this);
 
   // Express-like URL helpers.
   public get path(): string {
