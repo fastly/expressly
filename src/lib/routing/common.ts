@@ -27,11 +27,11 @@ export const appendFn =
     ) => {
       if (typeof headerValue === "string") {
         // @ts-expect-error
-        classDefinition.headers.append(headerName, headerValue);
+        classDefinition.headers?.append(headerName, headerValue);
       } else if (Array.isArray(headerValue)) {
         headerValue.forEach((v) => {
           // @ts-expect-error
-          classDefinition.headers.append(headerName, v);
+          classDefinition?.headers.append(headerName, v);
         });
       }
     };
