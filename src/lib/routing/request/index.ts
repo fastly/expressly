@@ -1,8 +1,8 @@
-import { addCommonMethods } from "../common";
+import { appendFn, setFn } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-class ERequestBase extends Request {
+export class ERequest extends Request {
   readonly clientInfo: ClientInfo;
   readonly waitUntil: (promise: Promise<any>) => void;
   urlObj: URL;
@@ -10,17 +10,20 @@ class ERequestBase extends Request {
   params: { [key: string]: string } = {};
   cookies: CookieMap;
 
-  constructor(private config: EConfig, private readonly event: FetchEvent) {
+  constructor(
+    private config: EConfig,
+    private readonly event: FetchEvent
+  ) {
     super(event.request);
     this.waitUntil = event.waitUntil.bind(event);
     this.clientInfo = this.event.client;
     this.urlObj = new URL(this.url);
     this.query = this.urlObj.searchParams;
-    
-    Object.defineProperty(this, 'url', {
+
+    Object.defineProperty(this, "url", {
       get() {
         return this.urlObj.toString();
-      }
+      },
     });
 
     // Parse cookies.
@@ -28,6 +31,9 @@ class ERequestBase extends Request {
       this.cookies = new CookieMap(this.headers);
     }
   }
+
+  static set = setFn(this);
+  static append = appendFn(this);
 
   // Express-like URL helpers.
   public get path(): string {
@@ -59,5 +65,4 @@ class ERequestBase extends Request {
   }
 }
 
-export const ERequest = addCommonMethods(ERequestBase);
-export type EReq = InstanceType<typeof ERequest>;
+export interface EReq extends ERequest {}
