@@ -14,8 +14,8 @@ export class EResponse {
 
   constructor(private config: EConfig) {}
 
-  static set = setFn(this);
-  static append = appendFn(this);
+  set = setFn(this);
+  append = appendFn(this);
 
   // Header helpers.
   vary(field: string) {
@@ -120,7 +120,7 @@ export class EResponse {
 
     this.headers.set(
       "Content-Type",
-      `text/html${charset ? `; charset=${charset}` : ""}`
+      `text/html${charset ? `; charset=${charset}` : ""}`,
     );
     this.send(data);
   }
