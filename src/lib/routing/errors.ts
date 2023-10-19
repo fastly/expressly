@@ -1,4 +1,12 @@
-export class ErrorNotFound extends Error {
+export class EErr extends Error {
+    public status: number = 500;
+    constructor(message?: string) {
+        super(message);
+        Object.setPrototypeOf(this, EErr.prototype);
+    }
+}
+
+export class ErrorNotFound extends EErr {
     public status: number = 404;
     constructor() {
         super("Not Found");
@@ -6,7 +14,7 @@ export class ErrorNotFound extends Error {
     }
 }
 
-export class ErrorMethodNotAllowed extends Error {
+export class ErrorMethodNotAllowed extends EErr {
     public status: number = 405;
     public allow: string = "";
 
