@@ -67,7 +67,6 @@ export class Router<
   /**
    * Handles preflight requests from trusted origins configured by the user when initializing a router.
    * Note that the wildcard value "*" will fail if the request is sent with credentials (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives)
-   * @param autoCorsPreflight the object containing CORS preflight option of trustedOrigins, an array of trusted origins.
    * @returns 200 if the preflight request succeeds, 403 if it fails
    */
   private async preflightHandler(req: Req, res: Res) {
