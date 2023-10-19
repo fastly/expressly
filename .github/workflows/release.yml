@@ -33,6 +33,8 @@ jobs:
           key: ${{ runner.os }}-expressly-${{ secrets.cache_key_epoch_time }}-${{ hashFiles('yarn.lock') }}
       - name: Compile expressly
         run: yarn build
+      - name: Test expressly
+        run: yarn test
       - name: Publish
         run: |
           git fetch origin 'refs/tags/*:refs/tags/*'
