@@ -1,18 +1,21 @@
 import cookie from "cookie";
-import { addCommonMethods } from "../common";
+import { appendFn, setFn } from "../common";
 import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
 import { EHeaders } from "./headers";
 import { CookieOptions, EConfig } from "..";
 
-class EResponseBase {
+export class EResponse {
   headers: EHeaders = new EHeaders();
   status: number = 0;
   body: BodyInit = null;
   hasEnded: boolean = false;
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
-  
+
   constructor(private config: EConfig) {}
+
+  set = setFn(this);
+  append = appendFn(this);
 
   // Header helpers.
   vary(field: string) {
@@ -29,7 +32,10 @@ class EResponseBase {
   clearCookie(key: string, options: CookieOptions = {}): void {
     if (this.hasEnded) return;
 
-    this.cookie(key, "", { ...options, expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT") });
+    this.cookie(key, "", {
+      ...options,
+      expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
+    });
   }
 
   // Response lifecycle methods.
@@ -47,7 +53,11 @@ class EResponseBase {
     }
 
     // EXPERIMENTAL: Content type inference, à la Express.js.
-    if (this.config.autoContentType && !this.headers.has("Content-Type") && Boolean(this.body)) {
+    if (
+      this.config.autoContentType &&
+      !this.headers.has("Content-Type") &&
+      Boolean(this.body)
+    ) {
       if (typeof this.body === "string") {
         this.headers.set("Content-Type", "text/html");
       } else if (this.body instanceof ArrayBuffer) {
@@ -108,10 +118,12 @@ class EResponseBase {
   html(data: string, charset?: string) {
     if (this.hasEnded) return;
 
-    this.headers.set("Content-Type", `text/html${charset ? `; charset=${charset}` : ""}`);
+    this.headers.set(
+      "Content-Type",
+      `text/html${charset ? `; charset=${charset}` : ""}`,
+    );
     this.send(data);
   }
 }
 
-export const EResponse = addCommonMethods(EResponseBase);
-export type ERes = InstanceType<typeof EResponse>;
+export interface ERes extends EResponse {}

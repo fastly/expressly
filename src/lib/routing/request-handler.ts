@@ -1,19 +1,27 @@
 import { EReq } from "./request";
 import { ERes } from "./response";
 
-export type RequestHandlerCallback = (req: EReq, res: ERes) => Promise<any>;
+export interface RequestHandlerCallback<
+  Req extends EReq = EReq,
+  Res extends ERes = ERes,
+>{
+  (req: Req, res: Res): Promise<any>;
+}
 
-export class RequestHandler {
+export class RequestHandler<
+Req extends EReq = EReq,
+Res extends ERes = ERes,
+> {
   constructor(
     private matchFn: Function,
-    private callback: RequestHandlerCallback
+    private callback: RequestHandlerCallback<Req, Res>
   ) {}
 
-  public check(event: EReq): 0 | 404 | string[] {
+  public check(event: Req): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 
-  public async run(req: EReq, res: ERes): Promise<any> {
+  public async run(req: Req, res: Res): Promise<any> {
     await this.callback(req, res);
   }
 }

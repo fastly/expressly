@@ -51,7 +51,10 @@ const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async 
   return res.sendStatus(200);
 }
 
-export class Router {
+export class Router<
+Req extends EReq = EReq,
+Res extends ERes = ERes
+> {
   requestHandlers: Array<RequestHandler> = [];
   errorHandlers: Array<ErrorMiddleware> = [];
   config: EConfig = {
@@ -82,20 +85,20 @@ export class Router {
     const res = new EResponse(this.config);
     try {
       // Run middleware and request handler stack.
-      await this.runRequestHandlers(req, res);
+      await this.runRequestHandlers(req as Req, res as Res);
     } catch (err) {
       // Add default error handler.
       this.use(defaultErrorHandler(this.config.auto405));
       // Run error handler stack.
-      await this.runErrorHandlers(err, req, res);
+      await this.runErrorHandlers(err, req as Req, res as Res);
     }
     return Router.serializeResponse(res);
   }
 
   // Middleware attach point.
   public use(
-    path: string | RequestHandlerCallback | ErrorMiddlewareCallback,
-    callback?: RequestHandlerCallback | ErrorMiddlewareCallback
+    path: string | RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback,
+    callback?: RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback
   ): void {
     const cb = path instanceof Function ? path : callback;
     const matcher = path instanceof Function ? () => 0 : this.routeMatcher(["*"], path as string);
@@ -105,54 +108,54 @@ export class Router {
       );
     } else {
       this.requestHandlers.push(
-        new RequestHandler(matcher, cb as RequestHandlerCallback)
+        new RequestHandler<Req, Res>(matcher, cb as RequestHandlerCallback<Req,Res>)
       )
     }
   }
 
   // Router API.
-  public route(methods: Method[], pattern: string, callback: RequestHandlerCallback): void {
-    this.requestHandlers.push(new RequestHandler(this.routeMatcher(methods.map(m => m.toUpperCase()), pattern), callback));
+  public route(methods: Method[], pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+    this.requestHandlers.push(new RequestHandler<Req, Res>(this.routeMatcher(methods.map(m => m.toUpperCase()), pattern), callback));
   }
 
-  public all(pattern: string, callback: RequestHandlerCallback): void {
+  public all(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["*"], pattern, callback);
   }
 
-  public get(pattern: string, callback: RequestHandlerCallback): void {
+  public get(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["GET"], pattern, callback);
   }
 
-  public post(pattern: string, callback: RequestHandlerCallback): void {
+  public post(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["POST"], pattern, callback);
   }
 
-  public put(pattern: string, callback: RequestHandlerCallback): void {
+  public put(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["PUT"], pattern, callback);
   }
 
-  public delete(pattern: string, callback: RequestHandlerCallback): void {
+  public delete(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["DELETE"], pattern, callback);
   }
 
-  public head(pattern: string, callback: RequestHandlerCallback): void {
+  public head(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["HEAD"], pattern, callback);
   }
 
-  public options(pattern: string, callback: RequestHandlerCallback): void {
+  public options(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["OPTIONS"], pattern, callback);
   }
 
-  public patch(pattern: string, callback: RequestHandlerCallback): void {
+  public patch(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["PATCH"], pattern, callback);
   }
 
-  public purge(pattern: string, callback: RequestHandlerCallback): void {
+  public purge(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
     this.route(["PURGE"], pattern, callback);
   }
 
   // Request handler runner.
-  private async runRequestHandlers(req: EReq, res: ERes): Promise<any> {
+  private async runRequestHandlers(req: Req, res: Res): Promise<any> {
     let checkResult;
     const allowedMethods = [];
     for (let a of this.requestHandlers) {
@@ -174,7 +177,7 @@ export class Router {
   }
 
   // Error handler runner.
-  private async runErrorHandlers(err: Error, req: EReq, res: ERes): Promise<any> {
+  private async runErrorHandlers(err: Error, req: Req, res: Res): Promise<any> {
     for (let eH of this.errorHandlers) {
       if (res.hasEnded) {
         break;
@@ -193,7 +196,7 @@ export class Router {
    * @returns 405 if the method is not allowed, 404 if the path doesn't match, 0 otherwise.
    */
   private routeMatcher(methods: string[], pattern: string): Function {
-    return (req: EReq): 404 | 0 | string[] => {
+    return (req: Req): 404 | 0 | string[] => {
       const methodAllowed = methods.some(m => m === "*" || m === req.method);
       if (pattern === "*" || pattern === "(.*)") {
         return methodAllowed ? 0 : methods;
@@ -216,7 +219,7 @@ export class Router {
     };
   }
 
-  private static serializeResponse(res: ERes): Response {
+  private static serializeResponse<Res extends ERes = ERes>(res: Res): Response {
     const response = new Response(res.body, {
       headers: res.headers,
       // Default to 200 / 204 if no status was set by middleware / route handler.
