@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@auto-it/bot-list@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/bot-list/-/bot-list-11.0.1.tgz"
-  integrity sha512-OKsgzE9vB/+s2iuXTN1dWQwmynd//zrepZ2dHmrqwH+5Yp8r+ypYjxX0g88E35onvX5HmqqUedmoBVs3BqtV2w==
+"@auto-it/bot-list@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-11.0.4.tgz#a247281531bc4ee4bde791515fd6ad98bc48afe0"
+  integrity sha512-f3w9UZ655MLiELUQP28K9Gceptf2vvKdKVRzh2b2ST+PG/srmoxCnHgE/TO9afW7NiuUA1h+hQVyIb0eQ9VSfQ==
 
-"@auto-it/core@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/core/-/core-11.0.1.tgz"
-  integrity sha512-8IMW0y+9n7qk1kP8gIRYYfjvKItZY0bFyfhynOTjB0kq3d4bb6kv7NBzgVlj+UH9jQiXAI4lpOrMS+Zml6SGWg==
+"@auto-it/core@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/core/-/core-11.0.4.tgz#2a030c4eb58d70a8e74480e1d92b72b5cc824d9c"
+  integrity sha512-oYIByeGeuiM0MhWibbj3Y4Vj8p5Kt1n4g0hKL7Zu7oFlKmAjsZlwbH4z0wEjVTdK2+Eqg2/I1Dj/GgkiSriXgg==
   dependencies:
-    "@auto-it/bot-list" "11.0.1"
+    "@auto-it/bot-list" "11.0.4"
     "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
     "@octokit/core" "^3.5.1"
     "@octokit/plugin-enterprise-compatibility" "1.3.0"
@@ -53,13 +53,13 @@
     typescript-memoize "^1.0.0-alpha.3"
     url-join "^4.0.0"
 
-"@auto-it/npm@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/npm/-/npm-11.0.1.tgz"
-  integrity sha512-1m6SP+8eKW32HZDq1fQKZOUGIMtEwjlRLSA5E6WtIWRlxmROMwNvZsXSGqinWiaGaGp3khlf6F26/0sgiMeaOQ==
+"@auto-it/npm@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/npm/-/npm-11.0.4.tgz#67b6bf78fb6d3f814365796f15541b014db73fcb"
+  integrity sha512-7sKGswdhQZ0/EryFhMU8DZV/hKZSZTOhJnNTXBtCGRk7oLjRHjt6XVOWCMOMOCNO/wVn5k5r52DbhAy5V4i0GQ==
   dependencies:
-    "@auto-it/core" "11.0.1"
-    "@auto-it/package-json-utils" "11.0.1"
+    "@auto-it/core" "11.0.4"
+    "@auto-it/package-json-utils" "11.0.4"
     await-to-js "^3.0.0"
     endent "^2.1.0"
     env-ci "^5.0.1"
@@ -73,32 +73,32 @@
     url-join "^4.0.0"
     user-home "^2.0.0"
 
-"@auto-it/package-json-utils@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/package-json-utils/-/package-json-utils-11.0.1.tgz"
-  integrity sha512-G9ZkL5WbZwLiNq+e2QkMEk3WpBAf0Nn380PnJIQo56A/0XdACDpvXkhS97w9dUU8SDfS7kF6Rz/LsYTVgU0qzg==
+"@auto-it/package-json-utils@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/package-json-utils/-/package-json-utils-11.0.4.tgz#a3660f28ff8df5111d893d37d60af7058514079a"
+  integrity sha512-Y84CW2QSL1TXkc4cVajODhRFFixDhOGX4JBS/ic3TgeJ94h6QH0Q8so+FxzPwBDWGXmUdLsj8fY/A3n0X09lqA==
   dependencies:
     parse-author "^2.0.0"
     parse-github-url "1.0.2"
 
-"@auto-it/released@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/released/-/released-11.0.1.tgz"
-  integrity sha512-hZAAAZy+4Q7dTSeNjXS4te9JESFxjiqbV41vf1XPRQoeXXnK/8+HzLIfNwM0oXh+YoHzqcj8DrnoNVcqI0Cc3Q==
+"@auto-it/released@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/released/-/released-11.0.4.tgz#1c1a4b6c4ce2def28ae10418f848bceacf834685"
+  integrity sha512-BfzCr+rJvONgw5EtsmTfoPtjm7C6Yo+vKDiXtI82EctLfUuADV/wCE/zj5e1nACsELpqhqWfgLySvDu1n6bn6g==
   dependencies:
-    "@auto-it/bot-list" "11.0.1"
-    "@auto-it/core" "11.0.1"
+    "@auto-it/bot-list" "11.0.4"
+    "@auto-it/core" "11.0.4"
     deepmerge "^4.0.0"
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     tslib "2.1.0"
 
-"@auto-it/version-file@11.0.1":
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/@auto-it/version-file/-/version-file-11.0.1.tgz"
-  integrity sha512-ZxpivVGMCKsxS1by9kXCiFNXOQBkC/7yUuDbaX8N0C2PkotbkHOTLzsONRRWfbdP9EjxhD8RrPGweHR5t9AQCg==
+"@auto-it/version-file@11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@auto-it/version-file/-/version-file-11.0.4.tgz#7281768daef5760add4f9ac3ffeb416791165ac5"
+  integrity sha512-esKwslQPsPjFC96m0lI/MJI12OFjH92KXtVaQEguGIIXAhs7iop9+y5vLXjOtgNOFVBvk/FKTFItq2mV587aiA==
   dependencies:
-    "@auto-it/core" "11.0.1"
+    "@auto-it/core" "11.0.4"
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     semver "^7.0.0"
@@ -317,10 +317,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.17.19.tgz#8cfaf2ff603e9aabb910e9c0558c26cf32744061"
   integrity sha512-lAhycmKnVOuRYNtRtatQR1LPQf2oYCkRGkSFnseDAKPl8lu5SOsK/e1sXe5a0Pc5kHIHe6P2I/ilntNv2xf3cA==
 
-"@fastly/js-compute@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/@fastly/js-compute/-/js-compute-3.2.0.tgz"
-  integrity sha512-3d4VlS57ZiOYubRXw7HngQTrsQtpwIzddUhn5RSN3FDzBT12eC/8lo2zlFWAhr65l1QRtRBQeaPXt3bepEqvcw==
+"@fastly/js-compute@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@fastly/js-compute/-/js-compute-3.7.0.tgz#0fec6607fb1d6aed3f61efeda8e04c3c8e4600f0"
+  integrity sha512-36aCipSW5kWNUmJ3aTWLWayzfPKwtRQZRVBImURdfR8+7wlmkq5VQlBpy7W72b6WaC7wnkfqVjUOMrsAtaVpIg==
   dependencies:
     "@bytecodealliance/jco" "^0.10.0"
     "@bytecodealliance/wizer" "^3.0.1"
@@ -604,10 +604,10 @@
   resolved "https://registry.npmjs.org/@types/minimist/-/minimist-1.2.4.tgz"
   integrity sha512-Kfe/D3hxHTusnPNRbycJE1N77WHDsdS4AjUYIzlDzhDrS47NrwuL3YW4VITxwR7KCVpzwgy4Rbj829KSSQmwXQ==
 
-"@types/node@^18.17.1":
-  version "18.17.1"
-  resolved "https://registry.npmjs.org/@types/node/-/node-18.17.1.tgz"
-  integrity sha512-xlR1jahfizdplZYRU59JlUx9uzF1ARa8jbhM11ccpCJya8kvos5jwdm2ZAgxSCwOl0fq21svP18EVwPBXMQudw==
+"@types/node@^18.18.6":
+  version "18.18.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.18.6.tgz#26da694f75cdb057750f49d099da5e3f3824cb3e"
+  integrity sha512-wf3Vz+jCmOQ2HV1YUJuCWdL64adYxumkrxtc+H1VUQlnQI04+5HtH+qZCOE21lBE7gIrt+CwX2Wv8Acrw5Ak6w==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.3"
@@ -729,15 +729,15 @@ author-regex@^1.0.0:
   resolved "https://registry.npmjs.org/author-regex/-/author-regex-1.0.0.tgz"
   integrity sha512-KbWgR8wOYRAPekEmMXrYYdc7BRyhn2Ftk7KWfMUnQ43hFdojWEFRxhhRUm3/OFEdPa1r0KAvTTg9YQK57xTe0g==
 
-auto@^11.0.1:
-  version "11.0.1"
-  resolved "https://registry.npmjs.org/auto/-/auto-11.0.1.tgz"
-  integrity sha512-pSkPlv6RHp5j28jUwrIPKYNZUVitj6LOUCmqtB2IAk6D8kTdTgFet9ljQUpeyz10p6Z2DYyzdyVc3i9EDb3EyA==
+auto@^11.0.4:
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/auto/-/auto-11.0.4.tgz#8aeccc8f9a898952aad88df9c70a24583e2a793e"
+  integrity sha512-jDe95fpOHZXRDe0HJMH1FvTrU0f3rXbee0eqNIAR2mB9EcdiWQTj1aF56R/xPyGLxF9y3WXzu38DgiIX9sjoDg==
   dependencies:
-    "@auto-it/core" "11.0.1"
-    "@auto-it/npm" "11.0.1"
-    "@auto-it/released" "11.0.1"
-    "@auto-it/version-file" "11.0.1"
+    "@auto-it/core" "11.0.4"
+    "@auto-it/npm" "11.0.4"
+    "@auto-it/released" "11.0.4"
+    "@auto-it/version-file" "11.0.4"
     await-to-js "^3.0.0"
     chalk "^4.0.0"
     command-line-application "^0.10.1"
@@ -965,10 +965,10 @@ cookie@^0.5.0:
   resolved "https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
-core-js@^3.32.0:
-  version "3.32.0"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-3.32.0.tgz"
-  integrity sha512-rd4rYZNlF3WuoYuRIDEmbR/ga9CeuWX9U05umAvgrrZoHY4Z++cp/xwPQMvUpBB4Ag6J8KfD80G0zwCyaSxDww==
+core-js@^3.33.0:
+  version "3.33.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.33.0.tgz#70366dbf737134761edb017990cf5ce6c6369c40"
+  integrity sha512-HoZr92+ZjFEKar5HS6MC776gYslNOKHt75mEBKWKnPeFDpZ6nH5OeF3S6HFT1mUAUZKrzkez05VboaX8myjSuw==
 
 cosmiconfig@7.0.0:
   version "7.0.0"
@@ -2013,10 +2013,10 @@ plur@^4.0.0:
   dependencies:
     irregular-plurals "^3.2.0"
 
-prettier@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-3.0.1.tgz"
-  integrity sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==
+prettier@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.3.tgz#432a51f7ba422d1469096c0fdc28e235db8f9643"
+  integrity sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==
 
 pretty-format@^29.7.0:
   version "29.7.0"
@@ -2284,6 +2284,11 @@ source-map@^0.6.0:
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
+source-map@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.4.tgz#a9bbe705c9d8846f4e08ff6765acf0f1b0898656"
+  integrity sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==
+
 spdx-correct@^3.0.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/spdx-correct/-/spdx-correct-3.2.0.tgz"
@@ -2451,15 +2456,16 @@ trim-newlines@^3.0.0:
   resolved "https://registry.npmjs.org/trim-newlines/-/trim-newlines-3.0.1.tgz"
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
-ts-loader@^9.4.4:
-  version "9.4.4"
-  resolved "https://registry.npmjs.org/ts-loader/-/ts-loader-9.4.4.tgz"
-  integrity sha512-MLukxDHBl8OJ5Dk3y69IsKVFRA/6MwzEqBgh+OXMPB/OD01KQuWPFd1WAQP8a5PeSCAxfnkhiuWqfmFJzJQt9w==
+ts-loader@^9.5.0:
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-9.5.0.tgz#f0a51dda37cc4d8e43e6cb14edebbc599b0c3aa2"
+  integrity sha512-LLlB/pkB4q9mW2yLdFMnK3dEHbrBjeZTYguaaIfusyojBgAGf5kF+O6KcWqiGzWqHk0LBsoolrp4VftEURhybg==
   dependencies:
     chalk "^4.1.0"
     enhanced-resolve "^5.0.0"
     micromatch "^4.0.0"
     semver "^7.3.4"
+    source-map "^0.7.4"
 
 ts-node@^10.9.1:
   version "10.9.1"
@@ -2545,10 +2551,10 @@ typescript-memoize@^1.0.0-alpha.3:
   resolved "https://registry.npmjs.org/typescript-memoize/-/typescript-memoize-1.1.1.tgz"
   integrity sha512-GQ90TcKpIH4XxYTI2F98yEQYZgjNMOGPpOgdjIBhaLaWji5HPWlRnZ4AeA1hfBxtY7bCGDJsqDDHk/KaHOl5bA==
 
-typescript@^5.1.6:
-  version "5.1.6"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.1.6.tgz"
-  integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
+typescript@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
+  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
 
 typical@^4.0.0:
   version "4.0.0"
