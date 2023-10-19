@@ -1,19 +1,28 @@
 import { EReq } from "./request";
 import { ERes } from "./response";
+import { EErr } from "./errors";
 
-export type ErrorMiddlewareCallback = (err: Error, req: EReq, res: ERes) => Promise<any>;
+export type ErrorMiddlewareCallback<
+  Err extends EErr = EErr,
+  Req extends EReq = EReq,
+  Res extends ERes = ERes,
+> = (err: Err, req: Req, res: Res) => Promise<any> | void;
 
-export class ErrorMiddleware {
+export class ErrorMiddleware<
+  Err extends EErr = EErr,
+  Req extends EReq = EReq,
+  Res extends ERes = ERes,
+>  {
   constructor(
     private matchFn: Function,
-    private callback: ErrorMiddlewareCallback
-  ) {}
+    private callback: ErrorMiddlewareCallback<Err, Req, Res>,
+  ) { }
 
-  public check(event: EReq): 0 | 404 | string[] {
+  public check(event: Req): 0 | 404 | string[] {
     return this.matchFn(event);
   }
 
-  public async run(err: Error, req: EReq, res: ERes): Promise<any> {
+  public async run(err: Err, req: Req, res: Res): Promise<any> {
     await this.callback(err, req, res);
   }
 }

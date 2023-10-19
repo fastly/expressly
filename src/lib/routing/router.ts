@@ -1,62 +1,20 @@
 import { match } from "path-to-regexp";
-import { AutoCorsPreflightOptions, EConfig, Method } from ".";
+import { EConfig, Method } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
-import { ErrorNotFound, ErrorMethodNotAllowed } from "./errors";
+import { ErrorNotFound, ErrorMethodNotAllowed, EErr } from "./errors";
 import { ERequest, EReq } from "./request";
 import { EResponse, ERes } from "./response";
 
 const pathMatcherCache: Map<string, Function> = new Map();
 
-const defaultErrorHandler = (auto405) => async (err: Error, req: EReq, res: ERes) => {
-  if (err instanceof ErrorNotFound || (err instanceof ErrorMethodNotAllowed && !auto405)) {
-    return res.sendStatus(404);
-  } else if (err instanceof ErrorMethodNotAllowed) {
-    res.headers.set("Allow", err.allow);
-    return res.sendStatus(405);
-  }
-  console.error(err);
-  res.withStatus(500).json({ error: err.message });
-}
-
-/**
- * Handles preflight requests from trusted origins configured by the user when initializing a router.
- * Note that the wildcard value "*" will fail if the request is sent with credentials (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives)
- * @param autoCorsPreflight the object containing CORS preflight option of trustedOrigins, an array of trusted origins.
- * @returns 200 if the preflight request succeeds, 403 if it fails
- */
-const preflightHandler = (autoCorsPreflight: AutoCorsPreflightOptions) => async (req: EReq, res: ERes) => {
-  if (autoCorsPreflight.trustedOrigins.length === 0) {
-    return res.sendStatus(403);
-  }
-  let originHeaderValue: string | null = null;
-  if (autoCorsPreflight.trustedOrigins.length === 1 && autoCorsPreflight.trustedOrigins[0] === "*") {
-    originHeaderValue = "*";
-  } else if (req.headers.has("origin")) {
-    const origin = req.headers.get("origin").toLowerCase();
-    if (autoCorsPreflight.trustedOrigins.some((trustedOrigin) => trustedOrigin.toLowerCase() === origin)) {
-      originHeaderValue = origin;
-    }
-  }
-  if (!originHeaderValue) {
-    return res.sendStatus(403);
-  }
-  if (req.headers.has("access-control-request-method")) {
-    res.headers.set("access-control-allow-methods", req.headers.get("access-control-request-method"));
-  }
-  if (req.headers.has("access-control-request-headers")) {
-    res.headers.set("access-control-allow-headers", req.headers.get("access-control-request-headers"));
-  }
-  res.headers.set("access-control-allow-origin", originHeaderValue);
-  return res.sendStatus(200);
-}
-
 export class Router<
-Req extends EReq = EReq,
-Res extends ERes = ERes
+  Req extends EReq = EReq,
+  Res extends ERes = ERes,
+  Err extends EErr = EErr,
 > {
-  requestHandlers: Array<RequestHandler> = [];
-  errorHandlers: Array<ErrorMiddleware> = [];
+  requestHandlers: Array<RequestHandler<Req,Res>> = [];
+  errorHandlers: Array<ErrorMiddleware<Err,Req,Res>> = [];
   config: EConfig = {
     parseCookie: true,
     auto405: true,
@@ -70,7 +28,7 @@ Res extends ERes = ERes
       ...config
     }
     if (this.config.autoCorsPreflight) {
-      this.options("*", preflightHandler(this.config.autoCorsPreflight));
+      this.options("*", this.preflightHandler);
     }
   }
 
@@ -88,69 +46,111 @@ Res extends ERes = ERes
       await this.runRequestHandlers(req as Req, res as Res);
     } catch (err) {
       // Add default error handler.
-      this.use(defaultErrorHandler(this.config.auto405));
+      this.use(this.defaultErrorHandler);
       // Run error handler stack.
       await this.runErrorHandlers(err, req as Req, res as Res);
     }
     return Router.serializeResponse(res);
   }
 
+  private async defaultErrorHandler(err: Err, req: Req, res: Res) {
+    if (err instanceof ErrorNotFound || (err instanceof ErrorMethodNotAllowed && !this.config.auto405)) {
+      return res.sendStatus(404);
+    } else if (err instanceof ErrorMethodNotAllowed) {
+      res.headers.set("Allow", err.allow);
+      return res.sendStatus(405);
+    }
+    console.error(err);
+    res.withStatus(500).json({ error: err.message });
+  }
+
+  /**
+   * Handles preflight requests from trusted origins configured by the user when initializing a router.
+   * Note that the wildcard value "*" will fail if the request is sent with credentials (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#directives)
+   * @returns 200 if the preflight request succeeds, 403 if it fails
+   */
+  private async preflightHandler(req: Req, res: Res) {
+    if (this.config.autoCorsPreflight.trustedOrigins.length === 0) {
+      return res.sendStatus(403);
+    }
+    let originHeaderValue: string | null = null;
+    if (this.config.autoCorsPreflight.trustedOrigins.includes("*")) {
+      originHeaderValue = "*";
+    } else if (req.headers.has("origin")) {
+      const origin = req.headers.get("origin").toLowerCase();
+      if (this.config.autoCorsPreflight.trustedOrigins.some((trustedOrigin) => trustedOrigin.toLowerCase() === origin)) {
+        originHeaderValue = origin;
+      }
+    }
+    if (!originHeaderValue) {
+      return res.sendStatus(403);
+    }
+    if (req.headers.has("access-control-request-method")) {
+      res.headers.set("access-control-allow-methods", req.headers.get("access-control-request-method"));
+    }
+    if (req.headers.has("access-control-request-headers")) {
+      res.headers.set("access-control-allow-headers", req.headers.get("access-control-request-headers"));
+    }
+    res.headers.set("access-control-allow-origin", originHeaderValue);
+    return res.sendStatus(200);
+  }
+
   // Middleware attach point.
   public use(
-    path: string | RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback,
-    callback?: RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback
+    path: string | RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback<Err,Req,Res>,
+    callback?: RequestHandlerCallback<Req, Res> | ErrorMiddlewareCallback<Err,Req,Res>
   ): void {
     const cb = path instanceof Function ? path : callback;
     const matcher = path instanceof Function ? () => 0 : this.routeMatcher(["*"], path as string);
     if (cb.length === 3) {
       this.errorHandlers.push(
-        new ErrorMiddleware(matcher, cb as ErrorMiddlewareCallback)
+        new ErrorMiddleware(matcher, cb as ErrorMiddlewareCallback<Err,Req,Res>)
       );
     } else {
       this.requestHandlers.push(
-        new RequestHandler<Req, Res>(matcher, cb as RequestHandlerCallback<Req,Res>)
+        new RequestHandler<Req, Res>(matcher, cb as RequestHandlerCallback<Req, Res>)
       )
     }
   }
 
   // Router API.
-  public route(methods: Method[], pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public route(methods: Method[], pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.requestHandlers.push(new RequestHandler<Req, Res>(this.routeMatcher(methods.map(m => m.toUpperCase()), pattern), callback));
   }
 
-  public all(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public all(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["*"], pattern, callback);
   }
 
-  public get(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public get(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["GET"], pattern, callback);
   }
 
-  public post(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public post(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["POST"], pattern, callback);
   }
 
-  public put(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public put(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["PUT"], pattern, callback);
   }
 
-  public delete(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public delete(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["DELETE"], pattern, callback);
   }
 
-  public head(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public head(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["HEAD"], pattern, callback);
   }
 
-  public options(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public options(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["OPTIONS"], pattern, callback);
   }
 
-  public patch(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public patch(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["PATCH"], pattern, callback);
   }
 
-  public purge(pattern: string, callback: RequestHandlerCallback<Req,Res>): void {
+  public purge(pattern: string, callback: RequestHandlerCallback<Req, Res>): void {
     this.route(["PURGE"], pattern, callback);
   }
 
@@ -177,7 +177,7 @@ Res extends ERes = ERes
   }
 
   // Error handler runner.
-  private async runErrorHandlers(err: Error, req: Req, res: Res): Promise<any> {
+  private async runErrorHandlers(err: Err, req: Req, res: Res): Promise<any> {
     for (let eH of this.errorHandlers) {
       if (res.hasEnded) {
         break;
