@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
     title: 'Focus on what matters',
     description: (
       <>
-        <strong>expressly</strong> lets you focus on your business logic, and makes it easier than ever to get started with <a href="https://www.fastly.com/products/edge-compute" target="_blank">Compute@Edge</a>.
+        <strong>expressly</strong> lets you focus on your business logic, and makes it easier than ever to get started with <a href="https://www.fastly.com/products/edge-compute" target="_blank">Fastly Compute</a>.
       </>
     ),
   },

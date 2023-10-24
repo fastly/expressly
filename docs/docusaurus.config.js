@@ -6,7 +6,7 @@ const { themes: { github: lightCodeTheme, nightOwl: darkCodeTheme} } = require("
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "expressly",
-  tagline: "Express-style router for Fastly's Compute@Edge",
+  tagline: "Express-style router for Fastly Compute",
   url: "https://expressly.edgecompute.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -80,10 +80,10 @@ const config = {
             ],
           },
           {
-            title: "Compute@Edge",
+            title: "Compute",
             items: [
               {
-                label: "Learn about Compute@Edge",
+                label: "Learn about Compute",
                 href: "https://developer.fastly.com/learning/compute/",
               },
               {

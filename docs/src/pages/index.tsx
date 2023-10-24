@@ -49,8 +49,8 @@ router.listen();`;
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Routing for C@E`}
-      description="Express-style router for Fastly Compute@Edge"
+      title={`Routing for Fastly Compute`}
+      description="Express-style router for Fastly Compute"
     >
       <HomepageHeader />
       <main>
@@ -63,7 +63,7 @@ router.listen();`;
                 <h2>Don't waste time on boilerplate code</h2>
                 <p>
                   <strong>expressly</strong> is a lightweight and minimalist routing layer for
-                  JavaScript apps running on Fastly's Compute@Edge.
+                  JavaScript apps running on Fastly Compute.
                 </p>
                 <p>
                   <dl>
