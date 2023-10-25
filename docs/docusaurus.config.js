@@ -83,7 +83,7 @@ const config = {
             title: "Compute",
             items: [
               {
-                label: "Learn about Compute",
+                label: "Learn about Fastly Compute",
                 href: "https://developer.fastly.com/learning/compute/",
               },
               {
