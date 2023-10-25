@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Working with origins
 
-Accessing data from origins is done via the standard Fetch API available in Compute@Edge. [Read more on developer.fastly.com.](https://developer.fastly.com/learning/compute/javascript/#communicating-with-backend-servers-and-the-fastly-cache)
+Accessing data from origins is done via the standard Fetch API available in Fastly Compute. [Read more on developer.fastly.com.](https://developer.fastly.com/learning/compute/javascript/#communicating-with-backend-servers-and-the-fastly-cache)
 
 ## Performance
 

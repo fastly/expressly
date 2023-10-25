@@ -36,10 +36,10 @@ jobs:
             ${{ runner.os }}-expressly-docs-
       - name: Compile docs
         run: npm run build
-      - name: Generate static build for Compute@Edge
+      - name: Generate static build for Compute
         run: |
           npx @fastly/compute-js-static-publish --preset=docusaurus --service-id=${{ secrets.DOCS_SERVICE_ID }}
-      - name: Deploy docs to Compute@Edge
+      - name: Deploy docs to Compute
         uses: fastly/compute-actions@main
         with:
           project_directory: ./docs/compute-js

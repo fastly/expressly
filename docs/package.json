@@ -1,7 +1,7 @@
 {
   "name": "expressly-docs",
   "version": "0.0.0",
-  "description": "Documentation for expressly - an Express-style router for Fastly's Compute@Edge",
+  "description": "Documentation for expressly - an Express-style router for Fastly Compute",
   "private": true,
   "engines": {
     "node": ">=18"

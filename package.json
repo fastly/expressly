@@ -1,7 +1,7 @@
 {
   "name": "@fastly/expressly",
-  "version": "2.2.0",
-  "description": "Express-style router for Fastly's Compute@Edge.",
+  "version": "2.2.1",
+  "description": "Express-style router for Fastly Compute.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -19,7 +19,6 @@
   },
   "keywords": [
     "fastly",
-    "c@e",
     "compute",
     "edge",
     "router"
