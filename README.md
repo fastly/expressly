@@ -9,7 +9,7 @@ Express-style router for Fastly Compute.
 
 First, head over to [developer.fastly.com](https://developer.fastly.com) to get started with JavaScript on Fastly Compute:
 
-1. Learn about Compute: [developer.fastly.com/learning/compute/](https://developer.fastly.com/learning/compute/)
+1. Learn about Fastly Compute: [developer.fastly.com/learning/compute/](https://developer.fastly.com/learning/compute/)
 2. Create your first JavaScript app: [developer.fastly.com/learning/compute/javascript/](https://developer.fastly.com/learning/compute/javascript/)
 
 ### Install expressly
