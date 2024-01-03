@@ -44,7 +44,7 @@ export class EResponse {
     });
   }
 
-  on(event: 'finish', callback: (finalResponse?: Response) => void): void {
+  on(event: "finish", callback: (finalResponse?: Response) => void): void {
     this.emitter.on(event, callback);
   }
   
