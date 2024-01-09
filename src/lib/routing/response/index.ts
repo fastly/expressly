@@ -6,6 +6,8 @@ import { SurrogateKeys } from "./surrogate-keys";
 import { EHeaders } from "./headers";
 import { CookieOptions, EConfig } from "..";
 
+export type EResponseEvent = "finish";
+
 export type EResponseEvents = {
   finish: Response;
 }
@@ -44,7 +46,7 @@ export class EResponse {
     });
   }
 
-  on(event: "finish", callback: (finalResponse?: Response) => void): void {
+  on(event: EResponseEvent, callback: (finalResponse?: Response) => void): void {
     this.emitter.on(event, callback);
   }
   
