@@ -124,9 +124,7 @@ router.get("/page", async (req, res) => {
 });
 ```
 
-## res.on()
- 
-### res.on('finish', callback)
+## res.on('finish', callback)
 
 Provides a useful listener for tidying up any post-request actions (e.g., sending logs, metrics or traces).
 
