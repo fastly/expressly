@@ -20,7 +20,7 @@ export class EResponse {
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
   emitter: Emitter<EResponseEvents> = mitt<EResponseEvents>();
 
-  constructor(private config: EConfig) {}
+  constructor(private config: EConfig) { }
 
   set = setFn(this);
   append = appendFn(this);
@@ -46,10 +46,10 @@ export class EResponse {
     });
   }
 
-  on(event: EResponseEvent, callback: (finalResponse?: Response) => void): void {
+  on<TEvent extends keyof EResponseEvents>(event: TEvent, callback: (param: EResponseEvents[TEvent]) => void): void {
     this.emitter.on(event, callback);
   }
-  
+
   // Response lifecycle methods.
   send(response: BodyInit | Response) {
     if (this.hasEnded) return;
@@ -138,4 +138,4 @@ export class EResponse {
   }
 }
 
-export interface ERes extends EResponse {}
+export interface ERes extends EResponse { }
