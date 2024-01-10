@@ -124,6 +124,19 @@ router.get("/page", async (req, res) => {
 });
 ```
 
+## res.on('finish', callback)
+
+Provides a useful listener for tidying up any post-request actions (e.g., sending logs, metrics or traces).
+
+> Note: The `finish` event is emitted immediately before the final response headers and body are handed off to the Fastly Compute platform, to send back to the client.
+
+```javascript
+router.use((_, res) => {
+  res.on("finish", (finalResponse) => {
+    console.log("Response sent!", finalResponse);
+  });
+});
+```
 
 ## Response headers
 

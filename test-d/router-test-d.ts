@@ -46,6 +46,9 @@ import { ERes } from '../dist/lib/routing/response';
   router.get('/', async (req, res) => {
     expectType<MyReq>(req)
     expectType<WoofRes>(res)
-    return res.send("Hello world!");
+    res.on('finish', finalResponse => {
+      expectType<Response | undefined>(finalResponse)
+    })
+    return res.send("Hello world!")
   });
 }

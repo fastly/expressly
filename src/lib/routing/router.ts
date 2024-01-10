@@ -230,6 +230,8 @@ export class Router<
       response.headers.delete("Set-Cookie");
       res.headers.cookies.forEach((c) => response.headers.append("Set-Cookie", c));
     }
+    res.emitter.emit("finish", response);
+    res.emitter.all.clear();
     return response;
   }
 }

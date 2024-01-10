@@ -1,9 +1,16 @@
 import cookie from "cookie";
+import mitt, { Emitter } from "mitt";
 import { appendFn, setFn } from "../common";
 import { statusText } from "./status-codes";
 import { SurrogateKeys } from "./surrogate-keys";
 import { EHeaders } from "./headers";
 import { CookieOptions, EConfig } from "..";
+
+export type EResponseEvent = "finish";
+
+export type EResponseEvents = {
+  finish: Response;
+}
 
 export class EResponse {
   headers: EHeaders = new EHeaders();
@@ -11,8 +18,9 @@ export class EResponse {
   body: BodyInit = null;
   hasEnded: boolean = false;
   surrogateKeys: SurrogateKeys = new SurrogateKeys(this.headers);
+  emitter: Emitter<EResponseEvents> = mitt<EResponseEvents>();
 
-  constructor(private config: EConfig) {}
+  constructor(private config: EConfig) { }
 
   set = setFn(this);
   append = appendFn(this);
@@ -36,6 +44,10 @@ export class EResponse {
       ...options,
       expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
     });
+  }
+
+  on<TEvent extends keyof EResponseEvents>(event: TEvent, callback: (param: EResponseEvents[TEvent]) => void): void {
+    this.emitter.on(event, callback);
   }
 
   // Response lifecycle methods.
@@ -126,4 +138,4 @@ export class EResponse {
   }
 }
 
-export interface ERes extends EResponse {}
+export interface ERes extends EResponse { }
