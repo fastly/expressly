@@ -2,7 +2,33 @@ import { appendFn, setFn } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-export class ERequest extends Request {
+export function wrapERequest (event: FetchEvent, config: EConfig) {
+  const { request } = event;
+  Object.setPrototypeOf(request, ERequest.prototype);
+
+  request.set = setFn(request);
+  request.append = appendFn(request);
+
+  request.params = {};
+  request.waitUntil = event.waitUntil.bind(event);
+  request.clientInfo = request.event.client;
+  request.urlObj = new URL(request.url);
+  request.query = request.urlObj.searchParams;
+
+  Object.defineProperty(request, "url", {
+    get() {
+      return request.urlObj.toString();
+    },
+  });
+
+  // Parse cookies.
+  if (request.config.parseCookie) {
+    request.cookies = new CookieMap(request.headers);
+  }
+  return request;
+}
+
+class ERequest extends Request {
   readonly clientInfo: ClientInfo;
   readonly waitUntil: (promise: Promise<any>) => void;
   urlObj: URL;
@@ -10,30 +36,13 @@ export class ERequest extends Request {
   params: { [key: string]: string } = {};
   cookies: CookieMap;
 
-  constructor(
-    private config: EConfig,
-    private readonly event: FetchEvent,
-  ) {
-    super(event.request);
-    this.waitUntil = event.waitUntil.bind(event);
-    this.clientInfo = this.event.client;
-    this.urlObj = new URL(this.url);
-    this.query = this.urlObj.searchParams;
-
-    Object.defineProperty(this, "url", {
-      get() {
-        return this.urlObj.toString();
-      },
-    });
-
-    // Parse cookies.
-    if (this.config.parseCookie) {
-      this.cookies = new CookieMap(this.headers);
-    }
+  constructor() {
+    super();
+    throw new Error('Should not be constructed directly');
   }
 
-  set = setFn(this);
-  append = appendFn(this);
+  set: ReturnType<typeof setFn>;
+  append: ReturnType<typeof appendFn>;
 
   // Express-like URL helpers.
   public get path(): string {
