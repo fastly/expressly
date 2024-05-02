@@ -10,8 +10,8 @@ export function wrapERequest (event: FetchEvent, config: EConfig) {
   request.append = appendFn(request);
 
   request.params = {};
-  request.waitUntil = event.waitUntil.bind(event);
-  request.clientInfo = request.event.client;
+  (request as any).waitUntil = event.waitUntil.bind(event);
+  (request as any).clientInfo = event.client;
   request.urlObj = new URL(request.url);
   request.query = request.urlObj.searchParams;
 
@@ -22,13 +22,13 @@ export function wrapERequest (event: FetchEvent, config: EConfig) {
   });
 
   // Parse cookies.
-  if (request.config.parseCookie) {
+  if (config.parseCookie) {
     request.cookies = new CookieMap(request.headers);
   }
   return request;
 }
 
-class ERequest extends Request {
+export class ERequest extends Request {
   readonly clientInfo: ClientInfo;
   readonly waitUntil: (promise: Promise<any>) => void;
   urlObj: URL;
@@ -36,8 +36,8 @@ class ERequest extends Request {
   params: { [key: string]: string } = {};
   cookies: CookieMap;
 
-  constructor() {
-    super();
+  constructor(input) {
+    super(input);
     throw new Error('Should not be constructed directly');
   }
 
