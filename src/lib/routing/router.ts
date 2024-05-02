@@ -3,7 +3,7 @@ import { EConfig, Method } from ".";
 import { RequestHandler, RequestHandlerCallback } from "./request-handler";
 import { ErrorMiddleware, ErrorMiddlewareCallback } from "./error-middleware";
 import { ErrorNotFound, ErrorMethodNotAllowed, EErr } from "./errors";
-import { wrapRequest, EReq } from "./request";
+import { wrapERequest, EReq } from "./request";
 import { EResponse, ERes } from "./response";
 
 const pathMatcherCache: Map<string, Function> = new Map();
