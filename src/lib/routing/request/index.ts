@@ -3,7 +3,7 @@ import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
 export function wrapERequest (req: Request, event: FetchEvent, config: EConfig) {
-  const request: EReq = event.request as any;
+  const request: EReq = req as any;
   Object.setPrototypeOf(request, ERequest.prototype);
 
   request.set = setFn(request);
