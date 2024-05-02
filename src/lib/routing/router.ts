@@ -39,7 +39,7 @@ export class Router<
   }
 
   private async handler(event: FetchEvent): Promise<Response> {
-    const req = wrapERequest(event, this.config);
+    const req = wrapERequest(event.request, event, this.config);
     const res = new EResponse(this.config);
     try {
       // Run middleware and request handler stack.

@@ -2,7 +2,7 @@ import { appendFn, setFn } from "../common";
 import { CookieMap } from "./cookie-map";
 import { EConfig } from "..";
 
-export function wrapERequest (event: FetchEvent, config: EConfig) {
+export function wrapERequest (req: Request, event: FetchEvent, config: EConfig) {
   const request: EReq = event.request as any;
   Object.setPrototypeOf(request, ERequest.prototype);
 
@@ -36,9 +36,12 @@ export class ERequest extends Request {
   params: { [key: string]: string } = {};
   cookies: CookieMap;
 
-  constructor(input) {
-    super(input);
-    throw new Error('Should not be constructed directly');
+  constructor(
+    private config: EConfig,
+    private readonly event: FetchEvent,
+  ) {
+    super(event.request);
+    wrapERequest(this, event, config);
   }
 
   set: ReturnType<typeof setFn>;
