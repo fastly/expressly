@@ -12,11 +12,10 @@
     "esModuleInterop": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "typeRoots": [],
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "types": ["@fastly/js-compute"],   
-    "allowSyntheticDefaultImports": true,   
+    "types": ["@fastly/js-compute"],
+    "allowSyntheticDefaultImports": true,
   },
   "exclude": ["node_modules"],
   "include": [

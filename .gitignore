@@ -1,7 +1,4 @@
 node_modules
 dist
-.dora
 .env
-.yarn
-.yarnrc.yml
-yarn-error.log
+package-lock.json
