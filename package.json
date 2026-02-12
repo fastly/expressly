@@ -1,6 +1,6 @@
 {
   "name": "@fastly/expressly",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Express-style router for Fastly Compute.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,10 +13,19 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepublish": "tsc",
+    "prepack": "npm run test && npm run build",
     "dev": "tsc --watch",
     "test": "tsd"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md"
+  ],
   "keywords": [
     "fastly",
     "compute",
@@ -29,12 +38,9 @@
   "author": "oss@fastly.com",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.18.6",
-    "auto": "^11.0.4",
     "husky": "^8.0.3",
     "prettier": "^3.1.1",
-    "pretty-quick": "^3.1.3",
-    "ts-loader": "^9.5.1",
+    "pretty-quick": "^4.2.2",
     "tsd": "^0.30.3",
     "typescript": "^5.3.3"
   },
@@ -44,20 +50,5 @@
     "mitt": "^3.0.1",
     "core-js": "^3.35.0",
     "path-to-regexp": "^6.2.1"
-  },
-  "auto": {
-    "baseBranch": "main",
-    "plugins": [
-      "npm",
-      "released"
-    ],
-    "release": {
-      "prerelease": true
-    },
-    "prereleaseBranches": [
-      "alpha",
-      "beta",
-      "main"
-    ]
   }
 }

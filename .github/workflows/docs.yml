@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dora-js-publish
 
 concurrency:
   group: ${{ github.ref_name }}-docs
@@ -22,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
       - name: Install dependencies
         run: npm ci
@@ -38,7 +37,7 @@ jobs:
         run: npm run build
       - name: Generate static build for Compute
         run: |
-          npx @fastly/compute-js-static-publish --preset=docusaurus --service-id=${{ secrets.DOCS_SERVICE_ID }}
+          npx @fastly/compute-js-static-publish@3 --preset=docusaurus --service-id=${{ secrets.DOCS_SERVICE_ID }}
       - name: Deploy docs to Compute
         uses: fastly/compute-actions@main
         with:
