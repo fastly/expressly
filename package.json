@@ -13,8 +13,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepack": "npm run test && npm run build",
-    "dev": "tsc --watch",
+    "ci": "npm run build && npm run test",
+    "prepack": "npm run ci",
     "test": "tsd"
   },
   "files": [
