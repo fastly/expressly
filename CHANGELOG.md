@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [2.4.0] - 2026/02/12
+
 ### Updated
 
 - Release to npmjs using updated CI workflow and trusted publishing
@@ -18,5 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Delete src/.DS_Store
 
-[unreleased]: https://github.com/fastly/expressly/compare/v2.1.0...HEAD
+[unreleased]: https://github.com/fastly/expressly/compare/v2.4.0...HEAD
+[2.4.0]: https://github.com/fastly/expressly/compare/v2.1.0...v2.4.0
 [2.1.0]: https://github.com/fastly/expressly/releases/tag/v2.1.0
