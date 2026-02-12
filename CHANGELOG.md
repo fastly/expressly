@@ -1,9 +1,22 @@
-# v2.1.1 (Thu Oct 19 2023)
+# Changelog
 
-#### ⚠️ Pushed to `main`
+All notable changes to this project will be documented in this file.
 
-- Delete src/.DS_Store ([@doramatadora](https://github.com/doramatadora))
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-#### Authors: 1
+## [unreleased]
 
-- Dora Militaru ([@doramatadora](https://github.com/doramatadora))
+### Updated
+
+- Release to npmjs using updated CI workflow and trusted publishing
+- Update to cookie 1.1.x
+
+## [2.1.0] - 2023/10/19
+
+### Updated
+
+- Delete src/.DS_Store
+
+[unreleased]: https://github.com/fastly/expressly/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/fastly/expressly/releases/tag/v2.1.0
