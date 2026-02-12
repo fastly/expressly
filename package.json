@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@fastly/js-compute": "^3.7.0",
-    "cookie": "^0.6.0",
+    "cookie": "^1.1.1",
     "mitt": "^3.0.1",
     "core-js": "^3.35.0",
     "path-to-regexp": "^6.2.1"

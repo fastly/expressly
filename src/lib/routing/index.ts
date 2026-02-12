@@ -12,7 +12,7 @@ export type EConfig = {
 
 export type CookieOptions = {
   domain?: string;
-  encode?: string;
+  encode?: (str: string) => string;
   expires?: Date;
   httpOnly?: boolean;
   maxAge?: number;
@@ -20,6 +20,7 @@ export type CookieOptions = {
   priority?: "low" | "medium" | "high";
   sameSite?: "strict" | "lax" | "none" | boolean;
   secure?: boolean;
+  partitioned?: boolean;
 }
 
 export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "PURGE" | "*";
