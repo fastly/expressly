@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Updated
+
+- Support @fastly/js-compute v4
+- Move @fastly/js-compute to peerDependencies (`^3.33.2 || ^4.0.0`)
+- Update to TypeScript 6
+- Change TypeScript `moduleResolution` to `bundler`
+
 ## [2.4.0] - 2026/02/12
 
 ### Updated
