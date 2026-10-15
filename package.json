@@ -38,17 +38,20 @@
   "author": "oss@fastly.com",
   "license": "MIT",
   "devDependencies": {
+    "@fastly/js-compute": "^4.0.1",
     "husky": "^8.0.3",
     "prettier": "^3.1.1",
     "pretty-quick": "^4.2.2",
     "tsd": "^0.30.3",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@fastly/js-compute": "^3.7.0",
     "cookie": "^1.1.1",
-    "mitt": "^3.0.1",
     "core-js": "^3.35.0",
+    "mitt": "^3.0.1",
     "path-to-regexp": "^6.2.1"
+  },
+  "peerDependencies": {
+    "@fastly/js-compute": "^3.33.2 || ^4.0.0"
   }
 }

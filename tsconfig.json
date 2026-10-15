@@ -11,7 +11,7 @@
     "strict": false,
     "esModuleInterop": true,
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "types": ["@fastly/js-compute"],
