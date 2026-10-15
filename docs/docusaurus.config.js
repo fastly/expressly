@@ -10,7 +10,11 @@ const config = {
   url: "https://expressly.edgecompute.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
   favicon: "img/favicon.ico",
   organizationName: "fastly", 
   projectName: "expressly", 
@@ -25,6 +29,7 @@ const config = {
           sidebarCollapsed: false,
           editUrl: 'https://github.com/fastly/expressly/edit/main/docs/',
         },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },

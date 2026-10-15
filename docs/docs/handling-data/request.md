@@ -17,10 +17,10 @@ The [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) object correspon
 Request [query string parameters](search-params.md).
 
 ### req.params
-An object containing properties mapped to any [named route "parameters"](../routing#path-parameters), if the [`extractRequestParameters`](../config.md#extractRequestParameters) configuration option is enabled.
+An object containing properties mapped to any [named route "parameters"](../routing#path-parameters), if the [`extractRequestParameters`](../config.md#extractrequestparameters) configuration option is enabled.
 
 ### req.cookies
-A Map containing [request cookies](cookies.md#request-cookies), if the [`parseCookie`](../config.md#parseCookie) configuration option is enabled.
+A Map containing [request cookies](cookies.md#request-cookies), if the [`parseCookie`](../config.md#parsecookie) configuration option is enabled.
 
 ### req.headers
 Request [headers](headers.md).

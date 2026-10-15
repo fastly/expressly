@@ -40,7 +40,7 @@ router.get("/origin", async (req, res) => {
   ));
 });
 ```
-> 💡 If the _experimental_ [`autoContentType`](../config.md#parseCookie) configuration option is enabled, `res.send` will try to [infer the `Content-Type` header](https://expressjs.com/en/4x/api.html#res.send) from the data it is passed, if the header is not set.
+> 💡 If the _experimental_ [`autoContentType`](../config.md#autocontenttype) configuration option is enabled, `res.send` will try to [infer the `Content-Type` header](https://expressjs.com/en/4x/api.html#res.send) from the data it is passed, if the header is not set.
 
 ## res.end()
 

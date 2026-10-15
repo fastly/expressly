@@ -4,7 +4,7 @@
   "description": "Documentation for expressly - an Express-style router for Fastly Compute",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "docusaurus": "docusaurus",
@@ -19,18 +19,20 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.0.0-beta.0",
-    "@docusaurus/preset-classic": "^3.0.0-beta.0",
-    "clsx": "^2.0.0",
-    "prism-react-renderer": "^2.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@docusaurus/core": "^3.10.2",
+    "@docusaurus/preset-classic": "^3.10.2",
+    "@mdx-js/react": "^3.1.1",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.0.0-beta.0",
-    "@tsconfig/docusaurus": "^2.0.2",
-    "@types/react": "^18.2.29",
-    "typescript": "^5.2.2"
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@docusaurus/tsconfig": "^3.10.2",
+    "@docusaurus/types": "^3.10.2",
+    "@types/react": "^19.3.0",
+    "typescript": "^5.9.3"
   },
   "browserslist": {
     "production": [
