@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [2.5.0] - 2026/10/15
+
 ### Updated
 
 - Support @fastly/js-compute v4
@@ -27,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Delete src/.DS_Store
 
-[unreleased]: https://github.com/fastly/expressly/compare/v2.4.0...HEAD
+[unreleased]: https://github.com/fastly/expressly/compare/v2.5.0...HEAD
+[2.5.0]: https://github.com/fastly/expressly/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/fastly/expressly/compare/v2.1.0...v2.4.0
 [2.1.0]: https://github.com/fastly/expressly/releases/tag/v2.1.0
